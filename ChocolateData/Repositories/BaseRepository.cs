@@ -7,9 +7,9 @@ namespace ChocolateData.Repositories;
 
 public class BaseRepository<TEntity> : IDbRepository<TEntity> where TEntity : class, IEntity 
 {
-    protected readonly DbContext _dbContext;
+    protected readonly ApplicationDbContext _dbContext;
 
-    protected BaseRepository(DbContext dbContext)
+    protected BaseRepository(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
     }

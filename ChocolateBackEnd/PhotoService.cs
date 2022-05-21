@@ -1,7 +1,10 @@
-﻿using ChocolateData;
+﻿using System.Runtime.CompilerServices;
+using ChocolateData;
 using ChocolateData.Repositories;
 using ChocolateDomain;
 using ChocolateDomain.Interfaces;
+
+//[assembly:InternalsVisibleTo(assemblyName:"ChocolateBackEnd.Tests")]
 
 namespace ChocolateBackEnd;
 

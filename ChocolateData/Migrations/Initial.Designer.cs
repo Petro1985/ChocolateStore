@@ -11,9 +11,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ChocolateData.Migrations
 {
-    [DbContext(typeof(DbContext))]
-    [Migration("20220423095043_PhotoRestrict")]
-    partial class PhotoRestrict
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20220417122819_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -74,7 +74,7 @@ namespace ChocolateData.Migrations
                     b.HasOne("ChocolateDomain.Product", "Product")
                         .WithMany("Photos")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");

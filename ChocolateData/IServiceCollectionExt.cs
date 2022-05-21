@@ -7,7 +7,7 @@ public static class IServiceCollectionExt
 {
     public static IServiceCollection AddDataBase(this IServiceCollection serviceCollection, string connectionString)
     {
-        serviceCollection.AddDbContext<DbContext>(options =>
+        serviceCollection.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
         return serviceCollection;
     } 

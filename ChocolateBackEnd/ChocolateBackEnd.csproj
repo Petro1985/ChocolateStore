@@ -10,12 +10,16 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="11.0.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
         <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>ChocolateBackEnd.Tests</_Parameter1>
+        </AssemblyAttribute>
     </ItemGroup>
 
     <ItemGroup>

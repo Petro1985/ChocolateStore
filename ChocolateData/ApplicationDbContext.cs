@@ -1,13 +1,14 @@
 ﻿using ChocolateDomain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
 namespace ChocolateData;
 
-public class DbContext : Microsoft.EntityFrameworkCore.DbContext
+public class ApplicationDbContext : IdentityDbContext
 {
-    public DbContext(DbContextOptions options) : base(options) { }
+    public ApplicationDbContext(DbContextOptions options) : base(options) { }
     
     public DbSet<Product> Products { get; set; }
     public DbSet<Photo> Photos { get; set; }

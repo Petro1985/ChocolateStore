@@ -6,7 +6,7 @@ namespace ChocolateData.Repositories;
 
 public class PhotoRepository : BaseRepository<Photo>
 {
-    public PhotoRepository(DbContext dbContext) : base(dbContext)
+    public PhotoRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
     }
 

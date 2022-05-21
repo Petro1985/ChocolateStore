@@ -7,7 +7,7 @@ namespace ChocolateData.Repositories;
 
 public class ProductRepository : BaseRepository<Product>
 {
-    public ProductRepository(DbContext dbContext) : base(dbContext)
+    public ProductRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
     }
 }

@@ -9,6 +9,8 @@ using ChocolateDomain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
+using ChocolateBackEnd.Auth;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ChocolateBackEnd.Controllers;
 
@@ -16,12 +18,9 @@ namespace ChocolateBackEnd.Controllers;
 public class ProductsController : Controller
 {
     private readonly IMapper _mapper;
-    // private readonly FileService _fileService;
-    // private readonly PhotoRepository _photoDb;
     private readonly PhotoService _photoService;
     
     private readonly IDbRepository<Product> _productDb;
-
 
     public ProductsController(IMapper mapper, IDbRepository<Product> productDb,  PhotoService photoService)
     {
@@ -36,6 +35,7 @@ public class ProductsController : Controller
         return await _mapper.ProjectTo<ProductResponse>(_productDb.GetQuery()).ToListAsync();
     }
     
+    [Authorize(Policy = Policies.Admin)]
     [HttpPost("Products", Name = "Post")]
     public async Task<ProductResponse> Add(ProductAddRequest request)
     {
@@ -47,6 +47,7 @@ public class ProductsController : Controller
         return mappedTask;
     }
 
+    [Authorize(Policy = Policies.Admin)]
     [HttpPost("Products/{productId:long}/Photos", Name = "PhotoPost")]
     public async Task<IActionResult> AddPhotos([FromRoute]long productId, IFormFile photo)
     {
@@ -69,6 +70,7 @@ public class ProductsController : Controller
         }
     }
 
+    [Authorize(Policy = Policies.Admin)]
     [HttpDelete("Products", Name = "DeleteProduct")]
     public async Task<IActionResult> DeleteProduct([FromBody]ProductDeleteRequest productId)
     {
@@ -88,8 +90,9 @@ public class ProductsController : Controller
         }
     }
 
+    [Authorize(Policy = Policies.Admin)]
     [HttpDelete("Products/{ProductId:long}/Photos/{PhotoNumber:long}", Name = "DeletePhoto")]
-    public async Task<IActionResult> DeleteProduct([FromRoute]PhotoDeleteRequest photoDeleteRequest)
+    public async Task<IActionResult> DeletePhoto([FromRoute]PhotoDeleteRequest photoDeleteRequest)
     {
         var photos = (await _photoService.GetPhotosByProduct(photoDeleteRequest.ProductId)).ToArray();
         if (photos is null) throw new PhotoNotFoundException(photoDeleteRequest.ProductId);

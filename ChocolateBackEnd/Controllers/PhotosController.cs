@@ -1,11 +1,14 @@
 ﻿using ChocolateData;
 using ChocolateDomain;
 using ChocolateDomain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChocolateBackEnd.Controllers;
 
-public class PhotosController : Controller
+[Authorize]
+[ApiController]
+public class PhotosController : ControllerBase
 {
     private readonly FileService _fileService;
     private readonly IDbRepository<Product> _productDb;
@@ -17,6 +20,4 @@ public class PhotosController : Controller
         _productDb = productDb;
         _photoDb = photoDb;
     }
-
-
 }
