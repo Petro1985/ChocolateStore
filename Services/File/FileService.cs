@@ -1,16 +1,17 @@
-﻿using System.IO;
-using System.Security.Cryptography.X509Certificates;
-using ChocolateDomain;
-using ChocolateDomain.Exceptions;
-using Microsoft.AspNetCore.Http;
+﻿namespace Services.File;
 
-namespace ChocolateData;
+public interface IFileService
+{
+    Task<string> SaveFile(Stream fileStream);
+    Task<Stream> LoadFile(string fileName);
+    void DeleteFile(string fileName);
+}
 
-public class FileService
+public class FileService : IFileService
 {
     private const string Path = "Photos";
 
-    public async Task<string>  SaveFile(Stream fileStream)
+    public async Task<string> SaveFile(Stream fileStream)
     {
         var dir = new DirectoryInfo(Path);
         if (!dir.Exists) dir.Create();
@@ -20,17 +21,17 @@ public class FileService
         fileStream.Seek(0, SeekOrigin.Begin);
 
         string filePath = System.IO.Path.Combine(Path, photoName.ToString());
-        await using var we = File.Create(filePath);
+        await using var we = System.IO.File.Create(filePath);
         await fileStream.CopyToAsync(we);
         
         return filePath;
     }
 
-    public async Task<Stream> LoadFile(Photo photo)
+    public async Task<Stream> LoadFile(string fileName)
     {
         try
         {
-            FileInfo file = new FileInfo(photo.PathToPhoto);
+            FileInfo file = new FileInfo(fileName);
             await using var fileStream = file.OpenRead();
 
             Stream stream = new MemoryStream(); 
@@ -40,13 +41,13 @@ public class FileService
         }
         catch (FileNotFoundException e)
         {
-            throw new PhotoFileNotFoundException(photo);
+            throw new PhotoFileNotFoundException(fileName);
         }
     }
 
-    public void DeleteFile(Photo photo)
+    public void DeleteFile(string fileName)
     {
-        FileInfo file = new FileInfo(photo.PathToPhoto);
+        FileInfo file = new FileInfo(fileName);
         if (!file.Exists) return;
         file.Delete();
     }

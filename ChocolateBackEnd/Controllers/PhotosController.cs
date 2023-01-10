@@ -3,6 +3,7 @@ using ChocolateDomain;
 using ChocolateDomain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Services.File;
 
 namespace ChocolateBackEnd.Controllers;
 
@@ -10,11 +11,11 @@ namespace ChocolateBackEnd.Controllers;
 [ApiController]
 public class PhotosController : ControllerBase
 {
-    private readonly FileService _fileService;
-    private readonly IDbRepository<Product> _productDb;
-    private readonly IDbRepository<Photo> _photoDb;
+    private readonly IFileService _fileService;
+    private readonly IDbRepository<ProductEntity> _productDb;
+    private readonly IDbRepository<PhotoEntity> _photoDb;
 
-    public PhotosController(FileService fileService, IDbRepository<Product> productDb, IDbRepository<Photo> photoDb)
+    public PhotosController(IFileService fileService, IDbRepository<ProductEntity> productDb, IDbRepository<PhotoEntity> photoDb)
     {
         _fileService = fileService;
         _productDb = productDb;

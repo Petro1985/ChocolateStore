@@ -1,8 +1,6 @@
-﻿using ChocolateDomain;
+﻿namespace Models;
 
-namespace ChocolateBackEnd.APIStruct;
-
-public class ProductResponse
+public class ProductDTO
 {
     public long Id { get; init; }
     public string Description { get; set; }

@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Drawing;
 using ChocolateBackEnd.Auth;
 using Microsoft.AspNetCore.Authorization;
+using Services.Photo;
 
 namespace ChocolateBackEnd.Controllers;
 
@@ -18,11 +19,11 @@ namespace ChocolateBackEnd.Controllers;
 public class ProductsController : Controller
 {
     private readonly IMapper _mapper;
-    private readonly PhotoService _photoService;
+    private readonly IPhotoService _photoService;
     
-    private readonly IDbRepository<Product> _productDb;
+    private readonly IDbRepository<ProductEntity> _productDb;
 
-    public ProductsController(IMapper mapper, IDbRepository<Product> productDb,  PhotoService photoService)
+    public ProductsController(IMapper mapper, IDbRepository<ProductEntity> productDb,  IPhotoService photoService)
     {
         _mapper = mapper;
         _productDb = productDb;
@@ -39,7 +40,7 @@ public class ProductsController : Controller
     [HttpPost("Products", Name = "Post")]
     public async Task<ProductResponse> Add(ProductAddRequest request)
     {
-        var product = new Product(
+        var product = new ProductEntity(
             request.Description, request.PriceRub, TimeSpan.FromHours(request.TimeToMakeInHours));
         
         await _productDb.Add(product);
@@ -49,19 +50,17 @@ public class ProductsController : Controller
 
     [Authorize(Policy = Policies.Admin)]
     [HttpPost("Products/{productId:long}/Photos", Name = "PhotoPost")]
-    public async Task<IActionResult> AddPhotos([FromRoute]long productId, IFormFile photo)
+    public async Task<IActionResult> AddPhotos([FromRoute]Guid productId, IFormFile photo)
     {
         try
         {
-            var product = await _productDb.Get(productId);
-        
-            await using Stream readStream = photo.OpenReadStream();
+            await using var readStream = photo.OpenReadStream();
             if (!IsImage(readStream))
             {
                 return BadRequest("Sent file isn't image.");                
             }
             
-            await _photoService.Add(product, readStream);
+            await _photoService.AddPhoto(productId, readStream);
             return Ok();
         }
         catch (EntityNotFoundException e)
@@ -72,16 +71,16 @@ public class ProductsController : Controller
 
     [Authorize(Policy = Policies.Admin)]
     [HttpDelete("Products", Name = "DeleteProduct")]
-    public async Task<IActionResult> DeleteProduct([FromBody]ProductDeleteRequest productId)
+    public async Task<IActionResult> DeleteProduct([FromQuery]Guid productId)
     {
         try
         {
-            var photos = await _photoService.GetPhotosByProduct(productId.Id);
-            foreach (Photo photo in photos)
+            var photos = await _photoService.GetPhotosByProduct(productId);
+            foreach (var photo in photos)
             {
                 await _photoService.Delete(photo);
             }
-            await _productDb.Delete(productId.Id);
+            await _productDb.Delete(productId);
             return Ok();
         }
         catch (Exception e)
@@ -91,37 +90,35 @@ public class ProductsController : Controller
     }
 
     [Authorize(Policy = Policies.Admin)]
-    [HttpDelete("Products/{ProductId:long}/Photos/{PhotoNumber:long}", Name = "DeletePhoto")]
-    public async Task<IActionResult> DeletePhoto([FromRoute]PhotoDeleteRequest photoDeleteRequest)
-    {
-        var photos = (await _photoService.GetPhotosByProduct(photoDeleteRequest.ProductId)).ToArray();
-        if (photos is null) throw new PhotoNotFoundException(photoDeleteRequest.ProductId);
-
-        var photoNumber = photoDeleteRequest.PhotoNumber;
-        
-        var photo = photos.ElementAtOrDefault(photoDeleteRequest.PhotoNumber);
-        if (photo is null) return BadRequest($"There isn't photo under number {photoNumber.ToString()}. Count of photos for product {photoDeleteRequest.ProductId.ToString()} is {photos.Count().ToString()}");
-        
-        await _photoService.Delete(photo);
-        return Ok();
-    }
-    
-    [HttpGet("Products/{productId:long}/Photos/{photoNumber:long}", Name = "GetPhoto")]
-    public async Task<ActionResult> GetPhotos([FromRoute] long productId, [FromRoute] int photoNumber)
+    [HttpDelete("Products/{productId:Guid}/Photos/{photoId:Guid}", Name = "DeletePhoto")]
+    public async Task<IActionResult> DeletePhoto([FromRoute]Guid productId, [FromRoute]Guid photoId)
     {
         var photos = (await _photoService.GetPhotosByProduct(productId)).ToArray();
         if (photos is null) throw new PhotoNotFoundException(productId);
 
-        var photo = photos.ElementAtOrDefault(photoNumber);
-        if (photo is null) return BadRequest($"There isn't photo under number {photoNumber.ToString()}. Count of photos for product {productId.ToString()} is {photos.Count().ToString()}");
+        var photoToDelete = photos.FirstOrDefault(x => x.Id == photoId);
+        if (photoToDelete is null) return BadRequest($"There isn't photo with Id {photoToDelete.Id}");
+        
+        await _photoService.Delete(photoToDelete);
+        return Ok();
+    }
+    
+    [HttpGet("Products/{productId:Guid}/Photos/{photoId:Guid}", Name = "GetPhoto")]
+    public async Task<ActionResult> GetPhotos([FromRoute] Guid productId, [FromRoute] Guid photoId)
+    {
+        var photos = (await _photoService.GetPhotosByProduct(productId)).ToArray();
+        if (photos is null) throw new PhotoNotFoundException(productId);
+
+        var photo = photos.FirstOrDefault(x => x.Id == photoId);
+        if (photo is null) return BadRequest($"There isn't photo with Id {photoId.ToString()}");
 
         var stream = await _photoService.GetPhotoFile(photo);
 
         return File(stream, MediaTypeNames.Image.Jpeg);
     }    
 
-    [HttpGet("Products/{productId:long}/Photos", Name = "GetAllPhotos")]
-    public async Task<ActionResult> GetPhotos([FromRoute] long productId)
+    [HttpGet("Products/{productId:Guid}/Photos", Name = "GetAllPhotos")]
+    public async Task<ActionResult> GetPhotos([FromRoute] Guid productId)
     {
         var photos = await _photoService.GetPhotosByProduct(productId);
         var streams = photos.Select(async photo => await _photoService.GetPhotoFile(photo)).ToArray();

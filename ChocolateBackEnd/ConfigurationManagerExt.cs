@@ -1,4 +1,4 @@
-﻿using ChocolateDomain.Interfaces;
+﻿namespace ChocolateBackEnd;
 
 public static class ConfigurationManagerExt
 {
@@ -6,7 +6,7 @@ public static class ConfigurationManagerExt
     {
         var exc = new Exception("connection string exception");
 
-        var confSection = conf.GetSection("DB_login_information");
+        var confSection = conf.GetSection("DbConnectionString");
         var server = confSection["Server"] ?? throw exc;
         var port = confSection["Port"] ?? throw exc;
         var dataBase = confSection["Database"] ?? throw exc;

@@ -14,7 +14,7 @@ public class BaseRepository<TEntity> : IDbRepository<TEntity> where TEntity : cl
         _dbContext = dbContext;
     }
 
-    public virtual async Task<long> Add(TEntity entity)
+    public virtual async Task<Guid> Add(TEntity entity)
     {
         _dbContext.Set<TEntity>().Add(entity);
         await _dbContext.SaveChangesAsync();
@@ -27,7 +27,7 @@ public class BaseRepository<TEntity> : IDbRepository<TEntity> where TEntity : cl
         await _dbContext.SaveChangesAsync();
     }
 
-    public virtual async Task Delete(long id)
+    public virtual async Task Delete(Guid id)
     {
         var entity = await Get(id);
         _dbContext.Set<TEntity>().Remove(entity);
@@ -40,7 +40,7 @@ public class BaseRepository<TEntity> : IDbRepository<TEntity> where TEntity : cl
         await _dbContext.SaveChangesAsync();
     }
 
-    public virtual async Task<TEntity> Get(long id)
+    public virtual async Task<TEntity> Get(Guid id)
     {
         var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(prod => prod.Id == id);
         if (entity is null) throw new EntityNotFoundException(typeof(TEntity), id);

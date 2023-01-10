@@ -7,6 +7,8 @@ using ChocolateDomain;
 using ChocolateDomain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Services.File;
+using Services.Photo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,11 +32,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.Lockout.MaxFailedAccessAttempts = 3;
 }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
-
-builder.Services.AddScoped<IDbRepository<Product>, ProductRepository>();
-builder.Services.AddScoped<IDbRepository<Photo>, PhotoRepository>();
-builder.Services.AddScoped<FileService>();
-builder.Services.AddScoped<PhotoService>();
+builder.Services.AddScoped<IDbRepository<ProductEntity>, ProductRepository>();
+builder.Services.AddScoped<IDbRepository<PhotoEntity>, PhotoRepository>();
+builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 
 builder.Services.ConfigureApplicationCookie(conf =>
 {
@@ -53,7 +54,7 @@ builder.Services.ConfigureApplicationCookie(conf =>
 
 builder.Services.AddAuthorization(options =>
 {
-    AuthorizationPolicyBuilder authorizationPolicyBuilder = new AuthorizationPolicyBuilder();
+    var authorizationPolicyBuilder = new AuthorizationPolicyBuilder();
     
     authorizationPolicyBuilder.RequireClaim("Admin");
     var authorizationPolicy = authorizationPolicyBuilder.Build();

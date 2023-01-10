@@ -2,10 +2,10 @@
 
 public interface IDbRepository <TEntity>
 {
-    public Task<long> Add(TEntity entity);
+    public Task<Guid> Add(TEntity entity);
     public Task Delete(TEntity entity);
-    public Task Delete(long id);
+    public Task Delete(Guid id);
     public Task Change(TEntity entity);
-    public Task<TEntity> Get(long id);
+    public Task<TEntity> Get(Guid id);
     public IQueryable<TEntity> GetQuery();
 }

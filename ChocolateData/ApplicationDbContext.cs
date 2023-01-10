@@ -10,14 +10,14 @@ public class ApplicationDbContext : IdentityDbContext
 {
     public ApplicationDbContext(DbContextOptions options) : base(options) { }
     
-    public DbSet<Product> Products { get; set; }
-    public DbSet<Photo> Photos { get; set; }
+    public DbSet<ProductEntity> Products { get; set; }
+    public DbSet<PhotoEntity> Photos { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Product>()
-            .HasMany<Photo>(product => product.Photos)
-            .WithOne(photo => photo.Product)
+        modelBuilder.Entity<ProductEntity>()
+            .HasMany<PhotoEntity>(product => product.Photos)
+            .WithOne(photo => photo.ProductEntity)
             .OnDelete(DeleteBehavior.Restrict);
         
         base.OnModelCreating(modelBuilder);

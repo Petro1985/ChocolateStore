@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ChocolateDomain\ChocolateDomain.csproj" />
+      <ProjectReference Include="..\Models\Models.csproj" />
     </ItemGroup>
 
     <ItemGroup>
