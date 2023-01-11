@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChocolateData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220521100819_UsersAu")]
-    partial class UsersAu
+    [Migration("20230111180936_fkFix")]
+    partial class fkFix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,20 +24,18 @@ namespace ChocolateData.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ChocolateDomain.Photo", b =>
+            modelBuilder.Entity("ChocolateDomain.PhotoEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("PathToPhoto")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -46,13 +44,11 @@ namespace ChocolateData.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("ChocolateDomain.Product", b =>
+            modelBuilder.Entity("ChocolateDomain.ProductEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -265,9 +261,9 @@ namespace ChocolateData.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ChocolateDomain.Photo", b =>
+            modelBuilder.Entity("ChocolateDomain.PhotoEntity", b =>
                 {
-                    b.HasOne("ChocolateDomain.Product", "Product")
+                    b.HasOne("ChocolateDomain.ProductEntity", "Product")
                         .WithMany("Photos")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -327,7 +323,7 @@ namespace ChocolateData.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ChocolateDomain.Product", b =>
+            modelBuilder.Entity("ChocolateDomain.ProductEntity", b =>
                 {
                     b.Navigation("Photos");
                 });

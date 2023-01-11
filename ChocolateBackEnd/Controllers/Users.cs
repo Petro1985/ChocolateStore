@@ -43,8 +43,6 @@ public class UsersController : ControllerBase
         var user = new IdentityUser();
         user.UserName = userName;
         var result = await _signInManager.UserManager.CreateAsync(user, password);
-        await _userManager.AddClaimAsync(user,
-            new Claim("Admin", "true"));
 
         if (result.Succeeded)
         {
@@ -67,7 +65,7 @@ public class UsersController : ControllerBase
         }
         else
         {
-            return BadRequest();
+            return BadRequest("Wrong user name or password");
         }
     }
 }

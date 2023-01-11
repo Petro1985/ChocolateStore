@@ -11,7 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Drawing;
 using ChocolateBackEnd.Auth;
 using Microsoft.AspNetCore.Authorization;
+using Models;
 using Services.Photo;
+using Services.Product;
 
 namespace ChocolateBackEnd.Controllers;
 
@@ -20,36 +22,30 @@ public class ProductsController : Controller
 {
     private readonly IMapper _mapper;
     private readonly IPhotoService _photoService;
+    private readonly IProductService _productService;
     
-    private readonly IDbRepository<ProductEntity> _productDb;
-
-    public ProductsController(IMapper mapper, IDbRepository<ProductEntity> productDb,  IPhotoService photoService)
+    public ProductsController(IMapper mapper,  IPhotoService photoService, IProductService productService)
     {
         _mapper = mapper;
-        _productDb = productDb;
         _photoService = photoService;
+        _productService = productService;
     }
 
     [HttpGet("Products", Name = "GetAllProducts")]
-    public async Task<IEnumerable<ProductResponse>> GetProducts()
+    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts()
     {
-        return await _mapper.ProjectTo<ProductResponse>(_productDb.GetQuery()).ToListAsync();
+        return Ok(await _productService.GetAllProducts());
     }
     
     [Authorize(Policy = Policies.Admin)]
     [HttpPost("Products", Name = "Post")]
-    public async Task<ProductResponse> Add(ProductAddRequest request)
+    public async Task<ActionResult<Guid>> Add(ProductDTO product)
     {
-        var product = new ProductEntity(
-            request.Description, request.PriceRub, TimeSpan.FromHours(request.TimeToMakeInHours));
-        
-        await _productDb.Add(product);
-        var mappedTask = _mapper.Map<ProductResponse>(product);
-        return mappedTask;
+        return Ok(await _productService.AddNewProduct(product));
     }
 
     [Authorize(Policy = Policies.Admin)]
-    [HttpPost("Products/{productId:long}/Photos", Name = "PhotoPost")]
+    [HttpPost("Products/{productId:Guid}/Photos", Name = "PhotoPost")]
     public async Task<IActionResult> AddPhotos([FromRoute]Guid productId, IFormFile photo)
     {
         try
@@ -73,20 +69,21 @@ public class ProductsController : Controller
     [HttpDelete("Products", Name = "DeleteProduct")]
     public async Task<IActionResult> DeleteProduct([FromQuery]Guid productId)
     {
-        try
-        {
-            var photos = await _photoService.GetPhotosByProduct(productId);
-            foreach (var photo in photos)
-            {
-                await _photoService.Delete(photo);
-            }
-            await _productDb.Delete(productId);
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
+        // try
+        // {
+        //     var photos = await _photoService.GetPhotosByProduct(productId);
+        //     foreach (var photo in photos)
+        //     {
+        //         await _photoService.Delete(photo);
+        //     }
+        //     await _productDb.Delete(productId);
+        //     return Ok();
+        // }
+        // catch (Exception e)
+        // {
+        //     return BadRequest(e.Message);
+        // }
+        return BadRequest("e.Message");
     }
 
     [Authorize(Policy = Policies.Admin)]

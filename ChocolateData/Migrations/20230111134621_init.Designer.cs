@@ -3,6 +3,7 @@ using System;
 using ChocolateData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChocolateData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class DbContextModelSnapshot : ModelSnapshot
+    [Migration("20230111134621_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,35 +24,34 @@ namespace ChocolateData.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ChocolateDomain.Photo", b =>
+            modelBuilder.Entity("ChocolateDomain.PhotoEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("PathToPhoto")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ProductEntityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductEntityId");
 
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("ChocolateDomain.Product", b =>
+            modelBuilder.Entity("ChocolateDomain.ProductEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -263,15 +264,15 @@ namespace ChocolateData.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ChocolateDomain.Photo", b =>
+            modelBuilder.Entity("ChocolateDomain.PhotoEntity", b =>
                 {
-                    b.HasOne("ChocolateDomain.Product", "Product")
+                    b.HasOne("ChocolateDomain.ProductEntity", "ProductEntity")
                         .WithMany("Photos")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductEntityId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("ProductEntity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -325,7 +326,7 @@ namespace ChocolateData.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ChocolateDomain.Product", b =>
+            modelBuilder.Entity("ChocolateDomain.ProductEntity", b =>
                 {
                     b.Navigation("Photos");
                 });

@@ -1,8 +1,9 @@
-﻿using ChocolateDomain;
+﻿using AutoMapper;
+using ChocolateDomain;
 
 namespace ChocolateBackEnd.APIStruct.Mapper;
 
-public class ProductMapperProfile : AutoMapper.Profile
+public class ProductMapperProfile : Profile
 {
     public ProductMapperProfile()
     {

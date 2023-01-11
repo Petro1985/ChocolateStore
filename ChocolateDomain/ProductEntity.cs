@@ -11,6 +11,10 @@ public class ProductEntity : IEntity
 
     public IEnumerable<PhotoEntity> Photos { get; set; } = new List<PhotoEntity>();
 
+    public ProductEntity()
+    {
+    }
+
     public ProductEntity(string description, decimal priceRub, TimeSpan timeToMake)
     {
         Description = description;

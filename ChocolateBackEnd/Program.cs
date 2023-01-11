@@ -1,5 +1,6 @@
 using System.Reflection;
 using ChocolateBackEnd;
+using ChocolateBackEnd.APIStruct.Mapper;
 using ChocolateBackEnd.Auth;
 using ChocolateData;
 using ChocolateData.Repositories;
@@ -9,18 +10,35 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Services.File;
 using Services.Photo;
+using Services.Product;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(Program)));
+builder.Services.AddAutoMapper(opt =>
+{
+    opt.AddProfile<ProductProfile>();
+    opt.AddProfile<ProductMapperProfile>();
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDataBase(builder.Configuration.GetConnectionString());
+
+builder.Services.AddCors(x =>
+{
+    x.AddPolicy("AnyOrigin", op =>
+    {
+        op.WithOrigins("http://localhost:5213", "https://localhost:7213");
+        // op.AllowAnyOrigin();
+        op.AllowAnyMethod();
+        op.AllowAnyHeader();
+        op.AllowCredentials();
+    });
+});
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
@@ -36,6 +54,7 @@ builder.Services.AddScoped<IDbRepository<ProductEntity>, ProductRepository>();
 builder.Services.AddScoped<IDbRepository<PhotoEntity>, PhotoRepository>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.ConfigureApplicationCookie(conf =>
 {
@@ -64,11 +83,12 @@ builder.Services.AddAuthorization(options =>
 
 var app = builder.Build();
 
+app.UseCors("AnyOrigin");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(op => op.EnablePersistAuthorization());
 }
 
 app.UseHttpsRedirection();

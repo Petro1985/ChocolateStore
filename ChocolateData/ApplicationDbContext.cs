@@ -17,7 +17,7 @@ public class ApplicationDbContext : IdentityDbContext
     {
         modelBuilder.Entity<ProductEntity>()
             .HasMany<PhotoEntity>(product => product.Photos)
-            .WithOne(photo => photo.ProductEntity)
+            .WithOne(photo => photo.Product)
             .OnDelete(DeleteBehavior.Restrict);
         
         base.OnModelCreating(modelBuilder);
