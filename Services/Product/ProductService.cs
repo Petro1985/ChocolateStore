@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ChocolateDomain;
+using ChocolateDomain.Entities;
 using ChocolateDomain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models;

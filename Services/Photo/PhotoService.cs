@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ChocolateData.Repositories;
 using ChocolateDomain;
+using ChocolateDomain.Entities;
 using ChocolateDomain.Interfaces;
 using Models;
 using Services.File;

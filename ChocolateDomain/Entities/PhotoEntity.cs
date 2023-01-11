@@ -1,6 +1,6 @@
 ﻿using ChocolateDomain.Interfaces;
 
-namespace ChocolateDomain;
+namespace ChocolateDomain.Entities;
 
 public class PhotoEntity : IEntity
 {

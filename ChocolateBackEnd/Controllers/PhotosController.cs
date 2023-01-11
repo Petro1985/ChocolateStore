@@ -1,5 +1,6 @@
 ﻿using ChocolateData;
 using ChocolateDomain;
+using ChocolateDomain.Entities;
 using ChocolateDomain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

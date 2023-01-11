@@ -1,4 +1,5 @@
 ﻿using ChocolateDomain;
+using ChocolateDomain.Entities;
 using ChocolateDomain.Exceptions;
 using ChocolateDomain.Interfaces;
 using Microsoft.EntityFrameworkCore;

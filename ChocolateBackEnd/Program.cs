@@ -5,6 +5,7 @@ using ChocolateBackEnd.Auth;
 using ChocolateData;
 using ChocolateData.Repositories;
 using ChocolateDomain;
+using ChocolateDomain.Entities;
 using ChocolateDomain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

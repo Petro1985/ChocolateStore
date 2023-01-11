@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ChocolateDomain;
+using ChocolateDomain.Entities;
 
 namespace ChocolateBackEnd.APIStruct.Mapper;
 

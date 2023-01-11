@@ -1,4 +1,5 @@
 ﻿using ChocolateDomain;
+using ChocolateDomain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -19,6 +20,7 @@ public class ApplicationDbContext : IdentityDbContext
             .HasMany<PhotoEntity>(product => product.Photos)
             .WithOne(photo => photo.Product)
             .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<ProductEntity>().HasOne<PhotoEntity>(prod => prod.MainPhoto);
         
         base.OnModelCreating(modelBuilder);
     }

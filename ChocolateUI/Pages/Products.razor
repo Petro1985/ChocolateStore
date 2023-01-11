@@ -1,0 +1,52 @@
+﻿@page "/"
+@using Models
+@using System.Globalization
+@inherits ProductsBase
+<h3>Products</h3>
+
+
+@if (Products is null)
+{
+    <h3>Loading products...</h3>
+}
+else
+{
+    <h3 class="mb-5">Products</h3>
+
+    var productCount = Products.Count();
+
+    if (productCount > 0)
+    {
+        const int itemsPerRow = 4;
+        var productRowList = new List<ProductDTO>();
+
+        for (int i = 0; i < productCount; i++)
+        {
+            productRowList = Products.Skip(i * itemsPerRow).Take(itemsPerRow).ToList();
+
+
+            <div class="row mt-3">
+
+                @foreach (var item in productRowList)
+                {
+                    <a href="#">
+                        <div class="card">
+                            <img class="img-thumbnail" src=""/>
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">
+                                    @item.Description
+                                </h5>
+                                <p class="card-text">
+                                    <b>@item.PriceRub.ToString("C")</b>
+                                </p>
+                            </div>
+
+                        </div>
+                    </a>
+                }
+
+
+            </div>
+        }
+    }
+}
