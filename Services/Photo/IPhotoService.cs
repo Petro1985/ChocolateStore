@@ -9,5 +9,6 @@ public interface IPhotoService
     public Task Delete(PhotoDTO photo);
     public Task Delete(Guid id);
     public Task<IEnumerable<PhotoDTO>> GetPhotosByProduct(Guid productId);
-    public Task<Stream> GetPhotoFile(PhotoDTO photo);
+    public Task<Stream> GetImage(PhotoDTO photo);
+    public Task<Stream> GetImage(Guid photoId);
 }

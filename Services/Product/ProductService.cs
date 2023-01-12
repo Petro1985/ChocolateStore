@@ -12,6 +12,12 @@ public interface IProductService
     Task<IEnumerable<ProductDTO>> GetAllProducts();
 
     Task<Guid> AddNewProduct(ProductDTO product);
+
+    Task UpdateProduct(ProductDTO product);
+
+    Task<ProductDTO> Get(Guid productId);
+
+    Task SetMainPhoto(Guid productId, Guid photoId);
 }
 
 public class ProductService : IProductService
@@ -36,5 +42,28 @@ public class ProductService : IProductService
         await _productDb.Add(productEntity);
 
         return productEntity.Id;
+    }
+
+    public async Task UpdateProduct(ProductDTO product)
+    {
+        var productEntity = _mapper.Map<ProductEntity>(product);
+
+        await _productDb.Change(productEntity);
+    }
+
+    public async Task<ProductDTO> Get(Guid productId)
+    {
+        return _mapper.Map<ProductDTO>(await _productDb.Get(productId));
+    }
+
+    public async Task SetMainPhoto(Guid productId, Guid photoId)
+    {
+        var productEntity = new ProductEntity
+        {
+            Id = productId,
+            MainPhotoId = photoId
+        };
+        
+        await _productDb.Change(productEntity);
     }
 }

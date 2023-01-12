@@ -22,15 +22,15 @@ namespace ChocolateData.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ChocolateDomain.PhotoEntity", b =>
+            modelBuilder.Entity("ChocolateDomain.Entities.PhotoEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("PathToPhoto")
+                    b.Property<byte[]>("Image")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("bytea");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
@@ -42,7 +42,7 @@ namespace ChocolateData.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("ChocolateDomain.ProductEntity", b =>
+            modelBuilder.Entity("ChocolateDomain.Entities.ProductEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,6 +52,9 @@ namespace ChocolateData.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("MainPhotoId")
+                        .HasColumnType("uuid");
+
                     b.Property<decimal>("PriceRub")
                         .HasColumnType("numeric");
 
@@ -59,6 +62,8 @@ namespace ChocolateData.Migrations
                         .HasColumnType("interval");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MainPhotoId");
 
                     b.ToTable("Products");
                 });
@@ -259,15 +264,24 @@ namespace ChocolateData.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ChocolateDomain.PhotoEntity", b =>
+            modelBuilder.Entity("ChocolateDomain.Entities.PhotoEntity", b =>
                 {
-                    b.HasOne("ChocolateDomain.ProductEntity", "Product")
+                    b.HasOne("ChocolateDomain.Entities.ProductEntity", "Product")
                         .WithMany("Photos")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ChocolateDomain.Entities.ProductEntity", b =>
+                {
+                    b.HasOne("ChocolateDomain.Entities.PhotoEntity", "MainPhoto")
+                        .WithMany()
+                        .HasForeignKey("MainPhotoId");
+
+                    b.Navigation("MainPhoto");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -321,7 +335,7 @@ namespace ChocolateData.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ChocolateDomain.ProductEntity", b =>
+            modelBuilder.Entity("ChocolateDomain.Entities.ProductEntity", b =>
                 {
                     b.Navigation("Photos");
                 });

@@ -23,13 +23,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Photos" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\ChocolateData\ChocolateData.csproj" />
       <ProjectReference Include="..\ChocolateDomain\ChocolateDomain.csproj" />
       <ProjectReference Include="..\Services\Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot" />
     </ItemGroup>
 
 </Project>

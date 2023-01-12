@@ -1,4 +1,5 @@
-﻿using ChocolateDomain.Interfaces;
+﻿using System.Diagnostics.CodeAnalysis;
+using ChocolateDomain.Interfaces;
 
 namespace ChocolateDomain.Entities;
 
@@ -9,7 +10,9 @@ public class ProductEntity : IEntity
     public decimal PriceRub { get; set; }
     public TimeSpan TimeToMake { get; set; }
 
-    public PhotoEntity MainPhoto { get; set; }
+    public PhotoEntity? MainPhoto { get; set; }
+
+    public Guid? MainPhotoId { get; set; }
 
     public IEnumerable<PhotoEntity> Photos { get; set; } = new List<PhotoEntity>();
 

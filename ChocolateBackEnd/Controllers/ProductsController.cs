@@ -1,13 +1,8 @@
 ﻿using System.IO.Compression;
 using System.Net.Mime;
 using AutoMapper;
-using ChocolateBackEnd.APIStruct;
-using ChocolateData;
-using ChocolateDomain;
 using ChocolateDomain.Exceptions;
-using ChocolateDomain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Drawing;
 using ChocolateBackEnd.Auth;
 using Microsoft.AspNetCore.Authorization;
@@ -50,13 +45,22 @@ public class ProductsController : Controller
     {
         try
         {
+            
             await using var readStream = photo.OpenReadStream();
             if (!IsImage(readStream))
             {
                 return BadRequest("Sent file isn't image.");                
             }
             
-            await _photoService.AddPhoto(productId, readStream);
+            var newPhotoId = await _photoService.AddPhoto(productId, readStream);
+
+            var product = await _productService.Get(productId);
+            if (product.MainPhotoId is null)
+            {
+                product.MainPhotoId = newPhotoId;
+                await _productService.UpdateProduct(product);
+            }
+            
             return Ok();
         }
         catch (EntityNotFoundException e)
@@ -106,10 +110,7 @@ public class ProductsController : Controller
         var photos = (await _photoService.GetPhotosByProduct(productId)).ToArray();
         if (photos is null) throw new PhotoNotFoundException(productId);
 
-        var photo = photos.FirstOrDefault(x => x.Id == photoId);
-        if (photo is null) return BadRequest($"There isn't photo with Id {photoId.ToString()}");
-
-        var stream = await _photoService.GetPhotoFile(photo);
+        var stream = await _photoService.GetImage(photoId);
 
         return File(stream, MediaTypeNames.Image.Jpeg);
     }    
@@ -118,7 +119,8 @@ public class ProductsController : Controller
     public async Task<ActionResult> GetPhotos([FromRoute] Guid productId)
     {
         var photos = await _photoService.GetPhotosByProduct(productId);
-        var streams = photos.Select(async photo => await _photoService.GetPhotoFile(photo)).ToArray();
+        
+        var streams = photos.Select(async photo => await _photoService.GetImage(photo));
 
         Stream archiveStream = new MemoryStream();
         var zipArchive = new ZipArchive(archiveStream, ZipArchiveMode.Create, true);
@@ -128,7 +130,7 @@ public class ProductsController : Controller
         {
             var archiveEntry = zipArchive.CreateEntry($"{i}.jpg");
             await using var newEntryStream = archiveEntry.Open();
-            (await stream).CopyTo(newEntryStream);
+            await (await stream).CopyToAsync(newEntryStream);
             i++;
         }
         

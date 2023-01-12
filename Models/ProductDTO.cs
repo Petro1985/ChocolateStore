@@ -6,4 +6,5 @@ public class ProductDTO
     public string Description { get; set; }
     public decimal PriceRub { get; set; }
     public int TimeToMakeInHours { get; set; }
+    public Guid? MainPhotoId { get; set; }
 }

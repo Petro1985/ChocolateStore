@@ -1,25 +1,31 @@
-﻿using ChocolateData;
+﻿using System.Net.Mime;
+using AutoMapper;
+using ChocolateData;
 using ChocolateDomain;
 using ChocolateDomain.Entities;
 using ChocolateDomain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services.File;
+using Services.Photo;
 
 namespace ChocolateBackEnd.Controllers;
 
-[Authorize]
 [ApiController]
 public class PhotosController : ControllerBase
 {
-    private readonly IFileService _fileService;
-    private readonly IDbRepository<ProductEntity> _productDb;
-    private readonly IDbRepository<PhotoEntity> _photoDb;
+    private readonly IMapper _mapper;
+    private readonly IPhotoService _photoService;
 
-    public PhotosController(IFileService fileService, IDbRepository<ProductEntity> productDb, IDbRepository<PhotoEntity> photoDb)
+    public PhotosController(IMapper mapper, IPhotoService photoService)
     {
-        _fileService = fileService;
-        _productDb = productDb;
-        _photoDb = photoDb;
+        _mapper = mapper;
+        _photoService = photoService;
+    }
+
+    [HttpGet("/image/{photoId:Guid}")]
+    public async Task<ActionResult<IFormFile>> GetImage([FromRoute]Guid photoId)
+    {
+        var stream = await _photoService.GetImage(photoId);
+        return File(stream, MediaTypeNames.Image.Jpeg);        
     }
 }

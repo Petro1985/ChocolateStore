@@ -42,7 +42,10 @@ public class BaseRepository<TEntity> : IDbRepository<TEntity> where TEntity : cl
 
     public virtual async Task<TEntity> Get(Guid id)
     {
-        var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(prod => prod.Id == id);
+        var entity = await _dbContext
+            .Set<TEntity>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(prod => prod.Id == id);
         if (entity is null) throw new EntityNotFoundException(typeof(TEntity), id);
         return entity;
     }

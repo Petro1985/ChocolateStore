@@ -1,5 +1,7 @@
 ﻿using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 using Models;
+using Newtonsoft.Json;
 
 namespace ChocolateUI.Services.Contracts;
 
@@ -16,8 +18,13 @@ class ProductService : IProductService
     {
         try
         {
-            var products = await _httpClient.GetFromJsonAsync<IEnumerable<ProductDTO>>("Products");
-            return products;
+            Console.WriteLine(_httpClient.BaseAddress);
+            var response = await _httpClient.GetAsync("Products");
+
+            response.EnsureSuccessStatusCode();
+            var responseBody = await response.Content.ReadAsStringAsync();
+            
+            return JsonConvert.DeserializeObject<IEnumerable<ProductDTO>>(responseBody);
         }
         catch (Exception e)
         {

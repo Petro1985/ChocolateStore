@@ -4,12 +4,10 @@ using ChocolateBackEnd.APIStruct.Mapper;
 using ChocolateBackEnd.Auth;
 using ChocolateData;
 using ChocolateData.Repositories;
-using ChocolateDomain;
 using ChocolateDomain.Entities;
 using ChocolateDomain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Services.File;
 using Services.Photo;
 using Services.Product;
 
@@ -33,7 +31,7 @@ builder.Services.AddCors(x =>
 {
     x.AddPolicy("AnyOrigin", op =>
     {
-        op.WithOrigins("http://localhost:5213", "https://localhost:7213");
+        op.WithOrigins("http://localhost:5213", "https://localhost:7213", "https://localhost:7028");
         // op.AllowAnyOrigin();
         op.AllowAnyMethod();
         op.AllowAnyHeader();
@@ -53,7 +51,6 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 builder.Services.AddScoped<IDbRepository<ProductEntity>, ProductRepository>();
 builder.Services.AddScoped<IDbRepository<PhotoEntity>, PhotoRepository>();
-builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
