@@ -1,4 +1,5 @@
-﻿using ChocolateDomain;
+﻿using System.Linq.Expressions;
+using ChocolateDomain;
 using ChocolateDomain.Exceptions;
 using ChocolateDomain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -40,12 +41,16 @@ public class BaseRepository<TEntity> : IDbRepository<TEntity> where TEntity : cl
         await _dbContext.SaveChangesAsync();
     }
 
-    public virtual async Task<TEntity> Get(Guid id)
+    public virtual async Task<TEntity> Get(Guid id, string? include=null)
     {
-        var entity = await _dbContext
+        var query = _dbContext
             .Set<TEntity>()
-            .AsNoTracking()
-            .FirstOrDefaultAsync(prod => prod.Id == id);
+            .AsNoTracking();
+        if (include is not null)
+        {
+            query.Include(include);
+        }
+        var entity = await query.FirstOrDefaultAsync(prod => prod.Id == id);
         if (entity is null) throw new EntityNotFoundException(typeof(TEntity), id);
         return entity;
     }

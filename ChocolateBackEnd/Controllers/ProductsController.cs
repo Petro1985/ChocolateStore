@@ -18,7 +18,7 @@ public class ProductsController : Controller
     private readonly IMapper _mapper;
     private readonly IPhotoService _photoService;
     private readonly IProductService _productService;
-    
+
     public ProductsController(IMapper mapper,  IPhotoService photoService, IProductService productService)
     {
         _mapper = mapper;
@@ -27,16 +27,51 @@ public class ProductsController : Controller
     }
 
     [HttpGet("Products", Name = "GetAllProducts")]
-    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts()
+    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
     {
         return Ok(await _productService.GetAllProducts());
     }
     
-    [Authorize(Policy = Policies.Admin)]
-    [HttpPost("Products", Name = "Post")]
-    public async Task<ActionResult<Guid>> Add(ProductDTO product)
+    [HttpGet("Products/{categoryId:Guid}", Name = "GetProductsByCategory")]
+    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByCategory([FromRoute]Guid categoryId)
     {
-        return Ok(await _productService.AddNewProduct(product));
+        return Ok(await _productService.GetProductsByCategory(categoryId));
+    }
+    
+    [HttpGet("Product/{productId:Guid}", Name = "GetProduct")]
+    public async Task<ActionResult<ProductDTO>> GetProduct(Guid productId)
+    {
+        var product = await _productService.GetProductWithPhotoIds(productId);
+
+        return Ok(product);
+    }
+    
+    [HttpGet("Categories", Name = "GetAllCategories")]
+    public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
+    {
+        return Ok(await _productService.GetAllCategories());
+    }
+    
+    [HttpGet("Category/{categoryId:guid}", Name = "GetCategory")]
+    public async Task<ActionResult<CategoryDTO>> GetCategory([FromRoute] Guid categoryId)
+    {
+        return Ok(await _productService.GetCategory(categoryId));
+    }
+    
+    [Authorize(Policy = Policies.Admin)]
+    [HttpPost("Category", Name = "AddCategory")]
+    public async Task<ActionResult<Guid>> AddCategory(CategoryDTO category)
+    {
+        return Ok(await _productService.AddNewCategory(category));
+    }
+
+    [Authorize(Policy = Policies.Admin)]
+    [HttpPost("Products", Name = "AddProduct")]
+    public async Task<ActionResult<Guid>> AddProduct(ProductDTO product)
+    {
+        var newProductId = await _productService.AddNewProduct(product);
+        
+        return Ok(newProductId);
     }
 
     [Authorize(Policy = Policies.Admin)]
@@ -54,7 +89,7 @@ public class ProductsController : Controller
             
             var newPhotoId = await _photoService.AddPhoto(productId, readStream);
 
-            var product = await _productService.Get(productId);
+            var product = await _productService.GetProduct(productId);
             if (product.MainPhotoId is null)
             {
                 product.MainPhotoId = newPhotoId;

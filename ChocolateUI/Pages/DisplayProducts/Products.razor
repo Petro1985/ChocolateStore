@@ -1,0 +1,31 @@
+﻿@page "/Category/{CategoryId:guid}"
+@using Models
+
+@inherits ProductsBase
+
+@if (Products is null)
+{
+    <h3>Loading products...</h3>
+}
+else
+{
+    <h3 class="mb-5">Products</h3>
+
+    var productCount = Products.Count;
+
+    if (productCount > 0)
+    {
+        const int itemsPerRow = 4;
+
+
+        for (int i = 0; i < productCount; i++)
+        {
+            var productRowList = Products.Skip(i * itemsPerRow).Take(itemsPerRow);
+
+            <div class="row mt-3">
+                <DisplayProduct Products="@productRowList"></DisplayProduct>
+            </div>
+        }
+        <hr class="mb-3"/>
+    }
+}

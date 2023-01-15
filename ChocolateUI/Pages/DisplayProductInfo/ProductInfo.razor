@@ -1,0 +1,30 @@
+﻿@page "/Product/{ProductId:guid}"
+
+@inherits ProductInfoBase
+
+@if (Product is null)
+{
+    <h3>Loading products...</h3>
+}
+else
+{
+    <h3 class="mb-5">Products</h3>
+
+    var photos = Product.Photos.ToList();
+    var photosCount = photos.Count();
+
+    if (photosCount > 0)
+    {
+        const int itemsPerRow = 4;
+
+
+        for (int i = 0; i < photosCount; i++)
+        {
+            IEnumerable<Guid> photosRowList = photos.Skip(i * itemsPerRow).Take(itemsPerRow);
+
+            <div class="row mt-3">
+                <DisplayProductInfo Photos="@photosRowList"></DisplayProductInfo>
+            </div>
+        }
+    }
+}

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Services.Photo;
 using Services.Product;
+using Services.Profiler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(opt =>
 {
-    opt.AddProfile<ProductProfile>();
+    opt.AddProfile<ServicesProfile>();
     opt.AddProfile<ProductMapperProfile>();
 });
 
@@ -49,8 +50,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.Lockout.MaxFailedAccessAttempts = 3;
 }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
-builder.Services.AddScoped<IDbRepository<ProductEntity>, ProductRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IDbRepository<PhotoEntity>, PhotoRepository>();
+builder.Services.AddScoped<IDbRepository<CategoryEntity>, CategoryRepository>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 

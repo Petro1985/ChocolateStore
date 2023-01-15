@@ -7,7 +7,6 @@ public class PhotoEntity : IEntity
 {
     public Guid Id { get; init; }
     
-    [Required]
     public byte[] Image { get; set; }
 
     public Guid ProductId { get; set; }

@@ -62,7 +62,7 @@ public class UsersController : ControllerBase
         if (result.Succeeded)
         {
             return Ok();
-        }
+        } 
         else
         {
             return BadRequest("Wrong user name or password");
