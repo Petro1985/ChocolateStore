@@ -28,7 +28,11 @@ public class ApplicationDbContext : IdentityDbContext
             .WithOne();
         modelBuilder.Entity<ProductEntity>()
             .HasOne(x => x.Category)
-            .WithMany();
+            .WithOne();
+        modelBuilder.Entity<ProductEntity>()
+            .Navigation(x => x.Photos);
+        modelBuilder.Entity<ProductEntity>()
+            .Navigation(x => x.MainPhoto);
         
         modelBuilder.Entity<PhotoEntity>()
             .ToTable("Photos")
@@ -42,6 +46,9 @@ public class ApplicationDbContext : IdentityDbContext
         modelBuilder.Entity<CategoryEntity>()
             .HasMany(x => x.Products)
             .WithOne();
+        modelBuilder.Entity<CategoryEntity>()
+            .Navigation(x => x.Products);
+        
         
         base.OnModelCreating(modelBuilder);
     }

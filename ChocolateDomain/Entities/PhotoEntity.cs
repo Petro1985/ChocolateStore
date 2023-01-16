@@ -11,5 +11,5 @@ public class PhotoEntity : IEntity
 
     public Guid ProductId { get; set; }
     
-    public ProductEntity Product {get; init; }
+    public virtual ProductEntity Product {get; init; }
 }

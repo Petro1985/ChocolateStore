@@ -54,10 +54,16 @@ public class UsersController : ControllerBase
         }
     }
 
-    [HttpPost("User", Name = "LogIn")]
-    public async Task<IActionResult> UserLoggingIn(string userName, string password)
+    public record UserLoginRequest
     {
-        var result = await _signInManager.PasswordSignInAsync(userName, password, true, false);
+        public string UserName { get; set; }
+        public string Password { get; set; }
+    }
+    
+    [HttpPost("User", Name = "LogIn")]
+    public async Task<IActionResult> UserLoggingIn([FromBody]UserLoginRequest userInfo)
+    {
+        var result = await _signInManager.PasswordSignInAsync(userInfo.UserName, userInfo.Password, true, false);
         
         if (result.Succeeded)
         {

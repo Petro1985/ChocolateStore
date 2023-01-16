@@ -1,0 +1,15 @@
+﻿@page "/Login"
+@inherits UserLoginBase
+
+<div class="container">
+
+    @* <form> *@
+        <label class="form-label" for="Login" style="font-size: large">Login</label>
+        <input @bind="UserInfo.userName" type="text" id="Login" class="form-control" style="max-width: 40rem"/>
+        <label class="form-label mt-3" for="Password" style="font-size: large">Password</label>
+        <input @bind="UserInfo.password" type="password" id="Password" class="form-control" style="max-width: 40rem"/>
+        <button @onclick="() => OnLoginClick(UserInfo)" class="btn btn-primary btn-lg mt-3" style="width: 10rem">Login</button>
+    @* </form> *@
+</div>
+
+

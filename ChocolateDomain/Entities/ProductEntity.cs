@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata;
 using ChocolateDomain.Interfaces;
 
 namespace ChocolateDomain.Entities;
@@ -12,18 +14,8 @@ public class ProductEntity : IEntity
     public TimeSpan TimeToMake { get; set; }
     public Guid? MainPhotoId { get; set; }
     public PhotoEntity? MainPhoto { get; set; }
-    public IEnumerable<PhotoEntity> Photos { get; set; } = new List<PhotoEntity>();
-    public CategoryEntity Category { get; set; }
+    public virtual IEnumerable<PhotoEntity> Photos { get; set; } = new List<PhotoEntity>();
+    [Column("CategoryId")]
     public Guid CategoryId { get; set; }
-   
-    public ProductEntity()
-    {
-    }
-
-    public ProductEntity(string description, decimal priceRub, TimeSpan timeToMake)
-    {
-        Description = description;
-        PriceRub = priceRub;
-        TimeToMake = timeToMake;
-    }
+    public virtual CategoryEntity Category { get; set; }
 }

@@ -1,7 +1,4 @@
-﻿using System.Net.Http.Json;
-using System.Text.Json.Serialization;
-using ChocolateUI.Pages.DisplayCategories;
-using Models;
+﻿using Models;
 using Newtonsoft.Json;
 
 namespace ChocolateUI.Services.Contracts;

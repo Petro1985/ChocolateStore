@@ -10,5 +10,5 @@ public class CategoryEntity : IEntity
     public Guid Id { get; init; }
     public string Name { get; set; }
     public Guid? MainPhotoId { get; set; }
-    public IEnumerable<ProductEntity> Products { get; set; }
+    public virtual IEnumerable<ProductEntity> Products { get; set; }
 }
