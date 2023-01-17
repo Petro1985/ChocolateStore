@@ -1,9 +1,9 @@
 ﻿using ChocolateUI.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace ChocolateUI.Pages.UserLogin;
+namespace ChocolateUI.Pages.UserSignUp;
 
-public class UserLoginBase : ComponentBase
+public class UserSignUpBase : ComponentBase
 {
     [Inject]
     public IUserService UserService { get; set; }
@@ -18,23 +18,19 @@ public class UserLoginBase : ComponentBase
         UserInfo = new UserCredentials() {userName = "", password = ""};
     }
 
-    public async Task OnLoginClick(UserCredentials userCredentials)
+    public async Task OnSignUpClick(UserCredentials userCredentials)
     {
-        var result = await UserService.LogIn(userCredentials);
+        var result = await UserService.SignUpUser(userCredentials);
 
-        if (result == false)
+        if (result)
+        {
+            ButtonClass = "btn-success";
+            InputsClass = "is-valid readonly";
+        }
+        else
         {
             ButtonClass = "btn-danger";
             InputsClass = "is-invalid";
         }
-        else
-        {
-            var userInfo = await UserService.GetUserInfo();
-            ButtonClass = "btn-success";
-            InputsClass = "is-valid";
-            
-            
-        }
     }
-
 }

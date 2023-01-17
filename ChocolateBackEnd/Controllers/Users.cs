@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 
 namespace ChocolateBackEnd.Controllers;
 
@@ -20,11 +21,16 @@ public class UsersController : ControllerBase
 
     [Authorize]
     [HttpGet("User/info", Name = "WhoIAm")]
-    public async Task<IActionResult> UserInfo()
+    public ActionResult<UserInfoDTO> UserInfo()
     {
         var user = User.Identity;
 
-        var result = new {Name = user.Name, Admin = User.Claims.Any(item => item.Type == "Admin")};
+        var result = new UserInfoDTO()
+        {
+            Name = user?.Name ?? "",
+            Email = User.Claims.First(x => x.Type == "Email").Value,
+            IsAdmin = User.Claims.Any(x => x.Type == "Admin"),
+        };
 
         return Ok(result);
     }
@@ -38,11 +44,11 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost("User/SignUp", Name = "SignUp")]
-    public async Task<IActionResult> UserSignUp(string userName, string password)
+    public async Task<IActionResult> UserSignUp([FromBody]UserLoginRequest userInfo)
     {
         var user = new IdentityUser();
-        user.UserName = userName;
-        var result = await _signInManager.UserManager.CreateAsync(user, password);
+        user.UserName = userInfo.UserName;
+        var result = await _signInManager.UserManager.CreateAsync(user, userInfo.Password);
 
         if (result.Succeeded)
         {

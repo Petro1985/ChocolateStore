@@ -6,6 +6,7 @@ using ChocolateData;
 using ChocolateData.Repositories;
 using ChocolateDomain.Entities;
 using ChocolateDomain.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Services.Photo;
@@ -33,7 +34,6 @@ builder.Services.AddCors(x =>
     x.AddPolicy("AnyOrigin", op =>
     {
         op.WithOrigins("http://localhost:5213", "https://localhost:7213", "https://localhost:7028");
-        // op.AllowAnyOrigin();
         op.AllowAnyMethod();
         op.AllowAnyHeader();
         op.AllowCredentials();
@@ -58,6 +58,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.ConfigureApplicationCookie(conf =>
 {
+    conf.Cookie.SameSite = SameSiteMode.None;
     conf.Events.OnRedirectToAccessDenied = context =>
     {
         context.Response.StatusCode = StatusCodes.Status403Forbidden;
@@ -74,10 +75,10 @@ builder.Services.ConfigureApplicationCookie(conf =>
 builder.Services.AddAuthorization(options =>
 {
     var authorizationPolicyBuilder = new AuthorizationPolicyBuilder();
-    
+
     authorizationPolicyBuilder.RequireClaim("Admin");
     var authorizationPolicy = authorizationPolicyBuilder.Build();
-    
+
     options.AddPolicy(Policies.Admin, authorizationPolicy);
 });
 
