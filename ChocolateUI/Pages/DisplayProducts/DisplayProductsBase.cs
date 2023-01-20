@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Models;
+using Models.Product;
 
 namespace ChocolateUI.Pages.DisplayProducts;
 

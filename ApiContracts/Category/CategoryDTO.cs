@@ -1,4 +1,4 @@
-﻿namespace Models;
+﻿namespace Models.Category;
 
 public class CategoryDTO
 {

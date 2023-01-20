@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.User;
 
 namespace ChocolateBackEnd.Controllers;
 
@@ -28,7 +29,6 @@ public class UsersController : ControllerBase
         var result = new UserInfoDTO()
         {
             Name = user?.Name ?? "",
-            Email = User.Claims.First(x => x.Type == "Email").Value,
             IsAdmin = User.Claims.Any(x => x.Type == "Admin"),
         };
 
@@ -46,8 +46,11 @@ public class UsersController : ControllerBase
     [HttpPost("User/SignUp", Name = "SignUp")]
     public async Task<IActionResult> UserSignUp([FromBody]UserLoginRequest userInfo)
     {
-        var user = new IdentityUser();
-        user.UserName = userInfo.UserName;
+        var user = new IdentityUser
+        {
+            UserName = userInfo.UserName
+        };
+        
         var result = await _signInManager.UserManager.CreateAsync(user, userInfo.Password);
 
         if (result.Succeeded)

@@ -1,6 +1,7 @@
 ﻿using ChocolateUI.Services.Contracts;
 using Microsoft.AspNetCore.Components;
 using Models;
+using Models.Product;
 
 namespace ChocolateUI.Pages.DisplayProductInfo;
 

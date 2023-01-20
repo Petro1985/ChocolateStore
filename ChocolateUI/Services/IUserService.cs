@@ -1,29 +1,32 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.JSInterop;
 using Models;
+using Models.User;
 using Newtonsoft.Json;
 
 namespace ChocolateUI.Services;
 
 public interface IUserService
 {
-    Task<bool> LogIn(UserCredentials userInfo);
+    Task<bool> LogIn(UserLoginInfo userInfo);
     Task<UserInfoDTO> GetUserInfo();
-    Task<bool> SignUpUser(UserCredentials userCredentials);
+    Task<bool> SignUpUser(UserLoginInfo userLoginInfo);
 }
 
 class UserService : IUserService
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<UserService> _logger;
+    private readonly IUserProfile _userProfile;
 
-    public UserService(HttpClient httpClient, ILogger<UserService> logger)
+    public UserService(HttpClient httpClient, ILogger<UserService> logger, IUserProfile userProfile)
     {
         _httpClient = httpClient;
         _logger = logger;
+        _userProfile = userProfile;
     }
     
-    public async Task<bool> LogIn(UserCredentials userInfo)
+    public async Task<bool> LogIn(UserLoginInfo userInfo)
     {
         try
         {
@@ -38,9 +41,6 @@ class UserService : IUserService
                     Console.WriteLine($"Cookie: {header}:");
                 }
 
-            // var setCookies = response.Headers.FirstOrDefault(x => x.Key == "set-cookie");
-            
-            // var test = await JSRuntime.InvokeAsync<string>("blazorExtensions.WriteCookie", name, value, 2);
             return true;
         }
         catch (Exception e)
@@ -59,8 +59,11 @@ class UserService : IUserService
             response.EnsureSuccessStatusCode();
             
             var responseBody = await response.Content.ReadAsStringAsync();
+
+            var userInfo = JsonConvert.DeserializeObject<UserInfoDTO>(responseBody) ?? new UserInfoDTO();
+            _userProfile.LogIn(userInfo);
             
-            return JsonConvert.DeserializeObject<UserInfoDTO>(responseBody) ?? new UserInfoDTO();
+            return userInfo;
         }
         catch (Exception e)
         {
@@ -69,11 +72,11 @@ class UserService : IUserService
         }
     }
 
-    public async Task<bool> SignUpUser(UserCredentials userCredentials)
+    public async Task<bool> SignUpUser(UserLoginInfo userLoginInfo)
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync("User/SignUp", userCredentials);
+            var response = await _httpClient.PostAsJsonAsync("User/SignUp", userLoginInfo);
             response.EnsureSuccessStatusCode();
             return true;
         }
@@ -83,10 +86,4 @@ class UserService : IUserService
             return false;
         }
     }
-}
-
-public class UserCredentials
-{
-    public string userName { get; set; }
-    public string password { get; set; }
 }

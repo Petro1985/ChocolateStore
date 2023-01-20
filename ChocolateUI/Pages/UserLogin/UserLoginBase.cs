@@ -1,5 +1,6 @@
 ﻿using ChocolateUI.Services;
 using Microsoft.AspNetCore.Components;
+using Models.User;
 
 namespace ChocolateUI.Pages.UserLogin;
 
@@ -8,17 +9,21 @@ public class UserLoginBase : ComponentBase
     [Inject]
     public IUserService UserService { get; set; }
 
-    public UserCredentials UserInfo { get; set; }
+    [Inject] 
+    public IUserProfile UserProfile { get; set; }
+
+    public UserLoginInfo UserInfo { get; set; }
 
     public string ButtonClass { get; set; } = "btn-primary";
     public string InputsClass { get; set; } = "";
 
+    
     protected override void OnInitialized()
     {
-        UserInfo = new UserCredentials() {userName = "", password = ""};
+        UserInfo = new UserLoginInfo() {userName = "", password = ""};
     }
 
-    public async Task OnLoginClick(UserCredentials userCredentials)
+    public async Task OnLoginClick(UserLoginInfo userCredentials)
     {
         var result = await UserService.LogIn(userCredentials);
 
@@ -32,8 +37,6 @@ public class UserLoginBase : ComponentBase
             var userInfo = await UserService.GetUserInfo();
             ButtonClass = "btn-success";
             InputsClass = "is-valid";
-            
-            
         }
     }
 

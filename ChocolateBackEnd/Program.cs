@@ -91,6 +91,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(op => op.EnablePersistAuthorization());
 }
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 

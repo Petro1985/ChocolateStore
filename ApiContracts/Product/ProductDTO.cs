@@ -1,8 +1,8 @@
-﻿namespace Models;
+﻿namespace Models.Product;
 
 public class ProductDTO
 {
-    public Guid Id { get; init; }
+    public Guid? Id { get; init; }
     public string Name { get; set; }
     public string Description { get; set; }
     public decimal PriceRub { get; set; }
@@ -11,7 +11,7 @@ public class ProductDTO
     public Guid? MainPhotoId { get; set; }
     
     public Guid CategoryId { get; set; }
-    public string CategoryName { get; set; }
+    public string? CategoryName { get; set; }
 
-    public IEnumerable<Guid> Photos { get; set; }
+    public IEnumerable<Guid>? Photos { get; set; }
 }

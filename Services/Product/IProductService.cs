@@ -1,4 +1,6 @@
 ﻿using Models;
+using Models.Category;
+using Models.Product;
 
 namespace Services.Product;
 
@@ -10,7 +12,7 @@ public interface IProductService
     Task<ProductDTO> GetProduct(Guid productId);
     Task<ProductDTO> GetProductWithPhotoIds(Guid productId);
     Task<CategoryDTO> GetCategory(Guid categoryId);
-    Task<Guid> AddNewProduct(ProductDTO product);
+    Task<Guid> AddNewProduct(ProductCreateRequest product);
     Task UpdateProduct(ProductDTO product);
     Task UpdateCategory(CategoryDTO category);
     Task SetMainPhoto(Guid productId, Guid photoId);

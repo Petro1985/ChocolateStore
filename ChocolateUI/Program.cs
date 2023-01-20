@@ -8,11 +8,17 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-var httpMessageHandler = new HttpClientHandler();
+var apiAddress = "https://localhost:7213";
 
-var httpClient = new HttpClient(httpMessageHandler) {BaseAddress = new Uri("https://localhost:7213")};
+// Http client registration
+builder.Services
+    .AddTransient<CookieHandler>()
+    .AddScoped(sp => sp
+        .GetRequiredService<IHttpClientFactory>()
+        .CreateClient("API"))
+    .AddHttpClient("API", client => client.BaseAddress = new Uri(apiAddress)).AddHttpMessageHandler<CookieHandler>();
 
-builder.Services.AddScoped(_ => httpClient);
+builder.Services.AddSingleton<IUserProfile, UserProfile>();
 builder.Services.AddLogging();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserService, UserService>();

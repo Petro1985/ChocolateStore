@@ -5,6 +5,8 @@ using ChocolateDomain;
 using ChocolateDomain.Entities;
 using ChocolateDomain.Interfaces;
 using Models;
+using Models.Photo;
+using Models.Product;
 
 //[assembly:InternalsVisibleTo(assemblyName:"ChocolateBackEnd.Tests")]
 

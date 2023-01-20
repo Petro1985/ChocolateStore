@@ -1,15 +1,16 @@
 ﻿@page "/"
 @using Models
+@using Models.Category
 
 @inherits CategoryBase
 
 @if (Categories is null)
 {
-    <h3>Loading products...</h3>
+    <h3>Загружаются категории товаров...</h3>
 }
 else
 {
-    <h3 class="mb-5">Products</h3>
+    <h3 class="mb-5">Категории товаров:</h3>
 
     var categoryCount = Categories.Count();
 
@@ -26,4 +27,28 @@ else
             </div>
         }
     }
+
+    if (UserProfile.IsLoggedIn() && UserProfile.IsAdmin())
+    {
+        <div class="row mt-3">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <a @onclick="() => _addCategoryForm.Open()" style="cursor:pointer;">
+                    <div class="card">
+                        <img class="img-thumbnail" src="https://localhost:7213/Images/add_new_item.png" alt="AddNewItem"/>
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">
+                                Добавить новую категорию
+                            </h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <AddCategoryModal @ref="_addCategoryForm" AfterAddingCallBack="async () => { Categories = await ProductServ.GetCategories(); StateHasChanged(); }"></AddCategoryModal>
+        
+    }
+}
+
+@code {
+    private AddCategoryModal _addCategoryForm { get; set; }
 }

@@ -9,7 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ChocolateData\ChocolateData.csproj" />
-      <ProjectReference Include="..\Models\Models.csproj" />
+      <ProjectReference Include="..\ApiContracts\ApiContracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>

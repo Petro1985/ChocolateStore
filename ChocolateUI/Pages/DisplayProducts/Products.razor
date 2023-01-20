@@ -1,14 +1,13 @@
 ﻿@page "/Category/{CategoryId:guid}"
-
 @inherits ProductsBase
 
-@if (Products is null)
+@if (Products is null || Category is null)
 {
-    <h3>Loading products...</h3>
+    <h3>Загрузка продуктов...</h3>
 }
 else
 {
-    <h3 class="mb-5">Products</h3>
+    <h3 class="mb-5">Продукты категории @Category.Name</h3>
 
     var productCount = Products.Count;
 
@@ -22,9 +21,33 @@ else
             var productRowList = Products.Skip(i * itemsPerRow).Take(itemsPerRow);
 
             <div class="row mt-3">
-                <DisplayProduct Products="@productRowList"></DisplayProduct>
+                <DisplayProducts Products="@productRowList"></DisplayProducts>
             </div>
         }
         <hr class="mb-3"/>
     }
+    if (UserProfile.IsLoggedIn() && UserProfile.IsAdmin())
+    {
+        <div class="row mt-3">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <a
+                    @onclick="() => { _addProductForm.Open();}" style="cursor:pointer;">
+                    <div class="card">
+                        <img class="img-thumbnail" src="https://localhost:7213/Images/add_new_item.png" alt="AddNewItem"/>
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">
+                                Добавить новый товар
+                            </h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <AddProductModal @ref="_addProductForm" Category="Category" AfterAddingCallBack="async () => { Products = await ProductServ.GetProductByCategory(CategoryId); StateHasChanged(); }"></AddProductModal>
+        
+    }
+}
+
+@code {
+    private AddProductModal _addProductForm { get; set; }
 }

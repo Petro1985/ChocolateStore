@@ -1,4 +1,6 @@
 ﻿using Models;
+using Models.Photo;
+using Models.Product;
 
 namespace Services.Photo;
 

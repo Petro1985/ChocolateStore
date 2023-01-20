@@ -1,0 +1,72 @@
+﻿@using Models
+@using System.Xml
+@using ChocolateUI.Services.Contracts
+@using Models.Category
+@inject NavigationManager uriHelper
+@inject IProductService productService
+
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Создание новой категории</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-floating">
+                    <input id="CategoryNameInput" class="form-control" type="text" @bind="NewCategory.Name" placeholder="Category name"/>
+                    <label for="CategoryNameInput">Имя категории</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" @onclick="CreateCategory">Создать</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+    [Parameter]
+    public Func<Task> AfterAddingCallBack { get; set; }
+
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    public CategoryDTO NewCategory { get; set; } = new ();
+    public void Open()
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+
+    public async Task CreateCategory()
+    {
+        Close();
+        await productService.CreateNewCategory(NewCategory);
+        await AfterAddingCallBack.Invoke();
+        // uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
+    }
+}

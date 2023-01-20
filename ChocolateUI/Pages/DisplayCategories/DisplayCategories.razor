@@ -5,7 +5,15 @@
     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
         <a href="/Category/@item.Id">
             <div class="card">
-                <img class="img-thumbnail" src="https://localhost:7213/image/@item.MainPhotoId"/>
+                @if (item.MainPhotoId == default) 
+                {
+                    <img class="img-thumbnail" src="https://localhost:7213/Images/NoImage.png"/>
+                }
+                else
+                {
+                    <img class="img-thumbnail" src="https://localhost:7213/image/@item.MainPhotoId"/>
+                }
+                
                 <div class="card-body">
                     <h5 class="card-title mb-3">
                         @item.Name

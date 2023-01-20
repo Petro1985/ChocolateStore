@@ -7,6 +7,8 @@ using System.Drawing;
 using ChocolateBackEnd.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Models;
+using Models.Category;
+using Models.Product;
 using Services.Photo;
 using Services.Product;
 
@@ -67,7 +69,7 @@ public class ProductsController : Controller
 
     [Authorize(Policy = Policies.Admin)]
     [HttpPost("Products", Name = "AddProduct")]
-    public async Task<ActionResult<Guid>> AddProduct(ProductDTO product)
+    public async Task<ActionResult<Guid>> AddProduct([FromBody]ProductCreateRequest product)
     {
         var newProductId = await _productService.AddNewProduct(product);
         

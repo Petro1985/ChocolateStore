@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChocolateBackEnd.Tests", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{689F1069-04EA-432C-8972-14759E6F2625}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{1091212E-A3A7-4D18-9989-D30FBFBF18E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiContracts", "ApiContracts\ApiContracts.csproj", "{1091212E-A3A7-4D18-9989-D30FBFBF18E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChocolateUI", "ChocolateUI\ChocolateUI.csproj", "{1A3FAE1F-EB0A-481A-8608-26CB16365BD1}"
 EndProject

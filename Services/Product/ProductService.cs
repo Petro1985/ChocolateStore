@@ -6,6 +6,8 @@ using ChocolateDomain.Entities;
 using ChocolateDomain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.Category;
+using Models.Product;
 
 namespace Services.Product;
 
@@ -55,18 +57,11 @@ public class ProductService : IProductService
         return _mapper.Map<CategoryDTO>(category);
     }
 
-    public async Task<Guid> AddNewProduct(ProductDTO product)
+    public async Task<Guid> AddNewProduct(ProductCreateRequest product)
     {
         var productEntity = _mapper.Map<ProductEntity>(product);
-        var category = await _categoryDb.Get(productEntity.CategoryId);
         await _productDb.Add(productEntity);
         
-        if (category.MainPhotoId == default)
-        {
-            category.MainPhotoId = productEntity.MainPhotoId;
-            await _categoryDb.Change(category);
-        }
-
         return productEntity.Id;
     }
 

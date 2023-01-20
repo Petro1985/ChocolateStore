@@ -25,29 +25,23 @@ public class ApplicationDbContext : IdentityDbContext
             .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<ProductEntity>()
             .HasOne<PhotoEntity>(prod => prod.MainPhoto)
-            .WithOne();
+            .WithOne().HasForeignKey<ProductEntity>(x => x.MainPhotoId);
         modelBuilder.Entity<ProductEntity>()
             .HasOne(x => x.Category)
-            .WithOne();
-        modelBuilder.Entity<ProductEntity>()
-            .Navigation(x => x.Photos);
-        modelBuilder.Entity<ProductEntity>()
-            .Navigation(x => x.MainPhoto);
+            .WithMany(x => x.Products);
+        
         
         modelBuilder.Entity<PhotoEntity>()
             .ToTable("Photos")
             .HasKey("Id");
-        modelBuilder.Entity<PhotoEntity>()
-            .HasOne<ProductEntity>(x => x.Product);
 
+        
         modelBuilder.Entity<CategoryEntity>()
             .ToTable("Categories")
             .HasKey("Id");
         modelBuilder.Entity<CategoryEntity>()
             .HasMany(x => x.Products)
-            .WithOne();
-        modelBuilder.Entity<CategoryEntity>()
-            .Navigation(x => x.Products);
+            .WithOne(x => x.Category);
         
         
         base.OnModelCreating(modelBuilder);
