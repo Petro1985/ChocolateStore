@@ -14,13 +14,15 @@ namespace Services.Photo;
 
 public class PhotoService : IPhotoService
 {
-    private readonly PhotoRepository _photoDb;
+    private readonly IProductRepository _productDb;
+    private readonly IPhotoRepository _photoDb;
     private readonly IMapper _mapper;
 
-    public PhotoService(IDbRepository<PhotoEntity> photoDb, IMapper mapper)
+    public PhotoService(IProductRepository productDb, IPhotoRepository photoDb, IMapper mapper)
     {
+        _productDb = productDb;
+        _photoDb = photoDb;
         _mapper = mapper;
-        _photoDb = (PhotoRepository)photoDb;
     }
 
     public Task<IEnumerable<PhotoDTO>> GetPhotos(ProductDTO productEntity)
@@ -28,19 +30,23 @@ public class PhotoService : IPhotoService
         throw new NotImplementedException();
     }
 
-    public async Task<Guid> AddPhoto(Guid productId, Stream photo)
+    public async Task<Guid> AddPhoto(Guid productId, byte[] photo)
     {
-        using var buffer = new MemoryStream();
-        photo.Position = 0;
-        await photo.CopyToAsync(buffer);
-
         var photoEntity = new PhotoEntity
         {
             ProductId = productId,
-            Image = buffer.ToArray(), 
+            Image = photo, 
         };
+        var newPhotoId = await _photoDb.Add(photoEntity);
+
+        var product = await _productDb.Get(productId);
         
-        return await _photoDb.Add(photoEntity);
+        if (product.MainPhotoId == default)
+        {
+            product.MainPhotoId = newPhotoId;
+            await _productDb.Change(product);
+        }
+        return newPhotoId;
     }
 
     public async Task Delete(PhotoDTO photo)
@@ -51,15 +57,12 @@ public class PhotoService : IPhotoService
 
     public async Task Delete(Guid id)
     {
-        // var entity = await _photoDb.Get(id);
-        // _fileService.DeleteFile(entity);
         await _photoDb.Delete(id);
     }
 
     public async Task Change(PhotoDTO photo)
     {
         var photoEntity = await _photoDb.Get(photo.Id);
-        // photoEntity.PathToPhoto = photo.PathToPhoto;
         photoEntity.ProductId = photo.ProductId;
         
         await _photoDb.Change(photoEntity);

@@ -4,10 +4,12 @@ using AutoMapper;
 using ChocolateDomain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
+using ChocolateBackEnd.APIStruct;
 using ChocolateBackEnd.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Models;
 using Models.Category;
+using Models.Photo;
 using Models.Product;
 using Services.Photo;
 using Services.Product;
@@ -77,28 +79,16 @@ public class ProductsController : Controller
     }
 
     [Authorize(Policy = Policies.Admin)]
-    [HttpPost("Products/{productId:Guid}/Photos", Name = "PhotoPost")]
-    public async Task<IActionResult> AddPhotos([FromRoute]Guid productId, IFormFile photo)
+    [HttpPost("Products/{productId:Guid}/Photos", Name = "AddNewPhoto")]
+    public async Task<IActionResult> AddPhotos([FromBody]AddPhotoRequest addPhotoRequest)
     {
         try
         {
+            var photo = Convert.FromBase64String(addPhotoRequest.Photo);
             
-            await using var readStream = photo.OpenReadStream();
-            if (!IsImage(readStream))
-            {
-                return BadRequest("Sent file isn't image.");                
-            }
-            
-            var newPhotoId = await _photoService.AddPhoto(productId, readStream);
+            var newPhotoId = await _photoService.AddPhoto(addPhotoRequest.ProductId, photo);
 
-            var product = await _productService.GetProduct(productId);
-            if (product.MainPhotoId is null)
-            {
-                product.MainPhotoId = newPhotoId;
-                await _productService.UpdateProduct(product);
-            }
-            
-            return Ok();
+            return Ok(newPhotoId);
         }
         catch (EntityNotFoundException e)
         {

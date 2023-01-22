@@ -14,7 +14,7 @@ public class ProductRepository : BaseRepository<ProductEntity>, IProductReposito
 
     public async Task<IEnumerable<ProductEntity>> GetProductsByCategory(Guid categoryId)
     {
-        return await _dbContext
+        return await DbContext
             .Products
             .Where(x => x.CategoryId == categoryId).ToListAsync();
     }
@@ -24,3 +24,7 @@ public interface IProductRepository : IDbRepository<ProductEntity>
 {
     Task<IEnumerable<ProductEntity>> GetProductsByCategory(Guid categoryId);
 }
+
+
+
+

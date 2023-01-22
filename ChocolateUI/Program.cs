@@ -1,8 +1,8 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ChocolateUI;
 using ChocolateUI.Services;
-using ChocolateUI.Services.Contracts;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

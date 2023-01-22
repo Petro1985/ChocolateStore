@@ -14,16 +14,16 @@ namespace Services.Product;
 public class ProductService : IProductService
 {
     private readonly IProductRepository _productDb;
-    private readonly IDbRepository<CategoryEntity> _categoryDb;
-    private readonly PhotoRepository _photoDb;
+    private readonly ICategoryRepository _categoryDb;
+    private readonly IPhotoRepository _photoDb;
     private readonly IMapper _mapper;
 
-    public ProductService(IProductRepository productDb, IMapper mapper, IDbRepository<CategoryEntity> categoryDb, IDbRepository<PhotoEntity> photoDb)
+    public ProductService(IProductRepository productDb, ICategoryRepository categoryDb, IPhotoRepository photoDb, IMapper mapper)
     {
         _productDb = productDb;
         _mapper = mapper;
         _categoryDb = categoryDb;
-        _photoDb = (PhotoRepository)photoDb;
+        _photoDb = photoDb;
     }
 
     public async Task<IEnumerable<ProductDTO>> GetAllProducts()

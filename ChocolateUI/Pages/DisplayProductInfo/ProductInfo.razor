@@ -1,5 +1,5 @@
 ﻿@page "/Product/{ProductId:guid}"
-
+@inject IUserProfile userProfile
 @inherits ProductInfoBase
 
 @if (Product is null)
@@ -27,4 +27,30 @@ else
             </div>
         }
     }
+    
+    if (userProfile.IsLoggedIn() && userProfile.IsAdmin())
+    {
+        <div class="row mt-3">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                <a
+                    @onclick="() => { _addPhotoForm.Open();}" style="cursor:pointer;">
+                    <div class="card">
+                        <img class="img-thumbnail" src="https://localhost:7213/Images/add_new_item.png" alt="AddNewItem"/>
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">
+                                Добавить новый товар
+                            </h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <AddPhotoModal @ref="_addPhotoForm" Product="Product" AfterAddingCallBack="async () => { Product = await ProductServ.GetProduct(ProductId); StateHasChanged(); }"></AddPhotoModal>
+        
+    }
+    
+}
+
+@code {
+    private AddPhotoModal _addPhotoForm { get; set; }
 }

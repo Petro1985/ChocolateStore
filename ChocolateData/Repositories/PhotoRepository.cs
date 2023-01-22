@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChocolateData.Repositories;
 
-public class PhotoRepository : BaseRepository<PhotoEntity>
+public class PhotoRepository : BaseRepository<PhotoEntity>, IPhotoRepository
 {
     public PhotoRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
@@ -11,7 +11,7 @@ public class PhotoRepository : BaseRepository<PhotoEntity>
 
     public async Task<IEnumerable<Guid>> GetPhotoIdsByProduct(Guid productId)
     {
-        return await _dbContext
+        return await DbContext
             .Photos
             .Where(photo => photo.Product.Id == productId)
             .Select(x => x.Id)
@@ -20,6 +20,6 @@ public class PhotoRepository : BaseRepository<PhotoEntity>
 
     public async Task<IEnumerable<PhotoEntity>> GetPhotosByProduct(Guid productId)
     {
-        return await _dbContext.Photos.Where(photo => photo.Product.Id == productId).ToListAsync();
+        return await DbContext.Photos.Where(photo => photo.Product.Id == productId).ToListAsync();
     }
 }

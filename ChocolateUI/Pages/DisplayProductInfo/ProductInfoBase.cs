@@ -1,4 +1,4 @@
-﻿using ChocolateUI.Services.Contracts;
+﻿using ChocolateUI.Services;
 using Microsoft.AspNetCore.Components;
 using Models;
 using Models.Product;

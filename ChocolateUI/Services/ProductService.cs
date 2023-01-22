@@ -1,10 +1,10 @@
 ﻿using System.Net.Http.Json;
-using Models;
+using System.Text.Json;
 using Models.Category;
+using Models.Photo;
 using Models.Product;
-using Newtonsoft.Json;
 
-namespace ChocolateUI.Services.Contracts;
+namespace ChocolateUI.Services;
 
 class ProductService : IProductService
 {
@@ -23,11 +23,8 @@ class ProductService : IProductService
         {
             Console.WriteLine(_httpClient.BaseAddress);
             var response = await _httpClient.GetAsync($"Products/{categoryId}");
-
-            response.EnsureSuccessStatusCode();
-            var responseBody = await response.Content.ReadAsStringAsync();
-            
-            return JsonConvert.DeserializeObject<IEnumerable<ProductDTO>>(responseBody)?.ToList() ?? new List<ProductDTO>();
+            var responseBody = await response.Content.ReadFromJsonAsync<ICollection<ProductDTO>>();
+            return responseBody ?? new List<ProductDTO>();
         }
         catch (Exception e)
         {
@@ -36,16 +33,14 @@ class ProductService : IProductService
         }
     }
 
-    public async Task<IEnumerable<CategoryDTO>> GetCategories()
+    public async Task<ICollection<CategoryDTO>> GetCategories()
     {
         try
         {
             var response = await _httpClient.GetAsync("Categories");
     
-            response.EnsureSuccessStatusCode();
-            var responseBody = await response.Content.ReadAsStringAsync();
-            
-            return JsonConvert.DeserializeObject<IEnumerable<CategoryDTO>>(responseBody) ?? new List<CategoryDTO>();
+            var responseBody = await response.Content.ReadFromJsonAsync<ICollection<CategoryDTO>>();
+            return responseBody ?? new List<CategoryDTO>();
         }
         catch (Exception e)
         {
@@ -60,10 +55,8 @@ class ProductService : IProductService
         {
             var response = await _httpClient.GetAsync($"Product/{productId}");
     
-            response.EnsureSuccessStatusCode();
-            var responseBody = await response.Content.ReadAsStringAsync();
-            
-            return JsonConvert.DeserializeObject<ProductDTO>(responseBody);
+            var responseBody = await response.Content.ReadFromJsonAsync<ProductDTO>();
+            return responseBody ?? new ProductDTO();
         }
         catch (Exception e)
         {
@@ -78,10 +71,8 @@ class ProductService : IProductService
         {
             var response = await _httpClient.PostAsJsonAsync("Category", categoryDto);
             
-            response.EnsureSuccessStatusCode();
-            var responseBody = await response.Content.ReadAsStringAsync();
-            
-            return JsonConvert.DeserializeObject<Guid>(responseBody);
+            var responseBody = await response.Content.ReadFromJsonAsync<Guid>();
+            return responseBody;
         }
         catch (Exception e)
         {
@@ -103,15 +94,13 @@ class ProductService : IProductService
                 TimeToMakeInHours = newProduct.TimeToMakeInHours,
             };
             var response = await _httpClient.PostAsJsonAsync("Products", productRequest);
-            
-            response.EnsureSuccessStatusCode();
-            var responseBody = await response.Content.ReadAsStringAsync();
-            
-            return JsonConvert.DeserializeObject<Guid>(responseBody);
+
+            var responseBody = await response.Content.ReadFromJsonAsync<Guid>();
+            return responseBody;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogError(e, "Ошибка при обращении к [Post]Products");
             throw;
         }
     }
@@ -123,13 +112,26 @@ class ProductService : IProductService
             var response = await _httpClient.GetAsync($"Category/{categoryId}");
     
             response.EnsureSuccessStatusCode();
-            var responseBody = await response.Content.ReadAsStringAsync();
-            
-            return JsonConvert.DeserializeObject<CategoryDTO>(responseBody) ?? new CategoryDTO();
+            var responseBody = await response.Content.ReadFromJsonAsync<CategoryDTO>();
+            return responseBody ?? new CategoryDTO();
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Ошибка при обращении [HTTPGet]/Category");
+            throw;
+        }
+    }
+
+    public async Task AddPhoto(string photo, Guid productId)
+    {
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync($"Products/{productId}/Photos", new AddPhotoRequest() {Photo = photo, ProductId = productId});
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Ошибка при обращении на [Post]Products/{productId}/Photos", productId);
             throw;
         }
     }

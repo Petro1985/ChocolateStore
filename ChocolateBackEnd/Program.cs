@@ -50,9 +50,12 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.Lockout.MaxFailedAccessAttempts = 3;
 }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
+// Регистрация репозиториев
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IDbRepository<PhotoEntity>, PhotoRepository>();
-builder.Services.AddScoped<IDbRepository<CategoryEntity>, CategoryRepository>();
+builder.Services.AddScoped<IPhotoRepository, PhotoRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+// регистрация сервисов
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 

@@ -6,6 +6,6 @@ public interface IDbRepository <TEntity>
     public Task Delete(TEntity entity);
     public Task Delete(Guid id);
     public Task Change(TEntity entity);
-    public Task<TEntity> Get(Guid id, string? include=null);
+    public Task<TEntity> Get(Guid id);
     public IQueryable<TEntity> GetQuery();
 }
