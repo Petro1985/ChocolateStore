@@ -70,12 +70,35 @@ public class ProductsController : Controller
     }
 
     [Authorize(Policy = Policies.Admin)]
+    [HttpPut("Category", Name = "UpdateCategory")]
+    public async Task<IActionResult> UpdateCategory([FromBody]CategoryDTO category)
+    {
+        await _productService.UpdateCategory(category);
+        return Ok();
+    }
+
+    [Authorize(Policy = Policies.Admin)]
+    [HttpDelete("Category/{categoryId:guid}", Name = "DeleteCategory")]
+    public async Task<IActionResult> DeleteCategory([FromRoute]Guid categoryId)
+    {
+        await _productService.DeleteCategory(categoryId);
+        return Ok();
+    }
+
+    [Authorize(Policy = Policies.Admin)]
     [HttpPost("Products", Name = "AddProduct")]
     public async Task<ActionResult<Guid>> AddProduct([FromBody]ProductCreateRequest product)
     {
         var newProductId = await _productService.AddNewProduct(product);
-        
         return Ok(newProductId);
+    }
+
+    [Authorize(Policy = Policies.Admin)]
+    [HttpPut("Product", Name = "UpdateProduct")]
+    public async Task<ActionResult<Guid>> AddProduct([FromBody]ProductDTO product)
+    {
+        await _productService.UpdateProduct(product);
+        return Ok();
     }
 
     [Authorize(Policy = Policies.Admin)]
@@ -97,24 +120,11 @@ public class ProductsController : Controller
     }
 
     [Authorize(Policy = Policies.Admin)]
-    [HttpDelete("Products", Name = "DeleteProduct")]
-    public async Task<IActionResult> DeleteProduct([FromQuery]Guid productId)
+    [HttpDelete("Product/{productId:guid}", Name = "DeleteProduct")]
+    public async Task<IActionResult> DeleteProduct([FromRoute]Guid productId)
     {
-        // try
-        // {
-        //     var photos = await _photoService.GetPhotosByProduct(productId);
-        //     foreach (var photo in photos)
-        //     {
-        //         await _photoService.Delete(photo);
-        //     }
-        //     await _productDb.Delete(productId);
-        //     return Ok();
-        // }
-        // catch (Exception e)
-        // {
-        //     return BadRequest(e.Message);
-        // }
-        return BadRequest("e.Message");
+        await _productService.DeleteProduct(productId);
+        return Ok();
     }
 
     [Authorize(Policy = Policies.Admin)]

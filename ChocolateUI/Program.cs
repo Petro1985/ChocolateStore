@@ -20,7 +20,10 @@ builder.Services
 
 builder.Services.AddSingleton<IUserProfile, UserProfile>();
 builder.Services.AddLogging();
-builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddScoped<CategoryState>();
+
+builder.Services.AddScoped<IFetchService, FetchService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 await builder.Build().RunAsync();

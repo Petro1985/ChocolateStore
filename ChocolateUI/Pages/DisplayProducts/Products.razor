@@ -1,5 +1,7 @@
 ﻿@page "/Category/{CategoryId:guid}"
+@using Models.Product
 @inherits ProductsBase
+@inject ILogger<Products> Logger
 
 @if (Products is null || Category is null)
 {
@@ -7,31 +9,17 @@
 }
 else
 {
-    <h3 class="mb-5">Продукты категории @Category.Name</h3>
+    <h3 class="mb-5">Продукты категории: @Category.Name</h3>
+    <div class="row mt-3">
+        <DisplayProducts Products="@Products" DeleteProductFunc="DeleteProduct" UpdateProductFunc="UpdateProduct"></DisplayProducts>
+    </div>
 
-    var productCount = Products.Count;
-
-    if (productCount > 0)
-    {
-        const int itemsPerRow = 4;
-
-
-        for (int i = 0; i < productCount; i++)
-        {
-            var productRowList = Products.Skip(i * itemsPerRow).Take(itemsPerRow);
-
-            <div class="row mt-3">
-                <DisplayProducts Products="@productRowList"></DisplayProducts>
-            </div>
-        }
-        <hr class="mb-3"/>
-    }
-    if (UserProfile.IsLoggedIn() && UserProfile.IsAdmin())
+    @if (UserProfile.IsLoggedIn() && UserProfile.IsAdmin())
     {
         <div class="row mt-3">
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
                 <a
-                    @onclick="() => { _addProductForm.Open();}" style="cursor:pointer;">
+                    @onclick="() => { _addOrEditProductForm.Open(new ProductDTO());}" style="cursor:pointer;">
                     <div class="card">
                         <img class="img-thumbnail" src="https://localhost:7213/Images/add_new_item.png" alt="AddNewItem"/>
                         <div class="card-body">
@@ -43,11 +31,57 @@ else
                 </a>
             </div>
         </div>
-        <AddProductModal @ref="_addProductForm" Category="Category" AfterAddingCallBack="async () => { Products = await ProductServ.GetProductByCategory(CategoryId); StateHasChanged(); }"></AddProductModal>
+        <AddOrEditProductModal @ref="_addOrEditProductForm" Category="Category" AddProductFunc="AddProduct"></AddOrEditProductModal>
         
     }
 }
 
-@code {
-    private AddProductModal _addProductForm { get; set; }
+@code 
+{
+    private AddOrEditProductModal _addOrEditProductForm { get; set; }
+
+    private async Task AddProduct(ProductDTO newProduct)
+    {
+        try
+        {
+            await FetchService.CreateNewProduct(newProduct);
+            Products!.Add(newProduct.Id, newProduct);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    private async Task UpdateProduct(ProductDTO updatingProduct)
+    {
+        try
+        {
+            await FetchService.UpdateProduct(updatingProduct);
+            Products![updatingProduct.Id] = updatingProduct;
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Ошибка при редактировании категории");
+            throw;
+        }
+    }
+    
+    private async Task DeleteProduct(Guid productId)
+    {
+        try
+        {
+            await FetchService.DeleteProduct(productId);
+            Products!.Remove(productId);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Ошибка при попытке удаления категории");
+            throw;
+        }
+    }
 }

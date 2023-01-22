@@ -1,11 +1,7 @@
-﻿using System.Linq.Expressions;
-using AutoMapper;
+﻿using AutoMapper;
 using ChocolateData.Repositories;
-using ChocolateDomain;
 using ChocolateDomain.Entities;
-using ChocolateDomain.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Models;
 using Models.Category;
 using Models.Product;
 
@@ -75,7 +71,6 @@ public class ProductService : IProductService
     public async Task UpdateProduct(ProductDTO product)
     {
         var productEntity = _mapper.Map<ProductEntity>(product);
-
         await _productDb.Change(productEntity);
     }
 
@@ -113,5 +108,15 @@ public class ProductService : IProductService
         };
 
         return await _categoryDb.Add(categoryEntity);    
+    }
+
+    public async Task DeleteCategory(Guid categoryId)
+    {
+        await _categoryDb.Delete(categoryId);
+    }
+
+    public async Task DeleteProduct(Guid productId)
+    {
+        await _productDb.Delete(productId);
     }
 }

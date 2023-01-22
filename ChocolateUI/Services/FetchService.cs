@@ -6,12 +6,12 @@ using Models.Product;
 
 namespace ChocolateUI.Services;
 
-class ProductService : IProductService
+class FetchService : IFetchService
 {
     private readonly HttpClient _httpClient;
-    private readonly ILogger<ProductService> _logger;
+    private readonly ILogger<FetchService> _logger;
     
-    public ProductService(HttpClient httpClient, ILogger<ProductService> logger)
+    public FetchService(HttpClient httpClient, ILogger<FetchService> logger)
     {
         _httpClient = httpClient;
         _logger = logger;
@@ -132,6 +132,62 @@ class ProductService : IProductService
         catch (Exception e)
         {
             _logger.LogError(e, "Ошибка при обращении на [Post]Products/{productId}/Photos", productId);
+            throw;
+        }
+    }
+
+    public async Task DeleteCategory(Guid categoryId)
+    {
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"Category/{categoryId}");
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Ошибка при обращении на [Delete]Category/{CategoryId}", categoryId);
+            throw;
+        }
+    }
+    
+    public async Task UpdateCategory(CategoryDTO category)
+    {
+        try
+        {
+            var response = await _httpClient.PutAsJsonAsync("Category", category);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Ошибка при обращении на [Put]Category");
+            throw;
+        }
+    }
+    
+    public async Task UpdateProduct(ProductDTO product)
+    {
+        try
+        {
+            var response = await _httpClient.PutAsJsonAsync("Product", product);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Ошибка при обращении на [Put]Product");
+            throw;
+        }
+    }
+
+    public async Task DeleteProduct(Guid productId)
+    {
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"Product/{productId}");
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Ошибка при обращении на [Delete]Product/{ProductId}", productId);
             throw;
         }
     }

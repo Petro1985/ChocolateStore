@@ -3,7 +3,7 @@
 @using Models.Product
 @using System.IO.Pipelines
 @inject ILogger<AddPhotoModal> _Logger;
-@inject IProductService ProductService
+@inject IFetchService FetchService
 @inject IJSRuntime JS
 
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
@@ -81,7 +81,7 @@
     public async Task CreateCategory()
     {
         Close();
-        await ProductService.CreateNewCategory(NewCategory);
+        await FetchService.CreateNewCategory(NewCategory);
         await AfterAddingCallBack.Invoke();
     }
     
@@ -119,7 +119,7 @@
         Close();
         foreach (var image in imageData)
         {
-            await ProductService.AddPhoto(image, Product.Id);
+            await FetchService.AddPhoto(image, Product.Id);
         }
         imageData = new List<string>();
         await AfterAddingCallBack();

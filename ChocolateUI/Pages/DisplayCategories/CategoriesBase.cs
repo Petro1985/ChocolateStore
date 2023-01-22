@@ -7,21 +7,23 @@ namespace ChocolateUI.Pages.DisplayCategories;
 
 public class CategoryBase : ComponentBase
 {
-    [Inject] public IProductService ProductServ { get; set; }
+    [Inject] public IFetchService FetchServ { get; set; }
     [Inject] public IUserProfile UserProfile { get; set; }
+    [Inject] public ILogger<CategoryBase> Logger { get; set; }
+    [Inject] public CategoryState State { get; set; }
 
-    public IEnumerable<CategoryDTO>? Categories { get; set; }
+    public Dictionary<Guid, CategoryDTO>? Categories { get; set; }
 
     public bool IsAddingNew { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        Categories = await ProductServ.GetCategories();
+        await GetCategories();
     }
 
-    protected void AddNewCategory()
+    protected async Task GetCategories()
     {
-        Console.WriteLine("Clicked");
-        //ProductServ.CreateNewCategory();
-        
+        var categoriesCollection = await FetchServ.GetCategories();
+        Categories = categoriesCollection.ToDictionary(x => x.Id);
+        State.Categories = Categories;
     }
 }

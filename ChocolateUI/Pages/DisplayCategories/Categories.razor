@@ -1,8 +1,9 @@
 ﻿@page "/"
-@using Models
-@using Models.Category
 
+@using Models.Category
+@using ChocolateUI.Services
 @inherits CategoryBase
+@inject IFetchService FetchService 
 
 @if (Categories is null)
 {
@@ -10,45 +11,81 @@
 }
 else
 {
-    <h3 class="mb-5">Категории товаров:</h3>
+    <CascadingValue Name="Categories" Value="@Categories">
+        <h3 class="mb-5">Категории товаров:</h3>
 
-    var categoryCount = Categories.Count();
-
-    if (categoryCount > 0)
-    {
-        const int itemsPerRow = 4;
-
-        for (int i = 0; i < Categories.Count(); i++)
-        {
-            List<CategoryDTO> categoriesRowList = Categories.Skip(i * itemsPerRow).Take(itemsPerRow).ToList();
-
-            <div class="row mt-3">
-                <DisplayCategories Categories="@categoriesRowList"></DisplayCategories>
-            </div>
-        }
-    }
-
-    if (UserProfile.IsLoggedIn() && UserProfile.IsAdmin())
-    {
         <div class="row mt-3">
-            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-                <a @onclick="() => _addCategoryForm.Open()" style="cursor:pointer;">
-                    <div class="card">
-                        <img class="img-thumbnail" src="https://localhost:7213/Images/add_new_item.png" alt="AddNewItem"/>
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">
-                                Добавить новую категорию
-                            </h5>
-                        </div>
-                    </div>
-                </a>
-            </div>
+            <DisplayCategories Categories="Categories" UpdateCategory="UpdateCategory" DeleteCategory="DeleteCategory"></DisplayCategories>
         </div>
-        <AddCategoryModal @ref="_addCategoryForm" AfterAddingCallBack="async () => { Categories = await ProductServ.GetCategories(); StateHasChanged(); }"></AddCategoryModal>
-        
-    }
+
+        @if (UserProfile.IsLoggedIn() && UserProfile.IsAdmin())
+        {
+            <div class="row mt-3">
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <a @onclick="() => _addCategoryForm.Open(new CategoryDTO())" style="cursor:pointer;">
+                        <div class="card">
+                            <img class="img-thumbnail" src="https://localhost:7213/Images/add_new_item.png" alt="AddNewItem"/>
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">
+                                    Добавить новую категорию
+                                </h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <AddOrEditCategoryModal @ref="_addCategoryForm" AddCategory="CreateCategory"></AddOrEditCategoryModal>
+        }
+    </CascadingValue>
 }
 
 @code {
-    private AddCategoryModal _addCategoryForm { get; set; }
+    private AddOrEditCategoryModal _addCategoryForm { get; set; }
+    
+    private async Task CreateCategory(CategoryDTO newCategory)
+    {
+        try
+        {
+            var id = await FetchService.CreateNewCategory(newCategory);
+            newCategory.Id = id;
+            Categories!.Add(newCategory.Id, newCategory);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Ошибка при создании новой категории");
+            throw;
+        }
+    }
+    
+    private async Task UpdateCategory(CategoryDTO updatingCategory)
+    {
+        try
+        {
+            await FetchService.UpdateCategory(updatingCategory);
+            Categories![updatingCategory.Id] = updatingCategory;
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Ошибка при редактировании категории");
+            throw;
+        }
+    }
+    
+    private async Task DeleteCategory(Guid categoryId)
+    {
+        try
+        {
+            await FetchService.DeleteCategory(categoryId);
+            Categories!.Remove(categoryId);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Ошибка при попытке удаления категории");
+            throw;
+        }
+    }
 }
+

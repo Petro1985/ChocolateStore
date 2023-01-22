@@ -1,5 +1,5 @@
 ﻿@page "/Product/{ProductId:guid}"
-@inject IUserProfile userProfile
+@inject IUserProfile UserProfile
 @inherits ProductInfoBase
 
 @if (Product is null)
@@ -8,7 +8,7 @@
 }
 else
 {
-    <h3 class="mb-5">Products</h3>
+    <h3 class="mb-5">Категория: @Product.CategoryName => Продукт: @Product.Name </h3>
 
     var photos = Product.Photos.ToList();
     var photosCount = photos.Count();
@@ -28,7 +28,7 @@ else
         }
     }
     
-    if (userProfile.IsLoggedIn() && userProfile.IsAdmin())
+    if (UserProfile.IsLoggedIn() && UserProfile.IsAdmin())
     {
         <div class="row mt-3">
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
@@ -45,7 +45,7 @@ else
                 </a>
             </div>
         </div>
-        <AddPhotoModal @ref="_addPhotoForm" Product="Product" AfterAddingCallBack="async () => { Product = await ProductServ.GetProduct(ProductId); StateHasChanged(); }"></AddPhotoModal>
+        <AddPhotoModal @ref="_addPhotoForm" Product="Product" AfterAddingCallBack="async () => { Product = await FetchServ.GetProduct(ProductId); StateHasChanged(); }"></AddPhotoModal>
         
     }
     

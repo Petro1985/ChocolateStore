@@ -10,7 +10,9 @@ public class ServicesProfile : Profile
 {
     public ServicesProfile()
     {
-        CreateMap<ProductEntity, ProductDTO>().ReverseMap();
+        CreateMap<ProductEntity, ProductDTO>();
+        CreateMap<ProductDTO, ProductEntity>()
+            .ForMember(x=>x.Category, op => op.Ignore());
         
         CreateMap<ProductCreateRequest, ProductEntity>();
         

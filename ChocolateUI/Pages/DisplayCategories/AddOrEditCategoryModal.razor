@@ -2,8 +2,7 @@
 @using System.Xml
 @using ChocolateUI.Services
 @using Models.Category
-@inject NavigationManager uriHelper
-@inject IProductService productService
+@inject ILogger<AddOrEditCategoryModal> Logger
 
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -16,12 +15,16 @@
             </div>
             <div class="modal-body">
                 <div class="form-floating">
-                    <input id="CategoryNameInput" class="form-control" type="text" @bind="NewCategory.Name" placeholder="Category name"/>
+                    <input id="CategoryNameInput" class="form-control" type="text" @bind="CurrentCategory.Name" placeholder="Category name"/>
                     <label for="CategoryNameInput">Имя категории</label>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" @onclick="CreateCategory">Создать</button>
+                <button 
+                    type="button" class="btn btn-primary" 
+                    @onclick="@(CurrentCategory.Id == default? async () => await CreateCategory() : async () => await EditCategory())">
+                    @(CurrentCategory.Id == default? "Создать" : "Сохранить")
+                </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
             </div>
         </div>
@@ -38,16 +41,19 @@
 @code {
 
     [Parameter]
-    public Func<Task> AfterAddingCallBack { get; set; }
-
-    public Guid Guid = Guid.NewGuid();
+    public Func<CategoryDTO, Task>? AddCategory { get; set; }
+    [Parameter]
+    public Func<CategoryDTO, Task>? UpdateCategory { get; set; }
+    
     public string ModalDisplay = "none;";
     public string ModalClass = "";
     public bool ShowBackdrop = false;
 
-    public CategoryDTO NewCategory { get; set; } = new ();
-    public void Open()
+    public CategoryDTO CurrentCategory { get; set; } = new();
+    
+    public void Open(CategoryDTO category)
     {
+        CurrentCategory = category;
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;
@@ -62,11 +68,29 @@
         StateHasChanged();
     }
 
-    public async Task CreateCategory()
+    public async Task EditCategory()
     {
         Close();
-        await productService.CreateNewCategory(NewCategory);
-        await AfterAddingCallBack.Invoke();
-        // uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true);
+        if (UpdateCategory is not null)
+        {
+            await UpdateCategory(CurrentCategory);
+        }
+        else
+        {
+            Logger.LogWarning("В компонент {ComponentName} не передан параметр {ParameterName}", nameof(AddOrEditCategoryModal), nameof(UpdateCategory));
+        }
+    }
+
+    private async Task CreateCategory()
+    {
+        Close();
+        if (AddCategory is not null)
+        {
+            await AddCategory(CurrentCategory);
+        }
+        else
+        {
+            Logger.LogWarning("В компонент {ComponentName} не передан параметр {ParameterName}", nameof(AddOrEditCategoryModal), nameof(AddCategory));
+        }
     }
 }

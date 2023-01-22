@@ -1,8 +1,11 @@
-﻿@using System.Globalization
-@inherits DisplayProductsBase
+﻿@using Models.Product
+@inject ILogger<DisplayProducts> Logger
+@inject IUserProfile UserProfile
 
-@foreach (var item in Products)
+@foreach (var value in Products)
 {
+    var item = value.Value;
+    
     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
         <a href="/Product/@item.Id">
             <div class="card">
@@ -13,6 +16,22 @@
                 else
                 {
                     <img class="img-thumbnail" src="https://localhost:7213/image/@item.MainPhotoId"/>
+                }
+                @if (UserProfile.IsAdmin())
+                {
+                    <button
+                        @onclick:preventDefault="true"
+                        @onclick:stopPropagation="true"
+                        @onclick="async () => await RemoveProduct(item.Id)"
+                        class="btn btn-close position-absolute top-0 end-0">
+                    </button>
+                    
+                    <button
+                        @onclick:preventDefault="true"
+                        @onclick:stopPropagation="true"
+                        @onclick="() => _editProductForm.Open(item)"
+                        class="btn btn-success position-absolute bottom-0 end-0">
+                    </button>
                 }
                 <div class="card-body">
                     <h5 class="card-title mb-3">
@@ -26,4 +45,29 @@
             </div>
         </a>
     </div>
+    <AddOrEditProductModal @ref="_editProductForm" UpdateProductFunc="UpdateProductFunc"></AddOrEditProductModal>
+}
+
+@code
+{
+    [Parameter] 
+    public Dictionary<Guid, ProductDTO>? Products { get; set; }
+    [Parameter]
+    public Func<ProductDTO, Task>? UpdateProductFunc { get; set; }
+    [Parameter]
+    public Func<Guid, Task>? DeleteProductFunc { get; set; }
+
+    private AddOrEditProductModal _editProductForm;
+    
+    private async Task RemoveProduct(Guid id)
+    {
+        if (DeleteProductFunc is not null)
+        {
+            await DeleteProductFunc(id);
+        }
+        else
+        {
+            Logger.LogWarning("В компонент {ComponentName} не передан параметр {ParameterName}", nameof(DisplayProducts), nameof(DeleteProductFunc));
+        }
+    }
 }

@@ -1,17 +1,38 @@
-﻿@inherits DisplayCategoriesBase
+﻿@using ChocolateUI.Services
+@using System.Security.AccessControl
+@using Microsoft.VisualBasic.FileIO
+@using Models.Category
+@inherits DisplayCategoriesBase
 
-@foreach (var item in Categories)
+@foreach (var value in Categories)
 {
+    var item = value.Value;
     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
         <a href="/Category/@item.Id">
-            <div class="card">
+            <div class="card position-relative">
                 @if (item.MainPhotoId == default) 
                 {
-                    <img class="img-thumbnail" src="https://localhost:7213/Images/NoImage.png"/>
+                    <img class="img-thumbnail" src="https://localhost:7213/Images/NoImage.png" alt="NoImage"/>
                 }
                 else
                 {
-                    <img class="img-thumbnail" src="https://localhost:7213/image/@item.MainPhotoId"/>
+                    <img class="img-thumbnail" src="https://localhost:7213/image/@item.MainPhotoId" alt="ProductMainPhoto"/>
+                }
+                @if (UserProfile.IsAdmin())
+                {
+                    <button
+                        @onclick:preventDefault="true"
+                        @onclick:stopPropagation="true"
+                        @onclick="async () => await RemoveCategory(item.Id)"
+                        class="btn btn-close position-absolute top-0 end-0">
+                    </button>
+                    
+                    <button
+                        @onclick:preventDefault="true"
+                        @onclick:stopPropagation="true"
+                        @onclick="() => _editCategoryForm.Open(item)"
+                        class="btn btn-success position-absolute bottom-0 end-0">
+                    </button>
                 }
                 
                 <div class="card-body">
@@ -22,4 +43,29 @@
             </div>
         </a>
     </div>
+}
+<AddOrEditCategoryModal @ref="_editCategoryForm" UpdateCategory="UpdateCategory"></AddOrEditCategoryModal>
+
+@code
+{
+    [Parameter] 
+    public Dictionary<Guid, CategoryDTO>? Categories { get; set; }
+    [Parameter]
+    public Func<CategoryDTO, Task>? UpdateCategory { get; set; }
+    [Parameter]
+    public Func<Guid, Task>? DeleteCategory { get; set; }
+
+    private AddOrEditCategoryModal _editCategoryForm;
+
+    private async Task RemoveCategory(Guid id)
+    {
+        if (DeleteCategory is not null)
+        {
+            await DeleteCategory(id);
+        }
+        else
+        {
+            Logger.LogWarning("В компонент {ComponentName} не передан параметр {ParameterName}", nameof(DisplayCategories), nameof(DeleteCategory));
+        }
+    }
 }

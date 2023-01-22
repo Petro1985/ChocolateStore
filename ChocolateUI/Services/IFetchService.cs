@@ -3,7 +3,7 @@ using Models.Product;
 
 namespace ChocolateUI.Services;
 
-public interface IProductService
+public interface IFetchService
 {
     Task<ICollection<ProductDTO>> GetProductByCategory(Guid categoryId);
     Task<ICollection<CategoryDTO>> GetCategories();
@@ -12,4 +12,8 @@ public interface IProductService
     Task<Guid> CreateNewProduct(ProductDTO newProduct);
     Task<CategoryDTO> GetCategory(Guid categoryId);
     Task AddPhoto(string photo, Guid productId);
+    Task DeleteCategory(Guid categoryId);
+    Task UpdateCategory(CategoryDTO category);
+    Task UpdateProduct(ProductDTO product);
+    Task DeleteProduct(Guid productId);
 }
