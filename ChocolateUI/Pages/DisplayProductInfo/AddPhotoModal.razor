@@ -2,12 +2,15 @@
 @using ChocolateUI.Services
 @using Models.Product
 @using System.IO.Pipelines
+@using System.Net.Mime
+@using System.Drawing
+@using System.Drawing.Imaging
 @inject ILogger<AddPhotoModal> _Logger;
 @inject IFetchService FetchService
 @inject IJSRuntime JS
 
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered .modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Добавление фотографий</h5>
@@ -16,8 +19,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-floating">
-                    <InputFile id="images" OnChange="LoadFiles" multiple class="form-control"/>
+                <div class="form-control">
+                    <InputFile id="images" OnChange="LoadFiles" multiple
+                               accept="image/jpeg, image/png" class="visually-hidden"/>
+                    <label class="btn btn-primary col-12" for="images">Выбирите файлы изображений</label>
                 </div>
                 <div class="container">
                     @for(var i = 0; i < imageData.Count; i++)
@@ -25,11 +30,12 @@
                         var id = i;
                         <div class="row" style="position: relative">
                             <img src="data:image/png;base64,@imageData[id]"  alt="" class="col-12" style="padding: 0"/>
+                            @* <canvas id="canvas@id"></canvas> *@
                             <button @onclick="() => DeletePhoto(id)" class="btn btn-close" style="position: absolute; right: 0; top: 0;z-index: 2; width: 30px;height: 30px;"></button>
                         </div>
                     }
-                    </div>
                 </div>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" @onclick="AddPhotos">Добавить фотографии</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
@@ -37,7 +43,7 @@
         </div>
     </div>
 </div>
-
+<canvas id="canvas"></canvas>
 
 @if (ShowBackdrop)
 {
@@ -62,6 +68,17 @@
     private IList<string> imageData = new List<string>();
 
     public CategoryDTO NewCategory { get; set; } = new ();
+    private IJSObjectReference? module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JS.InvokeAsync<IJSObjectReference>("import", 
+                "./scripts/crop-image.js");
+        }
+    }
+
     public void Open()
     {
         ModalDisplay = "block;";
@@ -94,11 +111,12 @@
             
             foreach (var file in files)
             {
-                var imageStream = await file.RequestImageFileAsync(format, 600, 800);
-                var buffer = new byte[imageStream.Size];
-                await imageStream.OpenReadStream(5000000L).ReadAsync(buffer);
-                // imageData.Add($"data:{format};base64,{Convert.ToBase64String(buffer)}");
-                imageData.Add(Convert.ToBase64String(buffer));
+                // var imageStream = await file.RequestImageFileAsync(format, 1200, 1200);
+                var croppedPhoto = await FetchService.CropPhoto(file.OpenReadStream(file.Size));
+                // var base64Photo = Convert.ToBase64String(buffer);
+                // var test = await JS.InvokeAsync<string>("CropImage", buffer);
+
+                // imageData.Add(test);
             }
 
         }

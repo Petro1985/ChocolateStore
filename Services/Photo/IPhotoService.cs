@@ -13,4 +13,5 @@ public interface IPhotoService
     public Task<IEnumerable<PhotoDTO>> GetPhotosByProduct(Guid productId);
     public Task<Stream> GetImage(PhotoDTO photo);
     public Task<Stream> GetImage(Guid photoId);
+    public Task<byte[]> CropPhoto(byte[] photo);
 }

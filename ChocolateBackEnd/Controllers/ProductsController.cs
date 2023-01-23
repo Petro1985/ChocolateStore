@@ -120,6 +120,17 @@ public class ProductsController : Controller
     }
 
     [Authorize(Policy = Policies.Admin)]
+    [HttpPost("/Photos/Crop", Name = "CropPhoto")]
+    public async Task<IActionResult> CropPhoto(IFormFile photo)
+    {
+        var stream = new MemoryStream();
+        await photo.CopyToAsync(stream);
+        var newPhoto = await _photoService.CropPhoto(stream.ToArray());
+        var newPhotoBase64 = Convert.ToBase64String(newPhoto);
+        return Ok(newPhotoBase64);
+    }
+
+    [Authorize(Policy = Policies.Admin)]
     [HttpDelete("Product/{productId:guid}", Name = "DeleteProduct")]
     public async Task<IActionResult> DeleteProduct([FromRoute]Guid productId)
     {

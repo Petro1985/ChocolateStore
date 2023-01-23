@@ -1,12 +1,13 @@
-﻿using System.Net.Mime;
+﻿using System.ComponentModel;
+using System.Net.Mime;
 using AutoMapper;
 using ChocolateData.Repositories;
-using ChocolateDomain;
 using ChocolateDomain.Entities;
-using ChocolateDomain.Interfaces;
-using Models;
 using Models.Photo;
 using Models.Product;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 //[assembly:InternalsVisibleTo(assemblyName:"ChocolateBackEnd.Tests")]
 
@@ -30,12 +31,35 @@ public class PhotoService : IPhotoService
         throw new NotImplementedException();
     }
 
+    public async Task<byte[]> CropPhoto(byte[] photo)
+    {
+        var loadedImage = Image.Load(photo);
+        if (loadedImage is null)
+        {
+            throw new InvalidEnumArgumentException("Не поддерживаемый тип изображения");
+        }
+
+        var xCrop = Math.Min(800, loadedImage.Width);
+        var yCrop = Math.Min(800, loadedImage.Height);
+        
+        var xCropOffset = (loadedImage.Width - xCrop) / 2;
+        var yCropOffset  = (loadedImage.Height - yCrop) / 2;
+        
+        loadedImage.Mutate(x => x.Crop(
+            new Rectangle(xCropOffset, yCropOffset, xCrop, yCrop)));
+
+        var stream = new MemoryStream();
+        await loadedImage.SaveAsPngAsync(stream);
+        return stream.ToArray();
+    }
+
     public async Task<Guid> AddPhoto(Guid productId, byte[] photo)
     {
+        
         var photoEntity = new PhotoEntity
         {
             ProductId = productId,
-            Image = photo, 
+            Image = await CropPhoto(photo), 
         };
         var newPhotoId = await _photoDb.Add(photoEntity);
 

@@ -12,10 +12,17 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.2" PrivateAssets="all" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+        <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\ChocolateDomain\ChocolateDomain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\scripts\crop-image.js">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
