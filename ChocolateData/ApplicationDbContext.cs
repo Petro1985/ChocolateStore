@@ -25,7 +25,8 @@ public class ApplicationDbContext : IdentityDbContext
             .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<ProductEntity>()
             .HasOne<PhotoEntity>(prod => prod.MainPhoto)
-            .WithOne().HasForeignKey<ProductEntity>(x => x.MainPhotoId);
+            .WithOne().HasForeignKey<ProductEntity>(x => x.MainPhotoId)
+            .OnDelete(DeleteBehavior.SetNull);
         modelBuilder.Entity<ProductEntity>()
             .HasOne(x => x.Category)
             .WithMany(x => x.Products);

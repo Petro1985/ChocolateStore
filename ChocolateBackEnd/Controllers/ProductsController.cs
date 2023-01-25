@@ -4,10 +4,8 @@ using AutoMapper;
 using ChocolateDomain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
-using ChocolateBackEnd.APIStruct;
 using ChocolateBackEnd.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Models;
 using Models.Category;
 using Models.Photo;
 using Models.Product;
@@ -121,11 +119,10 @@ public class ProductsController : Controller
 
     [Authorize(Policy = Policies.Admin)]
     [HttpPost("/Photos/Crop", Name = "CropPhoto")]
-    public async Task<IActionResult> CropPhoto(IFormFile photo)
+    public async Task<IActionResult> CropPhoto()
     {
-        var stream = new MemoryStream();
-        await photo.CopyToAsync(stream);
-        var newPhoto = await _photoService.CropPhoto(stream.ToArray());
+        var stream = HttpContext.Request.BodyReader.AsStream();
+        var newPhoto = await _photoService.CropPhoto(stream);
         var newPhotoBase64 = Convert.ToBase64String(newPhoto);
         return Ok(newPhotoBase64);
     }
@@ -139,19 +136,13 @@ public class ProductsController : Controller
     }
 
     [Authorize(Policy = Policies.Admin)]
-    [HttpDelete("Products/{productId:Guid}/Photos/{photoId:Guid}", Name = "DeletePhoto")]
-    public async Task<IActionResult> DeletePhoto([FromRoute]Guid productId, [FromRoute]Guid photoId)
+    [HttpDelete("Photos/{photoId:guid}", Name = "DeletePhoto")]
+    public async Task<IActionResult> DeletePhoto([FromRoute]Guid photoId)
     {
-        var photos = (await _photoService.GetPhotosByProduct(productId)).ToArray();
-        if (photos is null) throw new PhotoNotFoundException(productId);
-
-        var photoToDelete = photos.FirstOrDefault(x => x.Id == photoId);
-        if (photoToDelete is null) return BadRequest($"There isn't photo with Id {photoToDelete.Id}");
-        
-        await _photoService.Delete(photoToDelete);
+        await _photoService.Delete(photoId);
         return Ok();
     }
-    
+
     [HttpGet("Products/{productId:Guid}/Photos/{photoId:Guid}", Name = "GetPhoto")]
     public async Task<ActionResult> GetPhotos([FromRoute] Guid productId, [FromRoute] Guid photoId)
     {

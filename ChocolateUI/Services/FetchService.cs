@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Net.Mime;
 using Models.Category;
 using Models.Photo;
 using Models.Product;
@@ -141,16 +142,28 @@ class FetchService : IFetchService
         try
         {
             using var fileStreamContent = new StreamContent(basePhoto);
-            fileStreamContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
-            using var photo = new MultipartFormDataContent();
-            photo.Add(fileStreamContent, name: "file", fileName: "house.png");
-            var response = await _httpClient.PostAsync("Photos/Crop", photo);
+            fileStreamContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+            var response = await _httpClient.PostAsync("Photos/Crop", fileStreamContent);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Ошибка при обращении на [Post]Photos/Crop");
+            throw;
+        }
+    }
+
+    public async Task DeletePhoto(Guid photoId)
+    {
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"Photos/{photoId}");
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Ошибка при обращении на [Delete]Photos/{PhotoId}", photoId);
             throw;
         }
     }

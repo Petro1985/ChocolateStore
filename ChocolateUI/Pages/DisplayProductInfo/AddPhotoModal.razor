@@ -20,7 +20,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-control">
-                    <InputFile id="images" OnChange="LoadFiles" multiple
+                    <InputFile id="images" OnChange="LoadFiles" multiple 
                                accept="image/jpeg, image/png" class="visually-hidden"/>
                     <label class="btn btn-primary col-12" for="images">Выбирите файлы изображений</label>
                 </div>
@@ -107,16 +107,13 @@
         try
         {
             var format = "image/png";
-            var files = e.GetMultipleFiles();
+            var files = e.GetMultipleFiles(100);
             
             foreach (var file in files)
             {
-                // var imageStream = await file.RequestImageFileAsync(format, 1200, 1200);
-                var croppedPhoto = await FetchService.CropPhoto(file.OpenReadStream(file.Size));
-                // var base64Photo = Convert.ToBase64String(buffer);
-                // var test = await JS.InvokeAsync<string>("CropImage", buffer);
-
-                // imageData.Add(test);
+                await using var stream = file.OpenReadStream(file.Size);
+                var croppedPhoto = await FetchService.CropPhoto(stream);
+                imageData.Add(croppedPhoto);
             }
 
         }

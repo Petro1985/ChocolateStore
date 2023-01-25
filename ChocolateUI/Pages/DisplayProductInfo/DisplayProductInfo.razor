@@ -1,12 +1,35 @@
-﻿@inherits DisplayProductInfoBase
+﻿@inject IUserProfile UserProfile
 
 @foreach (var item in Photos)
 {
     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
         <a href="#">
-            <div class="card">
+            <div class="card position-relative">
+                @if (UserProfile.IsAdmin())
+                {
+                    <button
+                        @onclick:preventDefault="true"
+                        @onclick:stopPropagation="true"
+                        @onclick="async () => await RemovePhoto(item)"
+                        class="btn btn-close position-absolute top-0 end-0">
+                    </button>
+                }
                 <img class="img-thumbnail" src="https://localhost:7213/image/@item"/>
             </div>
         </a>
     </div>
+}
+
+@code
+{
+    [Parameter]
+    public IEnumerable<Guid> Photos { get; set; }
+
+    [Parameter]
+    public Func<Guid, Task> RemovePhotoFunc { get; set; }
+
+    private async Task RemovePhoto(Guid photoId)
+    {
+        await RemovePhotoFunc(photoId);
+    }
 }

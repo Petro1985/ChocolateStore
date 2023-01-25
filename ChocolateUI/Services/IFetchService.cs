@@ -17,4 +17,5 @@ public interface IFetchService
     Task UpdateProduct(ProductDTO product);
     Task DeleteProduct(Guid productId);
     Task<string> CropPhoto(Stream photo);
+    Task DeletePhoto(Guid photoId);
 }

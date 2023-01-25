@@ -31,22 +31,41 @@ public class PhotoService : IPhotoService
         throw new NotImplementedException();
     }
 
-    public async Task<byte[]> CropPhoto(byte[] photo)
+    public async Task<byte[]> CropPhoto(Stream photo)
     {
-        var loadedImage = Image.Load(photo);
+        var loadedImage = await Image.LoadAsync(photo);
         if (loadedImage is null)
         {
             throw new InvalidEnumArgumentException("Не поддерживаемый тип изображения");
         }
 
-        var xCrop = Math.Min(800, loadedImage.Width);
-        var yCrop = Math.Min(800, loadedImage.Height);
+        double width = loadedImage.Width;
+        double height = loadedImage.Height;
+
+        var newWidth = 800;
+        var newHeight = 800;
         
-        var xCropOffset = (loadedImage.Width - xCrop) / 2;
-        var yCropOffset  = (loadedImage.Height - yCrop) / 2;
+        var xCropOffset = 0;
+        var yCropOffset  = 0;
+
+        if (width > height)
+        {
+            newWidth = (int)Math.Floor(width / (height / 800));
+            xCropOffset = (newWidth - 800) / 2;
+        }
+        else
+        {
+            newHeight = (int)Math.Floor(height / (width / 800));
+            yCropOffset  = (newHeight - 800) / 2;
+        }
         
-        loadedImage.Mutate(x => x.Crop(
-            new Rectangle(xCropOffset, yCropOffset, xCrop, yCrop)));
+        loadedImage.Mutate(x =>
+        { 
+            x
+                .Resize(newWidth, newHeight)
+                .Crop(new Rectangle(xCropOffset, yCropOffset, Math.Min(800, newWidth), Math.Min(800, newHeight)))
+                .AutoOrient();
+        });
 
         var stream = new MemoryStream();
         await loadedImage.SaveAsPngAsync(stream);
@@ -59,7 +78,7 @@ public class PhotoService : IPhotoService
         var photoEntity = new PhotoEntity
         {
             ProductId = productId,
-            Image = await CropPhoto(photo), 
+            Image = await CropPhoto(new MemoryStream(photo)), 
         };
         var newPhotoId = await _photoDb.Add(photoEntity);
 

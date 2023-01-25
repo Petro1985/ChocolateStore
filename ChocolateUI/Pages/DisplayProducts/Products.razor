@@ -1,17 +1,21 @@
 ﻿@page "/Category/{CategoryId:guid}"
 @using Models.Product
-@inherits ProductsBase
+@using ChocolateUI.Services
+@using Microsoft.AspNetCore.Components
+@using Models.Category
 @inject ILogger<Products> Logger
+@inject IFetchService FetchService
+@inject IUserProfile UserProfile
 
-@if (Products is null || Category is null)
+@if (_products is null || _category is null)
 {
     <h3>Загрузка продуктов...</h3>
 }
 else
 {
-    <h3 class="mb-5">Продукты категории: @Category.Name</h3>
+    <h3 class="mb-5">Продукты категории: @_category.Name</h3>
     <div class="row mt-3">
-        <DisplayProducts Products="@Products" DeleteProductFunc="DeleteProduct" UpdateProductFunc="UpdateProduct"></DisplayProducts>
+        <DisplayProducts Products="@_products" DeleteProductFunc="DeleteProduct" UpdateProductFunc="UpdateProduct"></DisplayProducts>
     </div>
 
     @if (UserProfile.IsLoggedIn() && UserProfile.IsAdmin())
@@ -31,21 +35,31 @@ else
                 </a>
             </div>
         </div>
-        <AddOrEditProductModal @ref="_addOrEditProductForm" Category="Category" AddProductFunc="AddProduct"></AddOrEditProductModal>
-        
+        <AddOrEditProductModal @ref="_addOrEditProductForm" Category="_category" AddProductFunc="AddProduct"></AddOrEditProductModal>
     }
 }
 
-@code 
+@code
 {
-    private AddOrEditProductModal _addOrEditProductForm { get; set; }
+    [Parameter] public Guid CategoryId { get; set; }
+
+    private AddOrEditProductModal _addOrEditProductForm;
+
+    private Dictionary<Guid, ProductDTO>? _products;
+    private CategoryDTO? _category;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _products = (await FetchService.GetProductByCategory(CategoryId)).ToDictionary(x => x.Id);
+        _category = await FetchService.GetCategory(CategoryId);
+    }
 
     private async Task AddProduct(ProductDTO newProduct)
     {
         try
         {
             await FetchService.CreateNewProduct(newProduct);
-            Products!.Add(newProduct.Id, newProduct);
+            _products!.Add(newProduct.Id, newProduct);
             StateHasChanged();
         }
         catch (Exception e)
@@ -60,7 +74,7 @@ else
         try
         {
             await FetchService.UpdateProduct(updatingProduct);
-            Products![updatingProduct.Id] = updatingProduct;
+            _products![updatingProduct.Id] = updatingProduct;
             StateHasChanged();
         }
         catch (Exception e)
@@ -75,7 +89,7 @@ else
         try
         {
             await FetchService.DeleteProduct(productId);
-            Products!.Remove(productId);
+            _products!.Remove(productId);
             StateHasChanged();
         }
         catch (Exception e)

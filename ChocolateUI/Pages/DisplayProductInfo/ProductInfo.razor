@@ -1,32 +1,23 @@
-﻿@page "/Product/{ProductId:guid}"
+﻿@page "/Category/{CategoryId:guid}/Product/{ProductId:guid}"
+@using ChocolateUI.Services
+@using Models.Product
 @inject IUserProfile UserProfile
-@inherits ProductInfoBase
+@inject ILogger<ProductInfo> Logger
+@inject IFetchService FetchService
 
-@if (Product is null)
+@if (_product is null)
 {
     <h3>Loading products...</h3>
 }
 else
 {
-    <h3 class="mb-5">Категория: @Product.CategoryName => Продукт: @Product.Name </h3>
+    <h3 class="mb-5">Категория: @_product.CategoryName => Продукт: @_product.Name </h3>
 
-    var photos = Product.Photos.ToList();
-    var photosCount = photos.Count();
+    var photos = _product.Photos.ToList();
 
-    if (photosCount > 0)
-    {
-        const int itemsPerRow = 4;
-
-
-        for (int i = 0; i < photosCount; i++)
-        {
-            IEnumerable<Guid> photosRowList = photos.Skip(i * itemsPerRow).Take(itemsPerRow);
-
-            <div class="row mt-3">
-                <DisplayProductInfo Photos="@photosRowList"></DisplayProductInfo>
-            </div>
-        }
-    }
+    <div class="row mt-3">
+        <DisplayProductInfo Photos="photos" RemovePhotoFunc="DeletePhoto"></DisplayProductInfo>
+    </div>
     
     if (UserProfile.IsLoggedIn() && UserProfile.IsAdmin())
     {
@@ -45,12 +36,37 @@ else
                 </a>
             </div>
         </div>
-        <AddPhotoModal @ref="_addPhotoForm" Product="Product" AfterAddingCallBack="async () => { Product = await FetchServ.GetProduct(ProductId); StateHasChanged(); }"></AddPhotoModal>
-        
+        <AddPhotoModal @ref="_addPhotoForm" Product="_product" AfterAddingCallBack="async () => { _product = await FetchService.GetProduct(ProductId); StateHasChanged(); }"></AddPhotoModal>
     }
-    
 }
 
 @code {
-    private AddPhotoModal _addPhotoForm { get; set; }
+    
+    [Parameter] public Guid ProductId { get; set; }
+    [Parameter] public Guid CategoryId { get; set; }
+
+    private AddPhotoModal _addPhotoForm;
+    private ProductDTO? _product;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _product = await FetchService.GetProduct(ProductId);
+        var category = await FetchService.GetCategory(CategoryId);
+        _product.CategoryName = category.Name;
+    }
+    
+    private async Task DeletePhoto(Guid photoId)
+    {
+        try
+        {
+            await FetchService.DeletePhoto(photoId);
+            _product = await FetchService.GetProduct(_product!.Id);
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Ошибка при попытке удаления фотографии");
+            throw;
+        }
+    }
 }
