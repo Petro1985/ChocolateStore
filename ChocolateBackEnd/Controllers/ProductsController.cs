@@ -61,6 +61,16 @@ public class ProductsController : Controller
     }
     
     [Authorize(Policy = Policies.Admin)]
+    [HttpPost("Category/AddPhoto", Name = "AddCategoryPhoto")]
+    public async Task<IActionResult> AddCategoryPhoto(AddCategoryPhotoRequest request)
+    {
+        var photo = Convert.FromBase64String(request.PhotoBase64);
+        var newPhotoId = await _photoService.AddPhoto(null, photo);
+        await _productService.SetCategoryPhoto(request.CategoryId, newPhotoId);
+        return Ok(newPhotoId);
+    }
+
+    [Authorize(Policy = Policies.Admin)]
     [HttpPost("Category", Name = "AddCategory")]
     public async Task<ActionResult<Guid>> AddCategory(CategoryDTO category)
     {
@@ -105,7 +115,7 @@ public class ProductsController : Controller
     {
         try
         {
-            var photo = Convert.FromBase64String(addPhotoRequest.Photo);
+            var photo = Convert.FromBase64String(addPhotoRequest.PhotoBase64);
             
             var newPhotoId = await _photoService.AddPhoto(addPhotoRequest.ProductId, photo);
 

@@ -4,14 +4,14 @@
 {
     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
         <a href="#">
-            <div class="card position-relative">
+            <div class="card position-relative mb-1">
                 @if (UserProfile.IsAdmin())
                 {
                     <button
                         @onclick:preventDefault="true"
                         @onclick:stopPropagation="true"
                         @onclick="async () => await RemovePhoto(item)"
-                        class="btn btn-close position-absolute top-0 end-0">
+                        class="btn btn-close position-absolute" style="top: 5px; right: 5px;">
                     </button>
                 }
                 <img class="img-thumbnail" src="https://localhost:7213/image/@item"/>

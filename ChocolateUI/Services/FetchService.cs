@@ -127,7 +127,7 @@ class FetchService : IFetchService
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync($"Products/{productId}/Photos", new AddPhotoRequest() {Photo = photo, ProductId = productId});
+            var response = await _httpClient.PostAsJsonAsync($"Products/{productId}/Photos", new AddPhotoRequest() {PhotoBase64 = photo, ProductId = productId});
             response.EnsureSuccessStatusCode();
         }
         catch (Exception e)
@@ -164,6 +164,21 @@ class FetchService : IFetchService
         catch (Exception e)
         {
             _logger.LogError(e, "Ошибка при обращении на [Delete]Photos/{PhotoId}", photoId);
+            throw;
+        }
+    }
+
+    public async Task<Guid> AddCategoryPhoto(string imageData, Guid categoryId)
+    {
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync($"Category/AddPhoto", 
+                new AddCategoryPhotoRequest {PhotoBase64 = imageData, CategoryId = categoryId});
+            return await response.Content.ReadFromJsonAsync<Guid>();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Ошибка при обращении на [Post]Category/SetPhoto");
             throw;
         }
     }

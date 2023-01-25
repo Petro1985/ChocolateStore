@@ -1,8 +1,10 @@
 ﻿@using Models
 @using System.Xml
+@using ChocolateUI.Pages.Components
 @using ChocolateUI.Services
 @using Models.Category
 @inject ILogger<AddOrEditCategoryModal> Logger
+@inject IFetchService FetchService
 
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -10,7 +12,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">Создание новой категории</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">x</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -19,6 +21,7 @@
                     <label for="CategoryNameInput">Имя категории</label>
                 </div>
             </div>
+            <ChoosePhoto @ref="_choosePhoto"></ChoosePhoto>
             <div class="modal-footer">
                 <button 
                     type="button" class="btn btn-primary" 
@@ -30,7 +33,6 @@
         </div>
     </div>
 </div>
-
 
 @if (ShowBackdrop)
 {
@@ -50,10 +52,16 @@
     public bool ShowBackdrop = false;
 
     public CategoryDTO CurrentCategory { get; set; } = new();
-    
+
+    private ChoosePhoto _choosePhoto;
+
     public void Open(CategoryDTO category)
     {
         CurrentCategory = category;
+        if (category.MainPhotoId != default)
+        {
+            _choosePhoto.CurrentImage = $"https://localhost:7213/image/{category.MainPhotoId.ToString()}";
+        }
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;
@@ -73,7 +81,13 @@
         Close();
         if (UpdateCategory is not null)
         {
+            var newImage = _choosePhoto.GetImageBase64();
+            if (!string.IsNullOrWhiteSpace(newImage))
+            {
+                CurrentCategory.MainPhotoId = await FetchService.AddCategoryPhoto(newImage, CurrentCategory.Id);
+            };
             await UpdateCategory(CurrentCategory);
+            _choosePhoto.ClearImage();
         }
         else
         {

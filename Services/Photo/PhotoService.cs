@@ -36,7 +36,7 @@ public class PhotoService : IPhotoService
         var loadedImage = await Image.LoadAsync(photo);
         if (loadedImage is null)
         {
-            throw new InvalidEnumArgumentException("Не поддерживаемый тип изображения");
+            throw new InvalidEnumArgumentException("Не поддерживаемый формат изображения");
         }
 
         double width = loadedImage.Width;
@@ -72,7 +72,7 @@ public class PhotoService : IPhotoService
         return stream.ToArray();
     }
 
-    public async Task<Guid> AddPhoto(Guid productId, byte[] photo)
+    public async Task<Guid> AddPhoto(Guid? productId, byte[] photo)
     {
         
         var photoEntity = new PhotoEntity
@@ -81,14 +81,6 @@ public class PhotoService : IPhotoService
             Image = await CropPhoto(new MemoryStream(photo)), 
         };
         var newPhotoId = await _photoDb.Add(photoEntity);
-
-        var product = await _productDb.Get(productId);
-        
-        if (product.MainPhotoId == default)
-        {
-            product.MainPhotoId = newPhotoId;
-            await _productDb.Change(product);
-        }
         return newPhotoId;
     }
 
@@ -108,7 +100,7 @@ public class PhotoService : IPhotoService
         var photoEntity = await _photoDb.Get(photo.Id);
         photoEntity.ProductId = photo.ProductId;
         
-        await _photoDb.Change(photoEntity);
+        await _photoDb.Update(photoEntity);
     }
 
     public async Task<Stream> GetImage(Guid id)

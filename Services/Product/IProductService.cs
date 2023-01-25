@@ -15,7 +15,8 @@ public interface IProductService
     Task<Guid> AddNewProduct(ProductCreateRequest product);
     Task UpdateProduct(ProductDTO product);
     Task UpdateCategory(CategoryDTO category);
-    Task SetMainPhoto(Guid productId, Guid photoId);
+    Task SetProductMainPhoto(Guid productId, Guid photoId);
+    Task SetCategoryPhoto(Guid categoryId, Guid photoId);
     Task<Guid> AddNewCategory(CategoryDTO category);
     Task DeleteCategory(Guid categoryId);
     Task DeleteProduct(Guid productId);

@@ -35,7 +35,7 @@ public class BaseRepository<TEntity> : IDbRepository<TEntity> where TEntity : cl
         await DbContext.SaveChangesAsync();
     }
 
-    public virtual async Task Change(TEntity entity)
+    public virtual async Task Update(TEntity entity)
     {
         DbContext.Set<TEntity>().Update(entity);
         await DbContext.SaveChangesAsync();

@@ -65,13 +65,13 @@ public class ProductService : IProductService
     {
         var categoryEntity = _mapper.Map<CategoryEntity>(category);
 
-        await _categoryDb.Change(categoryEntity);
+        await _categoryDb.Update(categoryEntity);
     }
 
     public async Task UpdateProduct(ProductDTO product)
     {
         var productEntity = _mapper.Map<ProductEntity>(product);
-        await _productDb.Change(productEntity);
+        await _productDb.Update(productEntity);
     }
 
     public async Task<ProductDTO> GetProduct(Guid productId)
@@ -89,7 +89,7 @@ public class ProductService : IProductService
         return mappedProduct;
     }
 
-    public async Task SetMainPhoto(Guid productId, Guid photoId)
+    public async Task SetProductMainPhoto(Guid productId, Guid photoId)
     {
         var productEntity = new ProductEntity
         {
@@ -97,7 +97,18 @@ public class ProductService : IProductService
             MainPhotoId = photoId
         };
         
-        await _productDb.Change(productEntity);
+        await _productDb.Update(productEntity);
+    }
+
+    public async Task SetCategoryPhoto(Guid categoryId, Guid photoId)
+    {
+        var category = await _categoryDb.Get(categoryId);
+        if (category.MainPhotoId.HasValue && category.MainPhotoId.Value != default)
+        {
+            await _photoDb.Delete(category.MainPhotoId.Value);
+        }
+        category.MainPhotoId = photoId;
+        await _categoryDb.Update(category);
     }
 
     public async Task<Guid> AddNewCategory(CategoryDTO category)

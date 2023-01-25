@@ -9,7 +9,7 @@ public class PhotoEntity : IEntity
     
     public byte[] Image { get; set; }
 
-    public Guid ProductId { get; set; }
+    public Guid? ProductId { get; set; }
     
     public virtual ProductEntity Product {get; init; }
 }

@@ -21,9 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="wwwroot\scripts\crop-image.js">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
     </ItemGroup>
 
 </Project>
