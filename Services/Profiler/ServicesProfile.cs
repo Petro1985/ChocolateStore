@@ -10,12 +10,14 @@ public class ServicesProfile : Profile
 {
     public ServicesProfile()
     {
-        CreateMap<ProductEntity, ProductDTO>();
+        CreateMap<ProductEntity, ProductDTO>()
+            .ForMember(x => x.TimeToMakeInHours, op => op.MapFrom(x => x.TimeToMake.Hours));
         CreateMap<ProductDTO, ProductEntity>()
-            .ForMember(x=>x.Category, op => op.Ignore());
-        
+            .ForMember(x => x.Category, op => op.Ignore())
+            .ForMember(x => x.TimeToMake, op => op.MapFrom(x => TimeSpan.FromHours(x.TimeToMakeInHours)));
+
         CreateMap<ProductCreateRequest, ProductEntity>();
-        
+
         CreateMap<CategoryEntity, CategoryDTO>().ReverseMap();
     }
 }

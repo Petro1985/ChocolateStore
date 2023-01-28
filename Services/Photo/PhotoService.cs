@@ -1,15 +1,11 @@
 ﻿using System.ComponentModel;
-using System.Net.Mime;
 using AutoMapper;
 using ChocolateData.Repositories;
 using ChocolateDomain.Entities;
 using Models.Photo;
 using Models.Product;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-
-//[assembly:InternalsVisibleTo(assemblyName:"ChocolateBackEnd.Tests")]
 
 namespace Services.Photo;
 

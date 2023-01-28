@@ -50,7 +50,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _products = (await FetchService.GetProductByCategory(CategoryId)).ToDictionary(x => x.Id);
+        await ReLoadProducts();
         _category = await FetchService.GetCategory(CategoryId);
     }
 
@@ -59,7 +59,7 @@ else
         try
         {
             await FetchService.CreateNewProduct(newProduct);
-            _products!.Add(newProduct.Id, newProduct);
+            await ReLoadProducts();
             StateHasChanged();
         }
         catch (Exception e)
@@ -74,7 +74,7 @@ else
         try
         {
             await FetchService.UpdateProduct(updatingProduct);
-            _products![updatingProduct.Id] = updatingProduct;
+            await ReLoadProducts();
             StateHasChanged();
         }
         catch (Exception e)
@@ -83,7 +83,12 @@ else
             throw;
         }
     }
-    
+
+    private async Task ReLoadProducts()
+    {
+        _products = (await FetchService.GetProductByCategory(CategoryId)).ToDictionary(x => x.Id);
+    }
+
     private async Task DeleteProduct(Guid productId)
     {
         try

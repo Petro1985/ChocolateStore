@@ -1,10 +1,6 @@
-﻿@using Models.Category
-@using ChocolateUI.Services
+﻿@using ChocolateUI.Services
 @using Models.Product
-@using System.IO.Pipelines
-@using System.Net.Mime
-@using System.Drawing
-@using System.Drawing.Imaging
+@using Models.Category
 @inject ILogger<AddPhotoModal> _Logger;
 @inject IFetchService FetchService
 @inject IJSRuntime JS
@@ -49,7 +45,6 @@
     <div class="modal-backdrop fade show"></div>
 }
 
-
 @code {
 
     [Parameter]
@@ -68,15 +63,6 @@
 
     public CategoryDTO NewCategory { get; set; } = new ();
     private IJSObjectReference? module;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            module = await JS.InvokeAsync<IJSObjectReference>("import", 
-                "./scripts/crop-image.js");
-        }
-    }
 
     public void Open()
     {
