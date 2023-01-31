@@ -1,7 +1,7 @@
 ﻿namespace Models.Category;
 
-public class AddCategoryPhotoRequest
+public class AddMainPhotoRequest
 {
     public string PhotoBase64 { get; set; }
-    public Guid CategoryId { get; set; }
+    public Guid EntityId { get; set; }
 }

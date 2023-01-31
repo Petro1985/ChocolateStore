@@ -89,15 +89,16 @@ public class ProductService : IProductService
         return mappedProduct;
     }
 
-    public async Task SetProductMainPhoto(Guid productId, Guid photoId)
+    public async Task SetProductPhoto(Guid productId, Guid photoId)
     {
-        var productEntity = new ProductEntity
+        var product = await _productDb.Get(productId);
+        if (product.MainPhotoId.HasValue && product.MainPhotoId.Value != default)
         {
-            Id = productId,
-            MainPhotoId = photoId
-        };
-        
-        await _productDb.Update(productEntity);
+            await _photoDb.Delete(product.MainPhotoId.Value);
+        }
+
+        product.MainPhotoId = photoId;
+        await _productDb.Update(product);
     }
 
     public async Task SetCategoryPhoto(Guid categoryId, Guid photoId)
@@ -107,6 +108,7 @@ public class ProductService : IProductService
         {
             await _photoDb.Delete(category.MainPhotoId.Value);
         }
+        
         category.MainPhotoId = photoId;
         await _categoryDb.Update(category);
     }

@@ -173,12 +173,27 @@ class FetchService : IFetchService
         try
         {
             var response = await _httpClient.PostAsJsonAsync($"Category/AddPhoto", 
-                new AddCategoryPhotoRequest {PhotoBase64 = imageData, CategoryId = categoryId});
+                new AddMainPhotoRequest {PhotoBase64 = imageData, EntityId = categoryId});
             return await response.Content.ReadFromJsonAsync<Guid>();
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Ошибка при обращении на [Post]Category/SetPhoto");
+            throw;
+        }
+    }
+
+    public async Task<Guid> AddProductPhoto(string imageData, Guid productId)
+    {
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("Product/AddPhoto", 
+                new AddMainPhotoRequest {PhotoBase64 = imageData, EntityId = productId});
+            return await response.Content.ReadFromJsonAsync<Guid>();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Ошибка при обращении на [Post]Product/SetPhoto");
             throw;
         }
     }

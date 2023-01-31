@@ -62,11 +62,21 @@ public class ProductsController : Controller
     
     [Authorize(Policy = Policies.Admin)]
     [HttpPost("Category/AddPhoto", Name = "AddCategoryPhoto")]
-    public async Task<IActionResult> AddCategoryPhoto(AddCategoryPhotoRequest request)
+    public async Task<IActionResult> AddCategoryPhoto(AddMainPhotoRequest request)
     {
         var photo = Convert.FromBase64String(request.PhotoBase64);
         var newPhotoId = await _photoService.AddPhoto(null, photo);
-        await _productService.SetCategoryPhoto(request.CategoryId, newPhotoId);
+        await _productService.SetCategoryPhoto(request.EntityId, newPhotoId);
+        return Ok(newPhotoId);
+    }
+
+    [Authorize(Policy = Policies.Admin)]
+    [HttpPost("Product/AddPhoto", Name = "AddProductPhoto")]
+    public async Task<IActionResult> AddProductPhoto(AddMainPhotoRequest request)
+    {
+        var photo = Convert.FromBase64String(request.PhotoBase64);
+        var newPhotoId = await _photoService.AddPhoto(null, photo);
+        await _productService.SetProductPhoto(request.EntityId, newPhotoId);
         return Ok(newPhotoId);
     }
 

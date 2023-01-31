@@ -2,6 +2,7 @@
 @using Models.Category
 @using Models.Product
 @using ChocolateUI.Services
+@using ChocolateUI.Pages.Components
 @inject IFetchService FetchService
 @inject ILogger<AddOrEditProductModal> Logger
 
@@ -43,6 +44,7 @@
                     <label for="CategoryNameInput">Категория</label>
                 </div>
             </div>
+            <ChoosePhoto @ref="_choosePhoto"></ChoosePhoto>
             <div class="modal-footer">
                 <button 
                     type="button"
@@ -73,6 +75,7 @@
     [Parameter]
     public Func<ProductDTO, Task>? UpdateProductFunc {get; set; } 
 
+    private ChoosePhoto _choosePhoto;
     public Guid Guid = Guid.NewGuid();
     public string ModalDisplay = "none;";
     public string ModalClass = "";
@@ -92,6 +95,10 @@
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;
+        if (product.MainPhotoId != default)
+        {
+            _choosePhoto.CurrentImage = $"https://localhost:7213/image/{product.MainPhotoId.ToString()}";
+        }
         StateHasChanged();
     }
 
@@ -122,11 +129,18 @@
         Close();
         if (UpdateProductFunc is not null)
         {
+            var newImage = _choosePhoto.GetImageBase64();
+            if (!string.IsNullOrWhiteSpace(newImage))
+            {
+                CurrentProduct.MainPhotoId = await FetchService.AddProductPhoto(newImage, CurrentProduct.Id);
+            };
             await UpdateProductFunc(CurrentProduct);
+            _choosePhoto.ClearImage();
         }
         else
         {
             Logger.LogWarning("В компонент {ComponentName} не передан параметр {ParameterName}", nameof(AddOrEditProductModal), nameof(UpdateProductFunc));
         }
     }
+
 }
