@@ -54,6 +54,16 @@ else
         _category = await FetchService.GetCategory(CategoryId);
     }
 
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_category?.Id != CategoryId)
+        {
+            await ReLoadProducts();
+            _category = await FetchService.GetCategory(CategoryId);
+            StateHasChanged();
+        }
+    }
+
     private async Task AddProduct(ProductDTO newProduct)
     {
         try

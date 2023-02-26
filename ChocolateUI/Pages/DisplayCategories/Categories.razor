@@ -11,8 +11,9 @@
 }
 else
 {
-
-    <h3 class="mb-5">Категории товаров:</h3>
+    <h3 class="mb-5">
+        <b>Каталог товаров:</b>
+    </h3>
 
     <div class="row mt-3">
         <DisplayCategories Categories="Categories" UpdateCategory="UpdateCategory" DeleteCategory="DeleteCategory"></DisplayCategories>
@@ -36,12 +37,11 @@ else
         </div>
         <AddOrEditCategoryModal @ref="_addCategoryForm" AddCategory="CreateCategory"></AddOrEditCategoryModal>
     }
-
 }
 
 @code {
     private AddOrEditCategoryModal _addCategoryForm { get; set; }
-    
+
     private async Task CreateCategory(CategoryDTO newCategory)
     {
         try
@@ -57,7 +57,7 @@ else
             throw;
         }
     }
-    
+
     private async Task UpdateCategory(CategoryDTO updatingCategory)
     {
         try
@@ -72,7 +72,7 @@ else
             throw;
         }
     }
-    
+
     private async Task DeleteCategory(Guid categoryId)
     {
         try
@@ -87,5 +87,5 @@ else
             throw;
         }
     }
-}
 
+}
