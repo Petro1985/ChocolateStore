@@ -13,18 +13,18 @@ else
 {
     <h3 class="mb-5">Категория: @_product.CategoryName => Продукт: @_product.Name </h3>
 
-    var photos = _product.Photos.ToList();
+    var photos = _product!.Photos!.ToList();
 
     <div class="row mt-3">
         <DisplayProductInfo Photos="photos" RemovePhotoFunc="DeletePhoto"></DisplayProductInfo>
     </div>
-    
+
     if (UserProfile.IsLoggedIn() && UserProfile.IsAdmin())
     {
         <div class="row mt-3">
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
                 <a
-                    @onclick="() => { _addPhotoForm.Open();}" style="cursor:pointer;">
+                    @onclick="() => { _addPhotoForm.Open(); }" style="cursor:pointer;">
                     <div class="card">
                         <img class="img-thumbnail" src="https://localhost:7213/Images/add_new_item.png" alt="AddNewItem"/>
                         <div class="card-body">
@@ -41,9 +41,12 @@ else
 }
 
 @code {
-    
-    [Parameter] public Guid ProductId { get; set; }
-    [Parameter] public Guid CategoryId { get; set; }
+
+    [Parameter]
+    public Guid ProductId { get; set; }
+
+    [Parameter]
+    public Guid CategoryId { get; set; }
 
     private AddPhotoModal _addPhotoForm;
     private ProductDTO? _product;
@@ -54,7 +57,7 @@ else
         var category = await FetchService.GetCategory(CategoryId);
         _product.CategoryName = category.Name;
     }
-    
+
     private async Task DeletePhoto(Guid photoId)
     {
         try
@@ -69,4 +72,5 @@ else
             throw;
         }
     }
+
 }
