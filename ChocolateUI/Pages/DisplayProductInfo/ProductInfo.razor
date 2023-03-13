@@ -11,12 +11,12 @@
 }
 else
 {
-    <h3 class="mb-5">Категория: @_product.CategoryName => Продукт: @_product.Name </h3>
+    <h2 class="mb-5"><b>@_product.Name</b></h2>
 
     var photos = _product!.Photos!.ToList();
 
     <div class="row mt-3">
-        <DisplayProductInfo Photos="photos" RemovePhotoFunc="DeletePhoto"></DisplayProductInfo>
+        <DisplayProductInfo Photos="photos" Product="_product" RemovePhotoFunc="DeletePhoto"></DisplayProductInfo>
     </div>
 
     if (UserProfile.IsLoggedIn() && UserProfile.IsAdmin())
