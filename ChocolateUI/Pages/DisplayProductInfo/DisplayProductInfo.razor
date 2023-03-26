@@ -2,7 +2,9 @@
 @using Models.Photo
 @using Models.Product
 @using System.Globalization
+@using ChocolateUI.Services
 @inject IUserProfile UserProfile
+@inject IFetchService FetchService
 
 <div class="container">
     <div class="row">
@@ -10,7 +12,7 @@
             <div class="container user-select-none">
                 <div class="row">
                     <div class="col-12">
-                        <img alt="main-photo" class="" style="max-width:100%;height:auto;" src="https://localhost:7213/image/@_currentPhoto" draggable="false"/>
+                        <img alt="main-photo" class="" style="max-width:100%;height:auto;" src="@FetchService.GetImageUrl(_currentPhoto)" draggable="false"/>
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -22,7 +24,7 @@
                                     draggable="false"
                                     alt="miniature-photo"
                                     style="width:100%;height:auto; cursor: pointer;"
-                                    src="https://localhost:7213/image/@photo"/>
+                                    src="@FetchService.GetImageUrl(photo)"/>
                             </a>
                         </div>
                     }

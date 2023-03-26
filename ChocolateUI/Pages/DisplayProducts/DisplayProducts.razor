@@ -1,7 +1,9 @@
 ﻿@using Models.Product
 @using ChocolateUI.Pages.Components
+@using ChocolateUI.Services
 @inject ILogger<DisplayProducts> Logger
 @inject IUserProfile UserProfile
+@inject IFetchService FetchService
 
 @foreach (var value in Products)
 {
@@ -10,14 +12,7 @@
     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
         <a href="/Category/@item.CategoryId/Product/@item.Id">
             <div class="card">
-                @if (item.MainPhotoId == default)
-                {
-                    <img class="img-thumbnail" src="https://localhost:7213/Images/NoImage.png"/>
-                }
-                else
-                {
-                    <img class="img-thumbnail" src="https://localhost:7213/image/@item.MainPhotoId"/>
-                }
+                <img class="img-thumbnail" src="@FetchService.GetImageUrl(@item.MainPhotoId)" alt=""/>
                 @if (UserProfile.IsAdmin())
                 {
                     <DeleteItem DeleteFunction="async (x) => await RemoveProduct(x.Id)" Element="item"></DeleteItem>

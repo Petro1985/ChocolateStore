@@ -20,4 +20,5 @@ public interface IFetchService
     Task DeletePhoto(Guid photoId);
     Task<Guid> AddCategoryPhoto(string imageData, Guid categoryId);
     Task<Guid> AddProductPhoto(string newImage, Guid productId);
+    string GetImageUrl(Guid imageId);
 }

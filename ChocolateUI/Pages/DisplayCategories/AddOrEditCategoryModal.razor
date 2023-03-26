@@ -60,7 +60,7 @@
         CurrentCategory = category;
         if (category.MainPhotoId != default)
         {
-            _choosePhoto.CurrentImage = $"https://localhost:7213/image/{category.MainPhotoId.ToString()}";
+            _choosePhoto.CurrentImage = FetchService.GetImageUrl(category.MainPhotoId);
         }
         ModalDisplay = "block;";
         ModalClass = "Show";

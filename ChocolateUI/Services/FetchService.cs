@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Data;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Net.Mime;
 using Models.Category;
@@ -11,11 +12,13 @@ class FetchService : IFetchService
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<FetchService> _logger;
+    private readonly string _serverUrl;
     
-    public FetchService(HttpClient httpClient, ILogger<FetchService> logger)
+    public FetchService(HttpClient httpClient, ILogger<FetchService> logger, string serverUrl)
     {
         _httpClient = httpClient;
         _logger = logger;
+        _serverUrl = serverUrl;
     }
 
     public async Task<ICollection<ProductDTO>> GetProductByCategory(Guid categoryId)
@@ -196,6 +199,13 @@ class FetchService : IFetchService
             _logger.LogError(e, "Ошибка при обращении на [Post]Product/SetPhoto");
             throw;
         }
+    }
+
+    public string GetImageUrl(Guid imageId)
+    {
+        return imageId == default 
+            ? "/images/NoImage.png" 
+            : $"{_serverUrl}/image/{imageId}";
     }
 
     public async Task DeleteCategory(Guid categoryId)

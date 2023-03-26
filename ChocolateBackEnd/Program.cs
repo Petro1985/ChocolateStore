@@ -1,12 +1,8 @@
-using System.Reflection;
 using ChocolateBackEnd;
 using ChocolateBackEnd.APIStruct.Mapper;
 using ChocolateBackEnd.Auth;
 using ChocolateData;
 using ChocolateData.Repositories;
-using ChocolateDomain.Entities;
-using ChocolateDomain.Interfaces;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Services.Photo;
@@ -28,6 +24,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDataBase(builder.Configuration.GetConnectionString());
+
+// Устанавливаем переменные среды
+builder.Configuration.GetSection("");
 
 builder.Services.AddCors(x =>
 {
@@ -94,6 +93,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(op => op.EnablePersistAuthorization());
 }
+app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseHttpsRedirection();
@@ -102,5 +102,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapFallbackToFile("index.html");
 
 app.Run();

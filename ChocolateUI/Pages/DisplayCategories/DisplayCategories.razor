@@ -12,14 +12,7 @@
         <a href="/Category/@item.Id">
             <div class="card">
                 @* <div class="card-body"> *@
-                    @if (item.MainPhotoId == default)
-                    {
-                        <img class="img-thumbnail" src="https://localhost:7213/Images/NoImage.png" alt="NoImage"/>
-                    }
-                    else
-                    {
-                        <img class="img-thumbnail" src="https://localhost:7213/image/@item.MainPhotoId" alt="ProductMainPhoto"/>
-                    }
+                    <img class="img-thumbnail" src="@FetchService.GetImageUrl(@item.MainPhotoId)" alt="ProductMainPhoto"/>
                     @if (UserProfile.IsAdmin())
                     {
                         <DeleteItem DeleteFunction="async (x) => await RemoveCategory(x.Id)" Element="item"></DeleteItem>
