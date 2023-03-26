@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  chocolate_store_app:
+    build:
+      context: .
+      dockerfile: ChocolateStoreApp.Dockerfile
+    ports:
+        - "5129:80"
+    environment:
+      DbConnectionString:Server: "db"
+      DbConnectionString:Port: "5432"
+      DbConnectionString:DataBase: "ChocolateDB"
+      DbConnectionString:User_Id: "postgres"
+      DBPassword: "123qwe!@#QWE"
+    depends_on:
+      - db_initiator
+      - db
+  db_initiator:
+    build:
+      context: .
+      dockerfile: DbInitiator.Dockerfile
+    environment:
+      DB_Settings:connectionString: "Server=db;Port=5432;Database=ChocolateDB;User Id=postgres;password=123qwe!@#QWE;"
+    depends_on:
+      - db
+  db:
+    ports:
+      - "5432:5432"
+    image: "postgres:15.2-alpine"
+    environment:
+      POSTGRES_PASSWORD: "123qwe!@#QWE"

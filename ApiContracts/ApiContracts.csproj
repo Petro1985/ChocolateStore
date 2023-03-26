@@ -7,11 +7,5 @@
         <LangVersion>11</LangVersion>
         <RootNamespace>Models</RootNamespace>
     </PropertyGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.Http.Features">
-        <HintPath>C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App\7.0.2\Microsoft.AspNetCore.Http.Features.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
+    
 </Project>
