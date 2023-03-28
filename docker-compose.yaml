@@ -5,12 +5,24 @@ services:
       context: .
       dockerfile: ChocolateStoreApp.Dockerfile
     ports:
-        - "5129:80"
+#        - "5129:80"
+        - "80:80"
     environment:
+#      - DbConnectionString={
+#        "Server"="db",
+#        "Port"="5432",
+#        "DataBase"="ChocolateDB",
+#        "User_Id"="postgres"}
+#      - CORS={
+#          "AllowedOrigins"=["http://localhost:5129"]
+#        }
+#      - DBPassword="123qwe!@#QWE"
       DbConnectionString:Server: "db"
       DbConnectionString:Port: "5432"
       DbConnectionString:DataBase: "ChocolateDB"
       DbConnectionString:User_Id: "postgres"
+#      CORS:AllowedOrigin: "http://localhost:5129"
+      CORS:AllowedOrigin: "http://localhost:80"
       DBPassword: "123qwe!@#QWE"
     depends_on:
       - db_initiator
@@ -24,8 +36,8 @@ services:
     depends_on:
       - db
   db:
-    ports:
-      - "5432:5432"
+#    ports:
+#      - "5432:5432"
     image: "postgres:15.2-alpine"
     environment:
       POSTGRES_PASSWORD: "123qwe!@#QWE"

@@ -1,4 +1,4 @@
-﻿namespace ChocolateBackEnd;
+﻿namespace ChocolateBackEnd.Options;
 
 public static class ConfigurationManagerExt
 {

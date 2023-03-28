@@ -1,6 +1,7 @@
 using ChocolateBackEnd;
 using ChocolateBackEnd.APIStruct.Mapper;
 using ChocolateBackEnd.Auth;
+using ChocolateBackEnd.Options;
 using ChocolateData;
 using ChocolateData.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +33,15 @@ builder.Services.AddCors(x =>
 {
     x.AddPolicy("AnyOrigin", op =>
     {
-        op.WithOrigins("http://localhost:5213", "https://localhost:7213", "https://localhost:7028");
+        var corsOptions = builder.Configuration.GetSection("CORS").Get<CorsOptions>();
+        if (corsOptions is null)
+        {
+            throw new Exception("Configuration error (CORS section is absent)");
+        }
+
+        op.WithOrigins(corsOptions.AllowedOrigin);
+        
+        Console.WriteLine($"CORS origin set: {corsOptions.AllowedOrigin}");
         // op.AllowAnyOrigin();
         op.AllowAnyMethod();
         op.AllowAnyHeader();
@@ -61,7 +70,8 @@ builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.ConfigureApplicationCookie(conf =>
 {
-    conf.Cookie.SameSite = SameSiteMode.None;
+    conf.Cookie.SameSite = SameSiteMode.Unspecified;
+    conf.Cookie.SecurePolicy = CookieSecurePolicy.None;
     conf.Events.OnRedirectToAccessDenied = context =>
     {
         context.Response.StatusCode = StatusCodes.Status403Forbidden;
