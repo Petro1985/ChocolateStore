@@ -1,10 +1,10 @@
 ﻿@using System.Security.AccessControl
 @using ChocolateAdminUI.Pages.Components
-@using ChocolateAdminUI.Services
 @using Microsoft.VisualBasic.FileIO
 @using Models.Category
+@inherits DisplayCategoriesBase
 
-@foreach (var value in Categories)
+@foreach (var value in Categories!)
 {
     var item = value.Value;
     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
@@ -39,10 +39,6 @@
 
 @code
 {
-    [Inject] public IUserProfile UserProfile { get; set; }
-    [Inject] public IFetchService FetchService { get; set; }
-    [Inject] public ILogger<DisplayCategories> Logger { get; set; }
-
     [Parameter] 
     public Dictionary<Guid, CategoryDTO>? Categories { get; set; }
     [Parameter]

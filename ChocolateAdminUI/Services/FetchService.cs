@@ -1,5 +1,11 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Models.Category;
 using Models.Photo;
 using Models.Product;
@@ -12,11 +18,11 @@ class FetchService : IFetchService
     private readonly ILogger<FetchService> _logger;
     private readonly string _serverUrl;
     
-    public FetchService(HttpClient httpClient, ILogger<FetchService> logger, string serverUrl)
+    public FetchService(IHttpClientFactory httpFactory, ILogger<FetchService> logger)
     {
-        _httpClient = httpClient;
+        _httpClient = httpFactory.CreateClient("API");
         _logger = logger;
-        _serverUrl = serverUrl;
+        _serverUrl = _httpClient.BaseAddress?.ToString() ?? "";
     }
 
     public async Task<ICollection<ProductDTO>> GetProductByCategory(Guid categoryId)
@@ -203,7 +209,7 @@ class FetchService : IFetchService
     {
         return imageId == default 
             ? "/images/NoImage.png" 
-            : $"{_serverUrl}/image/{imageId}";
+            : $"{_serverUrl}image/{imageId}";
     }
 
     public async Task DeleteCategory(Guid categoryId)
