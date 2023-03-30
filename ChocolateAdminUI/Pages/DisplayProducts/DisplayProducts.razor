@@ -1,0 +1,67 @@
+﻿@using Models.Product
+@using ChocolateAdminUI.Pages.Components
+@using ChocolateAdminUI.Services
+@inject ILogger<DisplayProducts> Logger
+@inject IUserProfile UserProfile
+@inject IFetchService FetchService
+
+@foreach (var value in Products)
+{
+    var item = value.Value;
+    
+    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+        <a href="/Category/@item.CategoryId/Product/@item.Id">
+            <div class="card">
+                <img class="img-thumbnail" src="@FetchService.GetImageUrl(@item.MainPhotoId)" alt=""/>
+                @if (UserProfile.IsAdmin())
+                {
+                    <DeleteItem DeleteFunction="async (x) => await RemoveProduct(x.Id)" Element="item"></DeleteItem>
+                }
+                <div class="card-body position-relative">
+                    <h5 class="card-title mb-3">
+                        @item.Name
+                    </h5>
+                    <p class="card-text">
+                        <b>@item.PriceRub.ToString("C")</b>
+                    </p>
+                    @if (UserProfile.IsAdmin())
+                    {
+                        <button
+                            @onclick:preventDefault="true"
+                            @onclick:stopPropagation="true"
+                            @onclick="() => _editProductForm.Open(item)"
+                            class="btn btn-success position-absolute bottom-0 end-0" style="height: 100%">Редактировать
+                        </button>
+                    }
+                </div>
+
+            </div>
+        </a>
+    </div>
+    <AddOrEditProductModal @ref="_editProductForm" UpdateProductFunc="UpdateProductFunc"></AddOrEditProductModal>
+}
+
+@code
+{
+    [Parameter] 
+    public Dictionary<Guid, ProductDTO>? Products { get; set; }
+    [Parameter]
+    public Func<ProductDTO, Task>? UpdateProductFunc { get; set; }
+    [Parameter]
+    public Func<Guid, Task>? DeleteProductFunc { get; set; }
+
+    private AddOrEditProductModal _editProductForm;
+    private DeleteItem<ProductDTO> _deleteButton;
+    
+    private async Task RemoveProduct(Guid id)
+    {
+        if (DeleteProductFunc is not null)
+        {
+            await DeleteProductFunc(id);
+        }
+        else
+        {
+            Logger.LogWarning("В компонент {ComponentName} не передан параметр {ParameterName}", nameof(DisplayProducts), nameof(DeleteProductFunc));
+        }
+    }
+}

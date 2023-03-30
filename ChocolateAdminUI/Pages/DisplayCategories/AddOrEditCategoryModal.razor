@@ -1,0 +1,111 @@
+﻿@using Models
+@using System.Xml
+@using ChocolateAdminUI.Pages.Components
+@using ChocolateAdminUI.Services
+@using Models.Category
+@layout MainLayout
+@inject ILogger<AddOrEditCategoryModal> Logger
+@inject IFetchService FetchService
+
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@(CurrentCategory.Id == default? "Создание новой категории" : "Редактирование категории")</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-floating">
+                    <input id="CategoryNameInput" class="form-control" type="text" @bind="CurrentCategory.Name" placeholder="Category name"/>
+                    <label for="CategoryNameInput">Имя категории</label>
+                </div>
+                <ChoosePhoto @ref="_choosePhoto" IsMultiple="false"></ChoosePhoto>
+            </div>
+            <div class="modal-footer">
+                <button 
+                    type="button" class="btn btn-primary" 
+                    @onclick="@(CurrentCategory.Id == default? async () => await CreateCategory() : async () => await EditCategory())">
+                    @(CurrentCategory.Id == default? "Создать" : "Сохранить")
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+
+    [Parameter]
+    public Func<CategoryDTO, Task>? AddCategory { get; set; }
+    [Parameter]
+    public Func<CategoryDTO, Task>? UpdateCategory { get; set; }
+    
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    public CategoryDTO CurrentCategory { get; set; } = new();
+
+    private ChoosePhoto _choosePhoto;
+
+    public void Open(CategoryDTO category)
+    {
+        CurrentCategory = category;
+        if (category.MainPhotoId != default)
+        {
+            _choosePhoto.CurrentImage = FetchService.GetImageUrl(category.MainPhotoId);
+        }
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+
+    public async Task EditCategory()
+    {
+        Close();
+        if (UpdateCategory is not null)
+        {
+            var newImage = _choosePhoto.GetImageBase64();
+            if (!string.IsNullOrWhiteSpace(newImage))
+            {
+                CurrentCategory.MainPhotoId = await FetchService.AddCategoryPhoto(newImage, CurrentCategory.Id);
+            };
+            await UpdateCategory(CurrentCategory);
+            _choosePhoto.ClearImage();
+        }
+        else
+        {
+            Logger.LogWarning("В компонент {ComponentName} не передан параметр {ParameterName}", nameof(AddOrEditCategoryModal), nameof(UpdateCategory));
+        }
+    }
+
+    private async Task CreateCategory()
+    {
+        Close();
+        if (AddCategory is not null)
+        {
+            await AddCategory(CurrentCategory);
+        }
+        else
+        {
+            Logger.LogWarning("В компонент {ComponentName} не передан параметр {ParameterName}", nameof(AddOrEditCategoryModal), nameof(AddCategory));
+        }
+    }
+}

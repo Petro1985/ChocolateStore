@@ -1,7 +1,8 @@
+using System.Text.Json;
+using ChocolateAdminUI;
+using ChocolateAdminUI.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using ChocolateUI;
-using ChocolateUI.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -22,15 +23,20 @@ builder.Services
     .AddScoped(sp => sp
         .GetRequiredService<IHttpClientFactory>()
         .CreateClient("API"))
-    .AddHttpClient<IFetchService, FetchService>("API", client => client.BaseAddress = new Uri(serverApi))
-    .AddHttpMessageHandler<CookieHandler>();
-builder.Services.AddTransient<IFetchService, FetchService>();
+    .AddHttpClient("API", client =>
+    {
+        client.BaseAddress = new Uri(serverApi);
+    }).AddHttpMessageHandler<CookieHandler>();
 
 builder.Services.AddSingleton<IUserProfile, UserProfile>();
 builder.Services.AddLogging();
 
 builder.Services.AddScoped<CategoryState>();
 
+builder.Services.AddScoped<IFetchService, FetchService>(x => new FetchService(
+    x.GetRequiredService<HttpClient>(),
+    x.GetRequiredService<ILogger<FetchService>>(),
+    serverApi));
 builder.Services.AddScoped<IUserService, UserService>();
 
 await builder.Build().RunAsync();

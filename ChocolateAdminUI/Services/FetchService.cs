@@ -1,12 +1,10 @@
-﻿using System.Data;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Net.Mime;
 using Models.Category;
 using Models.Photo;
 using Models.Product;
 
-namespace ChocolateUI.Services;
+namespace ChocolateAdminUI.Services;
 
 class FetchService : IFetchService
 {
@@ -14,11 +12,11 @@ class FetchService : IFetchService
     private readonly ILogger<FetchService> _logger;
     private readonly string _serverUrl;
     
-    public FetchService(IHttpClientFactory httpFactory, ILogger<FetchService> logger)
+    public FetchService(HttpClient httpClient, ILogger<FetchService> logger, string serverUrl)
     {
-        _httpClient = httpFactory.CreateClient("API");
+        _httpClient = httpClient;
         _logger = logger;
-        _serverUrl = _httpClient.BaseAddress?.ToString() ?? "";
+        _serverUrl = serverUrl;
     }
 
     public async Task<ICollection<ProductDTO>> GetProductByCategory(Guid categoryId)
@@ -205,7 +203,7 @@ class FetchService : IFetchService
     {
         return imageId == default 
             ? "/images/NoImage.png" 
-            : $"{_serverUrl}image/{imageId}";
+            : $"{_serverUrl}/image/{imageId}";
     }
 
     public async Task DeleteCategory(Guid categoryId)
