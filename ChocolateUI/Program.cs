@@ -7,7 +7,9 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-var urlsSection = builder.Configuration.GetSection("Urls");
+var urlsSection = builder.Configuration
+    .GetSection("ChocolateStoreSettings")
+    .GetSection("Urls");
 var serverApi = urlsSection["ServerApi"];
 
 if (serverApi is null)
@@ -15,7 +17,6 @@ if (serverApi is null)
     throw new Exception("Ошибка загрузки файла конфигурации.");
 }
 Console.WriteLine($"ServerApi: {serverApi}");
-
 // Http client registration
 builder.Services
     .AddTransient<CookieHandler>()

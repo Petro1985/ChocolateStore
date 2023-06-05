@@ -1,16 +1,12 @@
-﻿using ChocolateDomain;
-using ChocolateDomain.Entities;
+﻿using ChocolateDomain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
 
 namespace ChocolateData;
 
 public class ApplicationDbContext : IdentityDbContext
 {
     public ApplicationDbContext(DbContextOptions options) : base(options) { }
-    
     public DbSet<ProductEntity> Products { get; set; }
     public DbSet<PhotoEntity> Photos { get; set; }
     
@@ -31,11 +27,9 @@ public class ApplicationDbContext : IdentityDbContext
             .HasOne(x => x.Category)
             .WithMany(x => x.Products);
         
-        
         modelBuilder.Entity<PhotoEntity>()
             .ToTable("Photos")
             .HasKey("Id");
-
         
         modelBuilder.Entity<CategoryEntity>()
             .ToTable("Categories")
@@ -43,7 +37,6 @@ public class ApplicationDbContext : IdentityDbContext
         modelBuilder.Entity<CategoryEntity>()
             .HasMany(x => x.Products)
             .WithOne(x => x.Category);
-        
         
         base.OnModelCreating(modelBuilder);
     }

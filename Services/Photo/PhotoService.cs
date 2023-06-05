@@ -70,7 +70,6 @@ public class PhotoService : IPhotoService
 
     public async Task<Guid> AddPhoto(Guid? productId, byte[] photo)
     {
-        
         var photoEntity = new PhotoEntity
         {
             ProductId = productId,

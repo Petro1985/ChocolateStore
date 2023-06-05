@@ -204,8 +204,8 @@ class FetchService : IFetchService
     public string GetImageUrl(Guid imageId)
     {
         return imageId == default 
-            ? "/images/NoImage.png" 
-            : $"{_serverUrl}image/{imageId}";
+            ? $"{_serverUrl}images/NoImage.png" 
+            : $"{_serverUrl}images/{imageId}";
     }
 
     public async Task DeleteCategory(Guid categoryId)

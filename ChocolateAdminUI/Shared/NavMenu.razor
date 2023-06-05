@@ -37,27 +37,32 @@
             <NavLink class="nav-link" href="Login">
                 <span class="oi oi-account-login" aria-hidden="true"></span> Login
             </NavLink>
-
-
         </div>
+
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="SignUp">
                 <span class="oi oi-eject" aria-hidden="true"></span> Создать пользователя
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="async () => await FetchService.MakeBackUp()">
+                <span class="oi oi-eject" aria-hidden="true"></span> Сделать Backup
             </NavLink>
         </div>
     </nav>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+    private bool _collapseNavMenu = true;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string? NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
-    private ICollection<CategoryDTO> _categories;
+    private ICollection<CategoryDTO>? _categories;
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
     }
 
     protected override async Task OnInitializedAsync()

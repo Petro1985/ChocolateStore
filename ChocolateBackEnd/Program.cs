@@ -4,8 +4,8 @@ using ChocolateBackEnd.Options;
 using ChocolateData;
 using ChocolateData.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Hosting.Internal;
 using Services.Photo;
 using Services.Product;
 using Services.Profiler;
@@ -41,7 +41,7 @@ builder.Services.AddCors(x =>
         
         op.WithOrigins(corsOptions.AllowedOrigin);
 
-        Console.WriteLine($"CORS origin set: {corsOptions.AllowedOrigin}");
+        Console.WriteLine($"CORS origin set to: {corsOptions.AllowedOrigin}");
         // op.AllowAnyOrigin();
         op.AllowAnyMethod();
         op.AllowAnyHeader();
@@ -58,6 +58,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
     options.Lockout.MaxFailedAccessAttempts = 3;
 }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
 
 // Регистрация репозиториев
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
@@ -105,10 +106,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(op => op.EnablePersistAuthorization());
 }
 
-app.UseBlazorFrameworkFiles();
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions()
+{
+    ServeUnknownFileTypes = true
+});
+// app.UseBlazorFrameworkFiles();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

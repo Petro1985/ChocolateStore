@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+using ChocolateAdminUI.Pages.DisplayProducts;
 using Models.Category;
 using Models.Photo;
 using Models.Product;
@@ -210,6 +205,50 @@ class FetchService : IFetchService
         return imageId == default 
             ? "/images/NoImage.png" 
             : $"{_serverUrl}image/{imageId}";
+    }
+
+    public async Task MakeBackUp()
+    {
+        try
+        {
+            var response = await _httpClient.PostAsync("DateBase/MakeBackup", null);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Ошибка при обращении на [Post]DateBase/MakeBackup");
+            throw;
+        }
+    }
+
+    public async Task DownloadBackUp(Guid backupId)
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"DataBase/{backupId}");
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Ошибка при обращении на [Get]DateBase/{BackupId}", backupId);
+            throw;
+        }
+    }
+
+    public async Task RestoreBackup(byte[] backup)
+    {
+        try
+        {
+            var content = new MultipartFormDataContent();
+            content.Add(new ByteArrayContent(backup), "Backup");
+            var response = await _httpClient.PostAsync("DateBase/RestoreBackup", content);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Ошибка при обращении на [Post]DateBase/RestoreBackup");
+            throw;
+        }
     }
 
     public async Task DeleteCategory(Guid categoryId)

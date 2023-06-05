@@ -1,13 +1,17 @@
 version: "3.9"
 services:
   chocolate_store_app:
+#    image: chocolate_store_app:latest
     build:
-      context: .
+      context: .      
       dockerfile: ChocolateStoreApp.Dockerfile
     ports:
-#        - "5129:80"
-        - "80:80"
+#        - "80:80"
+        - "5213:5213"
     environment:
+#      ASPNETCORE_URLS: "http://127.0.0.1:80"
+      ServerApi: "http://localhost:5213"
+      ASPNETCORE_URLS: "http://[::]:5213"
 #      - DbConnectionString={
 #        "Server"="db",
 #        "Port"="5432",
@@ -21,13 +25,14 @@ services:
       DbConnectionString:Port: "5432"
       DbConnectionString:DataBase: "ChocolateDB"
       DbConnectionString:User_Id: "postgres"
-#      CORS:AllowedOrigin: "http://localhost:5129"
-      CORS:AllowedOrigin: "http://localhost:80"
+      CORS:AllowedOrigin: "http://chocolate_store_app:5213"
+#      CORS:AllowedOrigin: "http://localhost:80"
       DBPassword: "123qwe!@#QWE"
     depends_on:
       - db_initiator
       - db
   db_initiator:
+    image: db_initiator:latest
     build:
       context: .
       dockerfile: DbInitiator.Dockerfile

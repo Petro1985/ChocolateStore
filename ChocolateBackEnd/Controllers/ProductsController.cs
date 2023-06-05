@@ -15,6 +15,7 @@ using Services.Product;
 namespace ChocolateBackEnd.Controllers;
 
 [ApiController]
+[Route("Products")]
 public class ProductsController : Controller
 {
     private readonly IMapper _mapper;
@@ -28,19 +29,8 @@ public class ProductsController : Controller
         _productService = productService;
     }
 
-    [HttpGet("Products", Name = "GetAllProducts")]
-    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
-    {
-        return Ok(await _productService.GetAllProducts());
-    }
-    
-    [HttpGet("Products/{categoryId:Guid}", Name = "GetProductsByCategory")]
-    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByCategory([FromRoute]Guid categoryId)
-    {
-        return Ok(await _productService.GetProductsByCategory(categoryId));
-    }
-    
-    [HttpGet("Product/{productId:Guid}", Name = "GetProduct")]
+   
+    [HttpGet("{productId:Guid}", Name = "GetProduct")]
     public async Task<ActionResult<ProductDTO>> GetProduct(Guid productId)
     {
         var product = await _productService.GetProductWithPhotoIds(productId);
@@ -48,63 +38,26 @@ public class ProductsController : Controller
         return Ok(product);
     }
     
-    [HttpGet("Categories", Name = "GetAllCategories")]
-    public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByCategory([FromQuery]Guid? categoryId)
     {
-        return Ok(await _productService.GetAllCategories());
-    }
-    
-    [HttpGet("Category/{categoryId:guid}", Name = "GetCategory")]
-    public async Task<ActionResult<CategoryDTO>> GetCategory([FromRoute] Guid categoryId)
-    {
-        return Ok(await _productService.GetCategory(categoryId));
-    }
-    
-    [Authorize(Policy = Policies.Admin)]
-    [HttpPost("Category/AddPhoto", Name = "AddCategoryPhoto")]
-    public async Task<IActionResult> AddCategoryPhoto(AddMainPhotoRequest request)
-    {
-        var photo = Convert.FromBase64String(request.PhotoBase64);
-        var newPhotoId = await _photoService.AddPhoto(null, photo);
-        await _productService.SetCategoryPhoto(request.EntityId, newPhotoId);
-        return Ok(newPhotoId);
+        return categoryId is null 
+            ? Ok(await _productService.GetAllProducts()) 
+            : Ok(await _productService.GetProductsByCategory(categoryId.Value));
     }
 
-    [Authorize(Policy = Policies.Admin)]
-    [HttpPost("Product/AddPhoto", Name = "AddProductPhoto")]
-    public async Task<IActionResult> AddProductPhoto(AddMainPhotoRequest request)
-    {
-        var photo = Convert.FromBase64String(request.PhotoBase64);
-        var newPhotoId = await _photoService.AddPhoto(null, photo);
-        await _productService.SetProductPhoto(request.EntityId, newPhotoId);
-        return Ok(newPhotoId);
-    }
+    // [Authorize(Policy = Policies.Admin)]
+    // [HttpPost("Photo")]
+    // public async Task<IActionResult> AddProductPhoto(AddMainPhotoRequest request)
+    // {
+    //     var photo = Convert.FromBase64String(request.PhotoBase64);
+    //     var newPhotoId = await _photoService.AddPhoto(null, photo);
+    //     await _productService.SetProductPhoto(request.EntityId, newPhotoId);
+    //     return Ok(newPhotoId);
+    // }
 
     [Authorize(Policy = Policies.Admin)]
-    [HttpPost("Category", Name = "AddCategory")]
-    public async Task<ActionResult<Guid>> AddCategory(CategoryDTO category)
-    {
-        return Ok(await _productService.AddNewCategory(category));
-    }
-
-    [Authorize(Policy = Policies.Admin)]
-    [HttpPut("Category", Name = "UpdateCategory")]
-    public async Task<IActionResult> UpdateCategory([FromBody]CategoryDTO category)
-    {
-        await _productService.UpdateCategory(category);
-        return Ok();
-    }
-
-    [Authorize(Policy = Policies.Admin)]
-    [HttpDelete("Category/{categoryId:guid}", Name = "DeleteCategory")]
-    public async Task<IActionResult> DeleteCategory([FromRoute]Guid categoryId)
-    {
-        await _productService.DeleteCategory(categoryId);
-        return Ok();
-    }
-
-    [Authorize(Policy = Policies.Admin)]
-    [HttpPost("Products", Name = "AddProduct")]
+    [HttpPost]
     public async Task<ActionResult<Guid>> AddProduct([FromBody]ProductCreateRequest product)
     {
         var newProductId = await _productService.AddNewProduct(product);
@@ -112,15 +65,15 @@ public class ProductsController : Controller
     }
 
     [Authorize(Policy = Policies.Admin)]
-    [HttpPut("Product", Name = "UpdateProduct")]
-    public async Task<ActionResult<Guid>> AddProduct([FromBody]ProductDTO product)
+    [HttpPut]
+    public async Task<ActionResult<Guid>> UpdateProduct([FromBody]ProductDTO product)
     {
         await _productService.UpdateProduct(product);
         return Ok();
     }
 
     [Authorize(Policy = Policies.Admin)]
-    [HttpPost("Products/{productId:Guid}/Photos", Name = "AddNewPhoto")]
+    [HttpPost("{productId:Guid}/Photos")]
     public async Task<IActionResult> AddPhotos([FromBody]AddPhotoRequest addPhotoRequest)
     {
         try
@@ -138,32 +91,14 @@ public class ProductsController : Controller
     }
 
     [Authorize(Policy = Policies.Admin)]
-    [HttpPost("/Photos/Crop", Name = "CropPhoto")]
-    public async Task<IActionResult> CropPhoto()
-    {
-        var stream = HttpContext.Request.BodyReader.AsStream();
-        var newPhoto = await _photoService.CropPhoto(stream);
-        var newPhotoBase64 = Convert.ToBase64String(newPhoto);
-        return Ok(newPhotoBase64);
-    }
-
-    [Authorize(Policy = Policies.Admin)]
-    [HttpDelete("Product/{productId:guid}", Name = "DeleteProduct")]
+    [HttpDelete("{productId:guid}", Name = "DeleteProduct")]
     public async Task<IActionResult> DeleteProduct([FromRoute]Guid productId)
     {
         await _productService.DeleteProduct(productId);
         return Ok();
     }
 
-    [Authorize(Policy = Policies.Admin)]
-    [HttpDelete("Photos/{photoId:guid}", Name = "DeletePhoto")]
-    public async Task<IActionResult> DeletePhoto([FromRoute]Guid photoId)
-    {
-        await _photoService.Delete(photoId);
-        return Ok();
-    }
-
-    [HttpGet("Products/{productId:Guid}/Photos/{photoId:Guid}", Name = "GetPhoto")]
+    [HttpGet("{productId:Guid}/Photos/{photoId:Guid}")]
     public async Task<ActionResult> GetPhotos([FromRoute] Guid productId, [FromRoute] Guid photoId)
     {
         var photos = (await _photoService.GetPhotosByProduct(productId)).ToArray();
@@ -174,7 +109,7 @@ public class ProductsController : Controller
         return File(stream, MediaTypeNames.Image.Jpeg);
     }    
 
-    [HttpGet("Products/{productId:Guid}/Photos", Name = "GetAllPhotos")]
+    [HttpGet("{productId:Guid}/Photos")]
     public async Task<ActionResult> GetPhotos([FromRoute] Guid productId)
     {
         var photos = await _photoService.GetPhotosByProduct(productId);
@@ -196,18 +131,5 @@ public class ProductsController : Controller
         zipArchive.Dispose();
         archiveStream.Seek(0, SeekOrigin.Begin);
         return File(archiveStream, MediaTypeNames.Application.Octet, fileDownloadName: "Photos.zip");
-    }
-
-    private bool IsImage(Stream stream)
-    {
-        try
-        {
-            Image.FromStream(stream);
-            return true;
-        }
-        catch (ArgumentException _)
-        {
-            return false;
-        }
     }
 }

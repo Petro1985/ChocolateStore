@@ -5,6 +5,8 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+<!--        <StaticWebAssetBasePath>ChocolateStore</StaticWebAssetBasePath>-->
+        <BlazorWebAssemblyEnableLinking>false</BlazorWebAssemblyEnableLinking>
     </PropertyGroup>
 
     <ItemGroup>
