@@ -4,7 +4,6 @@ using ChocolateBackEnd.Options;
 using ChocolateData;
 using ChocolateData.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Services.Photo;
 using Services.Product;
@@ -39,7 +38,7 @@ builder.Services.AddCors(x =>
             throw new Exception("Configuration error (CORS section is absent)");
         }
         
-        op.WithOrigins(corsOptions.AllowedOrigin);
+        op.WithOrigins(corsOptions.AllowedOrigin.Split(';'));
 
         Console.WriteLine($"CORS origin set to: {corsOptions.AllowedOrigin}");
         // op.AllowAnyOrigin();

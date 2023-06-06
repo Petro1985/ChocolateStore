@@ -26,7 +26,7 @@ class FetchService : IFetchService
         try
         {
             Console.WriteLine(_httpClient.BaseAddress);
-            var response = await _httpClient.GetAsync($"Products/{categoryId}");
+            var response = await _httpClient.GetAsync($"Products?categoryId={categoryId}");
             var responseBody = await response.Content.ReadFromJsonAsync<ICollection<ProductDTO>>();
             return responseBody ?? new List<ProductDTO>();
         }
@@ -57,7 +57,7 @@ class FetchService : IFetchService
     {
         try
         {
-            var response = await _httpClient.GetAsync($"Product/{productId}");
+            var response = await _httpClient.GetAsync($"Products/{productId}");
     
             var responseBody = await response.Content.ReadFromJsonAsync<ProductDTO>();
             return responseBody ?? new ProductDTO();
@@ -73,7 +73,7 @@ class FetchService : IFetchService
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync("Category", categoryDto);
+            var response = await _httpClient.PostAsJsonAsync("Categories", categoryDto);
             
             var responseBody = await response.Content.ReadFromJsonAsync<Guid>();
             return responseBody;
@@ -113,7 +113,7 @@ class FetchService : IFetchService
     {
         try
         {
-            var response = await _httpClient.GetAsync($"Category/{categoryId}");
+            var response = await _httpClient.GetAsync($"Categories/{categoryId}");
     
             response.EnsureSuccessStatusCode();
             var responseBody = await response.Content.ReadFromJsonAsync<CategoryDTO>();
@@ -121,7 +121,7 @@ class FetchService : IFetchService
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Ошибка при обращении [HTTPGet]/Category");
+            _logger.LogError(e, "Ошибка при обращении [HTTPGet]/Categories");
             throw;
         }
     }
@@ -175,13 +175,13 @@ class FetchService : IFetchService
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync($"Category/AddPhoto", 
+            var response = await _httpClient.PostAsJsonAsync($"Categories/Photos", 
                 new AddMainPhotoRequest {PhotoBase64 = imageData, EntityId = categoryId});
             return await response.Content.ReadFromJsonAsync<Guid>();
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Ошибка при обращении на [Post]Category/SetPhoto");
+            _logger.LogError(e, "Ошибка при обращении на [Post]Categories/Photos");
             throw;
         }
     }
@@ -190,13 +190,13 @@ class FetchService : IFetchService
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync("Product/AddPhoto", 
+            var response = await _httpClient.PostAsJsonAsync("Products/Photos", 
                 new AddMainPhotoRequest {PhotoBase64 = imageData, EntityId = productId});
             return await response.Content.ReadFromJsonAsync<Guid>();
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Ошибка при обращении на [Post]Product/SetPhoto");
+            _logger.LogError(e, "Ошибка при обращении на [Post]Products/Photos");
             throw;
         }
     }
@@ -212,12 +212,12 @@ class FetchService : IFetchService
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"Category/{categoryId}");
+            var response = await _httpClient.DeleteAsync($"Categories/{categoryId}");
             response.EnsureSuccessStatusCode();
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Ошибка при обращении на [Delete]Category/{CategoryId}", categoryId);
+            _logger.LogError(e, "Ошибка при обращении на [Delete]Categories/{CategoryId}", categoryId);
             throw;
         }
     }
@@ -226,12 +226,12 @@ class FetchService : IFetchService
     {
         try
         {
-            var response = await _httpClient.PutAsJsonAsync("Category", category);
+            var response = await _httpClient.PutAsJsonAsync("Categories", category);
             response.EnsureSuccessStatusCode();
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Ошибка при обращении на [Put]Category");
+            _logger.LogError(e, "Ошибка при обращении на [Put]Categories");
             throw;
         }
     }
@@ -240,12 +240,12 @@ class FetchService : IFetchService
     {
         try
         {
-            var response = await _httpClient.PutAsJsonAsync("Product", product);
+            var response = await _httpClient.PutAsJsonAsync("Products", product);
             response.EnsureSuccessStatusCode();
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Ошибка при обращении на [Put]Product");
+            _logger.LogError(e, "Ошибка при обращении на [Put]Products");
             throw;
         }
     }
@@ -254,12 +254,12 @@ class FetchService : IFetchService
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"Product/{productId}");
+            var response = await _httpClient.DeleteAsync($"Products/{productId}");
             response.EnsureSuccessStatusCode();
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Ошибка при обращении на [Delete]Product/{ProductId}", productId);
+            _logger.LogError(e, "Ошибка при обращении на [Delete]Products/{ProductId}", productId);
             throw;
         }
     }

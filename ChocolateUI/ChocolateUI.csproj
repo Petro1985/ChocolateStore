@@ -34,4 +34,9 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="xcopy /s /q /y $(TargetDir)wwwroot $(SolutionDir)ChocolateBackEnd\wwwroot\" />
+        <Exec Command="xcopy /s /q /y $(ProjectDir)wwwroot $(SolutionDir)ChocolateBackEnd\wwwroot\" />
+    </Target>
 </Project>

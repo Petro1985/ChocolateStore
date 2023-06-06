@@ -1,6 +1,5 @@
 ﻿using ChocolateUI.Services;
 using Microsoft.AspNetCore.Components;
-using Models;
 using Models.Category;
 
 namespace ChocolateUI.Pages.DisplayCategories;
