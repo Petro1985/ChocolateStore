@@ -10,8 +10,8 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Создание новой категории</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                <h5 class="modal-title">Редактирование или создание продукта</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="CloseModalForm">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -52,7 +52,7 @@
                     @onclick="@(CurrentProduct.Id == default? async () => await CreateProduct() : async () => await EditProduct())">
                     @(CurrentProduct.Id == default? "Создать" : "Сохранить")
                 </button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Close">Отмена</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="CloseModalForm">Отмена</button>
             </div>
         </div>
     </div>
@@ -63,7 +63,6 @@
 {
     <div class="modal-backdrop fade show"></div>
 }
-
 
 @code {
 
@@ -97,12 +96,12 @@
         ShowBackdrop = true;
         if (product.MainPhotoId != default)
         {
-            _choosePhoto.CurrentImage = FetchService.GetImageUrl(product.MainPhotoId);
+            _choosePhoto.CurrentImage = FetchService.MakeImageUrl(product.MainPhotoId);
         }
         StateHasChanged();
     }
 
-    public void Close()
+    public void CloseModalForm()
     {
         ModalDisplay = "none";
         ModalClass = "";
@@ -112,7 +111,7 @@
 
     private async Task CreateProduct()
     {
-        Close();
+        CloseModalForm();
         if (AddProductFunc is not null)
         {
             CurrentProduct.CategoryId = Category.Id;
@@ -126,16 +125,18 @@
     
     private async Task EditProduct()
     {
-        Close();
+        Logger.LogInformation("Открыт диалог редактирования продукта");
         if (UpdateProductFunc is not null)
         {
-            var newImage = _choosePhoto.GetImageBase64();
+            var newImage = _choosePhoto.ImageData;
             if (!string.IsNullOrWhiteSpace(newImage))
             {
+                Logger.LogInformation("Фотография продукта сохранена");
                 CurrentProduct.MainPhotoId = await FetchService.AddProductPhoto(newImage, CurrentProduct.Id);
-            };
+            }
             await UpdateProductFunc(CurrentProduct);
             _choosePhoto.ClearImage();
+            CloseModalForm();
         }
         else
         {

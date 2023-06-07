@@ -9,15 +9,15 @@
 {
     var item = value.Value;
     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-        <a href="/Category/@item.Id">
+        <a href="@(FetchService.BaseUrl)Category/@item.Id">
             <div class="card">
-                @* <div class="card-body"> *@
-                    <img class="img-thumbnail" src="@FetchService.GetImageUrl(@item.MainPhotoId)" alt="ProductMainPhoto"/>
+                <div class="card-body">
+                    <img class="img-thumbnail" src="@FetchService.MakeImageUrl(@item.MainPhotoId)" alt="ProductMainPhoto"/>
                     @if (UserProfile.IsAdmin())
                     {
                         <DeleteItem DeleteFunction="async (x) => await RemoveCategory(x.Id)" Element="item"></DeleteItem>
                     }
-                @* </div> *@
+                </div>
                 <div class="card-footer position-relative">
                     <h5 class="card-title mb-3">
                         @item.Name

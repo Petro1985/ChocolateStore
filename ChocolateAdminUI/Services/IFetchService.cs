@@ -5,6 +5,7 @@ namespace ChocolateAdminUI.Services;
 
 public interface IFetchService
 {
+    public string BaseUrl { get; }
     Task<ICollection<ProductDTO>> GetProductByCategory(Guid categoryId);
     Task<ICollection<CategoryDTO>> GetCategories();
     Task<ProductDTO> GetProduct(Guid productId);

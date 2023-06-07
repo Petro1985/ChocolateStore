@@ -5,6 +5,7 @@ namespace ChocolateUI.Services;
 
 public interface IFetchService
 {
+    public string BaseUrl { get; }
     Task<ICollection<ProductDTO>> GetProductByCategory(Guid categoryId);
     Task<ICollection<CategoryDTO>> GetCategories();
     Task<ProductDTO> GetProduct(Guid productId);
@@ -20,5 +21,5 @@ public interface IFetchService
     Task DeletePhoto(Guid photoId);
     Task<Guid> AddCategoryPhoto(string imageData, Guid categoryId);
     Task<Guid> AddProductPhoto(string newImage, Guid productId);
-    string GetImageUrl(Guid imageId);
+    string MakeImageUrl(Guid imageId);
 }

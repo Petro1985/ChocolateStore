@@ -17,13 +17,13 @@
 </div>
 <div class="container">
     <div class="row">
-        @if (string.IsNullOrWhiteSpace(_imageData))
+        @if (string.IsNullOrWhiteSpace(ImageData))
         {
             <img src="@CurrentImage" alt="" class="col-12" style="padding: 0"/>
         }
         else
         {
-            <img src="data:image/png;base64,@_imageData" alt="" class="col-12" style="padding: 0"/>
+            <img src="data:image/png;base64,@ImageData" alt="" class="col-12" style="padding: 0"/>
         }
     </div>
 </div>
@@ -32,28 +32,45 @@
 {
     [Parameter]
     public bool IsMultiple { get; set; }
+
+    private string _imageData = "";
+    public string ImageData
+    {
+        get => _imageData;
+        set
+        {
+            _imageData = value;
+            StateHasChanged();
+        }
+    }
     
-    private string _currentImage = "/images/NoImage.png";
+    private string _currentImage = "";
+
     public string CurrentImage
     {
         get => _currentImage;
         set
         {
+            Logger.LogInformation("_currentImage = {CurrentImage}", _currentImage);
             _currentImage = value;
             StateHasChanged();
         }
     }
 
-    public string _imageData = "";
+    protected override void OnInitialized()
+    {
+        CurrentImage = $"{FetchService.BaseUrl}images/NoImage.png";
+        base.OnInitialized();
+    }
 
     private async Task LoadFile(InputFileChangeEventArgs e)
     {
         try
         {
-            var format = "image/png";
             await using var stream = e.File.OpenReadStream(e.File.Size);
             var croppedPhoto = await FetchService.CropPhoto(stream);
-            _imageData = croppedPhoto;
+            ImageData = croppedPhoto;
+            Logger.LogInformation("Cropped photo loaded");
         }
         catch (Exception exception)
         {
@@ -64,12 +81,12 @@
 
     public string GetImageBase64()
     {
-        return _imageData;
+        return ImageData;
     }
 
     public void ClearImage()
     {
-        _imageData = "";
+        ImageData = "";
     }
 
     public void Show()

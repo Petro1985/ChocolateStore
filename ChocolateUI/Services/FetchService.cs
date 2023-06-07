@@ -13,7 +13,8 @@ class FetchService : IFetchService
     private readonly HttpClient _httpClient;
     private readonly ILogger<FetchService> _logger;
     private readonly string _serverUrl;
-    
+    public string BaseUrl => _serverUrl;
+
     public FetchService(IHttpClientFactory httpFactory, ILogger<FetchService> logger)
     {
         _httpClient = httpFactory.CreateClient("API");
@@ -201,7 +202,7 @@ class FetchService : IFetchService
         }
     }
 
-    public string GetImageUrl(Guid imageId)
+    public string MakeImageUrl(Guid imageId)
     {
         return imageId == default 
             ? $"{_serverUrl}images/NoImage.png" 

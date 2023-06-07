@@ -33,8 +33,8 @@
 {
     [Parameter]
     public bool IsMultiple { get; set; }
-    
-    private string _currentImage = "/images/NoImage.png";
+
+    private string _currentImage = "";
     public string CurrentImage
     {
         get => _currentImage;
@@ -44,14 +44,18 @@
             StateHasChanged();
         }
     }
-
-    public string _imageData = "";
+    private string _imageData = "";
+    
+    protected override void OnInitialized()
+    {
+        _currentImage = $"{FetchService.BaseUrl}/images/NoImage.png";
+        base.OnInitialized();
+    }
 
     private async Task LoadFile(InputFileChangeEventArgs e)
     {
         try
         {
-            var format = "image/png";
             await using var stream = e.File.OpenReadStream(e.File.Size);
             var croppedPhoto = await FetchService.CropPhoto(stream);
             _imageData = croppedPhoto;
