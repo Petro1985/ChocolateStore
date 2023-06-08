@@ -1,30 +1,41 @@
 version: "3.9"
 services:
+  proxy:
+#    build:
+#      context: ReverseProxyApp
+#      dockerfile: Proxy.Dockerfile
+    image: "reverse-proxy"
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      Kestrel:Endpoints:Https:Certificate:Path: /certs/live/petr-prozorov.ru/cert.pem
+      Kestrel:Endpoints:Https:Certificate:KeyPath: /certs/live/petr-prozorov.ru/privkey.pem
+      Kestrel:Endpoints:Https:Url: "https://*:443"  
+    volumes:
+      - type: bind
+        source: /etc/letsencrypt/live/petr-prozorov.ru
+        target: /certs/live/petr-prozorov.ru
+        read_only: true
+      - type: bind
+        source: /etc/letsencrypt/archive/petr-prozorov.ru
+        target: /certs/archive/petr-prozorov.ru
+        read_only: true
+
   chocolate_store_app:
 #    image: chocolate_store_app:latest
-    build:
-      context: .      
-      dockerfile: ChocolateStoreApp.Dockerfile
-    ports:
+#    build:
+#      context: .      
+#      dockerfile: ChocolateStoreApp.Dockerfile
+#    ports:
 #        - "80:80"
-        - "5213:5213"
+#        - "5213:5213"
+    image: chocolate_store_app
     environment:
-#      ASPNETCORE_URLS: "http://127.0.0.1:80"
-      ServerApi: "http://localhost:5213"
-      ASPNETCORE_URLS: "http://[::]:5213"
-#      - DbConnectionString={
-#        "Server"="db",
-#        "Port"="5432",
-#        "DataBase"="ChocolateDB",
-#        "User_Id"="postgres"}
-#      - CORS={
-#          "AllowedOrigins"=["http://localhost:5129"]
-#        }
-#      - DBPassword="123qwe!@#QWE"
-      DbConnectionString:Server: "db"
-      DbConnectionString:Port: "5432"
-      DbConnectionString:DataBase: "ChocolateDB"
-      DbConnectionString:User_Id: "postgres"
+      ASPNETCORE_URLS: "http://127.0.0.1:80"
+#      ServerApi: "http://localhost:5213"
+#      ASPNETCORE_URLS: "http://[::]:5213"
+      DbConnectionString: "Server=localhost;Port=5444;Database=ChocolateDB;User ID=postgres;password=123qwe!@#QWE"
       CORS:AllowedOrigin: "http://chocolate_store_app:5213"
 #      CORS:AllowedOrigin: "http://localhost:80"
       DBPassword: "123qwe!@#QWE"
@@ -33,16 +44,14 @@ services:
       - db
   db_initiator:
     image: db_initiator:latest
-    build:
-      context: .
-      dockerfile: DbInitiator.Dockerfile
+#    build:
+#      context: .
+#      dockerfile: DbInitiator.Dockerfile
     environment:
       DB_Settings:connectionString: "Server=db;Port=5432;Database=ChocolateDB;User Id=postgres;password=123qwe!@#QWE;"
     depends_on:
       - db
   db:
-#    ports:
-#      - "5432:5432"
     image: "postgres:15.2-alpine"
     environment:
       POSTGRES_PASSWORD: "123qwe!@#QWE"

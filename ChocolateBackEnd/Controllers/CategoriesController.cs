@@ -33,7 +33,7 @@ public class CategoriesController : Controller
     }
 
     [Authorize(Policy = Policies.Admin)]
-    [HttpPost("Photo")]
+    [HttpPost("Photos")]
     public async Task<IActionResult> AddCategoryPhoto(AddMainPhotoRequest request)
     {
         var photo = Convert.FromBase64String(request.PhotoBase64);

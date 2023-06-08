@@ -1,0 +1,58 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "Kestrel": {
+    "Endpoints": {
+      "HTTPS": {
+        "Url": "https://*:443"
+      }
+    }
+  },
+  "AllowedHosts": "*",
+  "ReverseProxy": {
+    "Routes": {
+      "TheLifeApp" : {
+        "ClusterId": "TheLifeAppCluster",
+        "Match": {
+          "Path": "/life/{**remainder}"
+        },
+        "Transforms": [
+          {
+            "PathPattern": "/{**remainder}"
+          }
+        ]
+      },
+      "ChocolateStoreApp" : {
+        "ClusterId": "ChocolateStoreAppCluster",
+        "Match": {
+          "Path": "/ChocolateStore/{**remainder}"
+        },
+        "Transforms": [
+          {
+            "PathPattern": "/{**remainder}"
+          }
+        ]
+      }
+    },
+    "Clusters": {
+      "TheLifeAppCluster": {
+        "Destinations": {
+          "TheLife": {
+            "Address": "http://life:5128/"
+          }
+        }
+      },
+      "ChocolateStoreAppCluster": {
+        "Destinations": {
+          "ChocolateStoreApp": {
+            "Address": "http://chocolate_store_app:5000/"
+          }
+        }
+      }
+    }
+  }
+}
