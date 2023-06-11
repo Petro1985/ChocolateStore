@@ -191,7 +191,7 @@ class FetchService : IFetchService
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync("Products/Photos", 
+            var response = await _httpClient.PostAsJsonAsync($"Products/{productId}/Photos", 
                 new AddMainPhotoRequest {PhotoBase64 = imageData, EntityId = productId});
             return await response.Content.ReadFromJsonAsync<Guid>();
         }
@@ -241,7 +241,7 @@ class FetchService : IFetchService
     {
         try
         {
-            var response = await _httpClient.PutAsJsonAsync("Products", product);
+            var response = await _httpClient.PutAsJsonAsync($"Products", product);
             response.EnsureSuccessStatusCode();
         }
         catch (Exception e)

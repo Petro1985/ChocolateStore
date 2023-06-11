@@ -60,7 +60,7 @@
         CurrentCategory = category;
         if (category.MainPhotoId != default)
         {
-            _choosePhoto.CurrentImage = FetchService.MakeImageUrl(category.MainPhotoId);
+            _choosePhoto.OldPhotoPath = FetchService.MakeImageUrl(category.MainPhotoId);
         }
         ModalDisplay = "block;";
         ModalClass = "Show";

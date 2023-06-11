@@ -5,12 +5,12 @@
 @inject IUserProfile UserProfile
 @inject IFetchService FetchService
 
-@foreach (var value in Products)
+@foreach (var value in Products!)
 {
     var item = value.Value;
     
     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-        <a href="@(FetchService.BaseUrl)Category/@item.CategoryId/Product/@item.Id">
+        <a href="Category/@item.CategoryId/Product/@item.Id">
             <div class="card">
                 <img class="img-thumbnail" src="@FetchService.MakeImageUrl(item.MainPhotoId)" alt=""/>
                 @if (UserProfile.IsAdmin())
@@ -29,7 +29,7 @@
                         <button
                             @onclick:preventDefault="true"
                             @onclick:stopPropagation="true"
-                            @onclick="() => _editProductForm.Open(item)"
+                            @onclick="() => _editProductForm!.Open(item)"
                             class="btn btn-success position-absolute bottom-0 end-0" style="height: 100%">Редактировать
                         </button>
                     }
@@ -38,8 +38,8 @@
             </div>
         </a>
     </div>
-    <AddOrEditProductModal @ref="_editProductForm" UpdateProductFunc="UpdateProductFunc"></AddOrEditProductModal>
 }
+<AddOrEditProductModal @ref="_editProductForm" UpdateProductFunc="UpdateProductFunc!"></AddOrEditProductModal>
 
 @code
 {
@@ -50,8 +50,8 @@
     [Parameter]
     public Func<Guid, Task>? DeleteProductFunc { get; set; }
 
-    private AddOrEditProductModal _editProductForm;
-    private DeleteItem<ProductDTO> _deleteButton;
+    private AddOrEditProductModal? _editProductForm;
+    private DeleteItem<ProductDTO>? _deleteButton;
     
     private async Task RemoveProduct(Guid id)
     {

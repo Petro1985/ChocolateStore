@@ -59,7 +59,7 @@
 
     protected override void OnInitialized()
     {
-        _currentPhoto = Photos.First();
+        _currentPhoto = Photos.FirstOrDefault();
     }
 
     private async Task RemovePhoto(Guid photoId)

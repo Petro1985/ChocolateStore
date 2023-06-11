@@ -1,3 +1,4 @@
+using System.Net.Security;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ChocolateUI;
@@ -34,4 +35,7 @@ builder.Services.AddScoped<CategoryState>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 
-await builder.Build().RunAsync();
+var app = builder.Build();
+
+await app.RunAsync();
+

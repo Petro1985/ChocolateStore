@@ -33,6 +33,9 @@
       <Content Update="wwwroot\appsettings.Development.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <Content Update="wwwroot\appsettings.Production.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">

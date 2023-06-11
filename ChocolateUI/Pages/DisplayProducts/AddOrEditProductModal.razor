@@ -74,7 +74,7 @@
     [Parameter]
     public Func<ProductDTO, Task>? UpdateProductFunc {get; set; } 
 
-    private ChoosePhoto _choosePhoto;
+    private ChoosePhoto? _choosePhoto;
     public Guid Guid = Guid.NewGuid();
     public string ModalDisplay = "none;";
     public string ModalClass = "";
@@ -96,9 +96,11 @@
         ShowBackdrop = true;
         if (product.MainPhotoId != default)
         {
-            _choosePhoto.CurrentImage = FetchService.MakeImageUrl(product.MainPhotoId);
+            _choosePhoto.OldPhotoPath = FetchService.MakeImageUrl(product.MainPhotoId);
+        } else
+        {
+            _choosePhoto.OldPhotoPath = $"{FetchService.BaseUrl}images/NoImage.png";
         }
-        StateHasChanged();
     }
 
     public void CloseModalForm()
@@ -106,36 +108,42 @@
         ModalDisplay = "none";
         ModalClass = "";
         ShowBackdrop = false;
-        StateHasChanged();
     }
 
     private async Task CreateProduct()
     {
-        CloseModalForm();
         if (AddProductFunc is not null)
         {
             CurrentProduct.CategoryId = Category.Id;
+            var newImage = _choosePhoto!.ChosenPhotoBase64;
+            if (!string.IsNullOrWhiteSpace(newImage))
+            {
+                Logger.LogInformation("Фотография продукта сохранена");
+                CurrentProduct.MainPhotoId = await FetchService.AddProductPhoto(newImage, CurrentProduct.Id);
+            }
             await AddProductFunc(CurrentProduct);
         }
         else
         {
             Logger.LogWarning("В компонент {ComponentName} не передан параметр {ParameterName}", nameof(AddOrEditProductModal), nameof(AddProductFunc));
         }
+        _choosePhoto.ClearImage();
+        CloseModalForm();
     }
-    
+
     private async Task EditProduct()
     {
-        Logger.LogInformation("Открыт диалог редактирования продукта");
+        Logger.LogInformation("Идет сохранение изменений по продукту");
         if (UpdateProductFunc is not null)
         {
-            var newImage = _choosePhoto.ImageData;
+            var newImage = _choosePhoto!.ChosenPhotoBase64;
             if (!string.IsNullOrWhiteSpace(newImage))
             {
                 Logger.LogInformation("Фотография продукта сохранена");
                 CurrentProduct.MainPhotoId = await FetchService.AddProductPhoto(newImage, CurrentProduct.Id);
             }
             await UpdateProductFunc(CurrentProduct);
-            _choosePhoto.ClearImage();
+            _choosePhoto. ClearImage();
             CloseModalForm();
         }
         else

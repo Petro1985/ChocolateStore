@@ -20,8 +20,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitialFilling", "InitialFi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChocolateAdminUI", "ChocolateAdminUI\ChocolateAdminUI.csproj", "{8FF09AB8-C827-4A5B-9CF1-C4D87D57214D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseProxyApp", "ReverseProxyApp\ReverseProxyApp.csproj", "{19171A54-52FE-4313-8106-5AFDA226E42D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,10 +62,6 @@ Global
 		{8FF09AB8-C827-4A5B-9CF1-C4D87D57214D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FF09AB8-C827-4A5B-9CF1-C4D87D57214D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FF09AB8-C827-4A5B-9CF1-C4D87D57214D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{19171A54-52FE-4313-8106-5AFDA226E42D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19171A54-52FE-4313-8106-5AFDA226E42D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19171A54-52FE-4313-8106-5AFDA226E42D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19171A54-52FE-4313-8106-5AFDA226E42D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1A6F8C78-6418-41F9-A87A-D0A45F07FADB} = {A3C03ABF-EFC7-45BD-B677-9808FCBEC8EC}

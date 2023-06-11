@@ -7,23 +7,24 @@
     {
         <InputFile id="images" OnChange="LoadFile"  multiple 
                    accept="image/jpeg, image/png" class="visually-hidden"/>
+        <label class="btn btn-primary col-12" for="images">Выбирите файлы изображений</label>
     }
     else
     {
         <InputFile id="images" OnChange="LoadFile"
                    accept="image/jpeg, image/png" class="visually-hidden"/>
+        <label class="btn btn-primary col-12" for="images">Выбирите файлы изображений</label>
     }
-    <label class="btn btn-primary col-12" for="images">Выбирите файлы изображений</label>
 </div>
 <div class="container">
     <div class="row">
-        @if (string.IsNullOrWhiteSpace(ImageData))
+        @if (string.IsNullOrWhiteSpace(ChosenPhotoBase64))
         {
-            <img src="@CurrentImage" alt="" class="col-12" style="padding: 0"/>
+            <img src="@OldPhotoPath" alt="" class="col-12" style="padding: 0"/>
         }
         else
         {
-            <img src="data:image/png;base64,@ImageData" alt="" class="col-12" style="padding: 0"/>
+            <img src="data:image/png;base64,@ChosenPhotoBase64" alt="" class="col-12" style="padding: 0"/>
         }
     </div>
 </div>
@@ -32,35 +33,27 @@
 {
     [Parameter]
     public bool IsMultiple { get; set; }
-
-    private string _imageData = "";
-    public string ImageData
+    private string _chosenPhotoBase64 = "";
+    public string ChosenPhotoBase64
     {
-        get => _imageData;
+        get => _chosenPhotoBase64;
         set
         {
-            _imageData = value;
-            StateHasChanged();
-        }
-    }
-    
-    private string _currentImage = "";
-
-    public string CurrentImage
-    {
-        get => _currentImage;
-        set
-        {
-            Logger.LogInformation("_currentImage = {CurrentImage}", _currentImage);
-            _currentImage = value;
+            _chosenPhotoBase64 = value;
             StateHasChanged();
         }
     }
 
-    protected override void OnInitialized()
+    private string _oldPhotoPath = "";
+
+    public string OldPhotoPath
     {
-        CurrentImage = $"{FetchService.BaseUrl}images/NoImage.png";
-        base.OnInitialized();
+        get => _oldPhotoPath;
+        set
+        {
+            _oldPhotoPath = value;
+            StateHasChanged();
+        }
     }
 
     private async Task LoadFile(InputFileChangeEventArgs e)
@@ -69,7 +62,7 @@
         {
             await using var stream = e.File.OpenReadStream(e.File.Size);
             var croppedPhoto = await FetchService.CropPhoto(stream);
-            ImageData = croppedPhoto;
+            ChosenPhotoBase64 = croppedPhoto;
             Logger.LogInformation("Cropped photo loaded");
         }
         catch (Exception exception)
@@ -81,12 +74,12 @@
 
     public string GetImageBase64()
     {
-        return ImageData;
+        return ChosenPhotoBase64;
     }
 
     public void ClearImage()
     {
-        ImageData = "";
+        ChosenPhotoBase64 = "";
     }
 
     public void Show()
