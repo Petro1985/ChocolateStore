@@ -10,7 +10,7 @@ public class DbInitiator
     {
         var optBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
         var connectionString = Environment.GetEnvironmentVariable("DbConnectionString")
-                               ?? @"Server=localhost;Port=5444;Database=ChocolateDB;User Id=postgres;password=123qwe!@#QWE";
+                               ?? "Server=db_choco;Port=5432;Database=ChocolateDB;User Id=postgres;password=123qwe!@#QWE;";
         optBuilder.UseNpgsql(connectionString);
         
         var context = new ApplicationDbContext(optBuilder.Options);
