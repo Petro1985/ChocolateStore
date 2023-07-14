@@ -24,9 +24,13 @@
                     @foreach (var category in _categories)
                     {
                         <li >
-                            <NavLink class="nav-link" href="@($"Category/{category.Id.ToString()}")" Match="NavLinkMatch.Prefix">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="#AB7C94" d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"></path></svg>
-                                @category?.Name
+                            <NavLink class="nav-link d-flex flex-row" href="@($"Category/{category.Id.ToString()}")" Match="NavLinkMatch.Prefix">
+                                <div class="d-flex align-content-start">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="#AB7C94" d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"></path></svg>
+                                </div>
+                                <div class="d-flex align-self-center lh-1">
+                                    @category.Name
+                                </div>
                             </NavLink>
                         </li>
                     }

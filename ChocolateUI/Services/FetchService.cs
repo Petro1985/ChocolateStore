@@ -209,6 +209,13 @@ class FetchService : IFetchService
             : $"{_serverUrl}images/{imageId}";
     }
 
+    public string MakeThumbnailUrl(Guid imageId)
+    {
+        return imageId == default 
+            ? $"{_serverUrl}Thumbnail/NoImage.png" 
+            : $"{_serverUrl}Thumbnail/{imageId}";
+    }
+
     public async Task DeleteCategory(Guid categoryId)
     {
         try

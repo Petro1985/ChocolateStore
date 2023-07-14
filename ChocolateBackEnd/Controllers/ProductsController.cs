@@ -99,35 +99,35 @@ public class ProductsController : Controller
     [HttpGet("{productId:Guid}/Photos/{photoId:Guid}")]
     public async Task<ActionResult> GetPhotos([FromRoute] Guid productId, [FromRoute] Guid photoId)
     {
-        var photos = (await _photoService.GetPhotosByProduct(productId)).ToArray();
+        var photos = (await _photoService.GetPhotosByProductId(productId)).ToArray();
         if (photos is null) throw new PhotoNotFoundException(productId);
 
-        var stream = await _photoService.GetImage(photoId);
+        var stream = await _photoService.GetPhoto(photoId);
 
         return File(stream, MediaTypeNames.Image.Jpeg);
     }    
 
-    [HttpGet("{productId:Guid}/Photos")]
-    public async Task<ActionResult> GetPhotos([FromRoute] Guid productId)
-    {
-        var photos = await _photoService.GetPhotosByProduct(productId);
-        
-        var streams = photos.Select(async photo => await _photoService.GetImage(photo));
-
-        Stream archiveStream = new MemoryStream();
-        var zipArchive = new ZipArchive(archiveStream, ZipArchiveMode.Create, true);
-
-        var i = 1;
-        foreach (Task<Stream> stream in streams)
-        {
-            var archiveEntry = zipArchive.CreateEntry($"{i}.jpg");
-            await using var newEntryStream = archiveEntry.Open();
-            await (await stream).CopyToAsync(newEntryStream);
-            i++;
-        }
-        
-        zipArchive.Dispose();
-        archiveStream.Seek(0, SeekOrigin.Begin);
-        return File(archiveStream, MediaTypeNames.Application.Octet, fileDownloadName: "Photos.zip");
-    }
+    // [HttpGet("{productId:Guid}/Photos")]
+    // public async Task<ActionResult> GetPhotos([FromRoute] Guid productId)
+    // {
+    //     var photos = await _photoService.GetPhotosByProductId(productId);
+    //     
+    //     var streams = photos.Select(async photo => await _photoService.GetPhotosByProductId(photo));
+    //
+    //     Stream archiveStream = new MemoryStream();
+    //     var zipArchive = new ZipArchive(archiveStream, ZipArchiveMode.Create, true);
+    //
+    //     var i = 1;
+    //     foreach (Task<Stream> stream in streams)
+    //     {
+    //         var archiveEntry = zipArchive.CreateEntry($"{i}.jpg");
+    //         await using var newEntryStream = archiveEntry.Open();
+    //         await (await stream).CopyToAsync(newEntryStream);
+    //         i++;
+    //     }
+    //     
+    //     zipArchive.Dispose();
+    //     archiveStream.Seek(0, SeekOrigin.Begin);
+    //     return File(archiveStream, MediaTypeNames.Application.Octet, fileDownloadName: "Photos.zip");
+    // }
 }

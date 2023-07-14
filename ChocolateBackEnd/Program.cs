@@ -26,8 +26,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDataBase(builder.Configuration.GetConnectionString());
 
-// Устанавливаем переменные среды
-builder.Configuration.GetSection("");
+builder.Services.AddOptions<PhotoServiceOptions>()
+    .BindConfiguration("PhotoService");
 
 builder.Services.AddCors(x =>
 {

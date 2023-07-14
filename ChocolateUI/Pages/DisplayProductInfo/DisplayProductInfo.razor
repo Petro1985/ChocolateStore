@@ -24,7 +24,7 @@
                                     draggable="false"
                                     alt="miniature-photo"
                                     style="width:100%;height:auto; cursor: pointer;"
-                                    src="@FetchService.MakeImageUrl(photo)"/>
+                                    src="@FetchService.MakeThumbnailUrl(photo)"/>
                             </a>
                         </div>
                     }
@@ -35,7 +35,12 @@
             <h3>
                 <p>Описание товара:</p>
             </h3>
-            @Product.Description
+            <div>
+                @foreach (var str in _description)
+                {
+                    @str <br />
+                }
+            </div>
             <h3 class="mt-4">
                 <p>Цена: <b>@(Product.PriceRub.ToString("N2") + " руб.")</b></p>
             </h3>
@@ -56,10 +61,13 @@
     public Func<Guid, Task> RemovePhotoFunc { get; set; }
 
     private Guid _currentPhoto;
+    private string[] _description { get; set; }
 
     protected override void OnInitialized()
     {
         _currentPhoto = Photos.FirstOrDefault();
+        // Меняем переносы строк на тег <br />
+        _description = Product.Description.Split('\n');
     }
 
     private async Task RemovePhoto(Guid photoId)

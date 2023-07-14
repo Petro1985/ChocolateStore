@@ -21,9 +21,16 @@ public class PhotosController : ControllerBase
     }
 
     [HttpGet("{photoId:Guid}")]
-    public async Task<ActionResult<IFormFile>> GetImage([FromRoute]Guid photoId)
+    public async Task<ActionResult<IFormFile>> GetPhoto([FromRoute]Guid photoId)
     {
-        var stream = await _photoService.GetImage(photoId);
+        var stream = await _photoService.GetPhoto(photoId);
+        return File(stream, MediaTypeNames.Image.Jpeg);        
+    }
+    
+    [HttpGet("/Thumbnail/{photoId:Guid}")]
+    public async Task<ActionResult<IFormFile>> GetThumbnail([FromRoute]Guid photoId)
+    {
+        var stream = await _photoService.GetThumbnail(photoId);
         return File(stream, MediaTypeNames.Image.Jpeg);        
     }
     

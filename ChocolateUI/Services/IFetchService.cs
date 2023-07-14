@@ -22,4 +22,5 @@ public interface IFetchService
     Task<Guid> AddCategoryPhoto(string imageData, Guid categoryId);
     Task<Guid> AddProductPhoto(string newImage, Guid productId);
     string MakeImageUrl(Guid imageId);
+    string MakeThumbnailUrl(Guid imageId);
 }

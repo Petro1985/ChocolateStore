@@ -22,4 +22,16 @@ public class PhotoRepository : BaseRepository<PhotoEntity>, IPhotoRepository
     {
         return await DbContext.Photos.Where(photo => photo.Product.Id == productId).ToListAsync();
     }
+
+    public async Task<byte[]> GetPhoto(Guid photoId)
+    {
+        return await DbContext.Photos.Where(x => x.Id == photoId)
+            .Select(x => x.Image).FirstAsync();
+    }
+
+    public async Task<byte[]?> GetThumbnail(Guid photoId)
+    {
+        return await DbContext.Photos.Where(x => x.Id == photoId)
+            .Select(x => x.Thumbnail).FirstAsync();
+    }
 }
