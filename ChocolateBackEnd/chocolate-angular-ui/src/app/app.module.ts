@@ -12,6 +12,8 @@ import { NgOptimizedImage } from "@angular/common";
 import { CategoriesComponent } from './components/categories/categories.component';
 import { CategoryCardComponent } from './components/category-card/category-card.component';
 import { FetchService } from "./services/fetch-service";
+import {HttpClientModule} from "@angular/common/http";
+import {ImageService} from "./services/imageService";
 
 @NgModule({
     declarations: [
@@ -26,11 +28,12 @@ import { FetchService } from "./services/fetch-service";
     ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     NgOptimizedImage
   ],
-  providers: [FetchService],
+  providers: [FetchService, ImageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

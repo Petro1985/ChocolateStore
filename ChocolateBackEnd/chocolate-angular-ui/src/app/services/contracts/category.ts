@@ -1,5 +1,5 @@
 export interface ICategory {
-  Id: string,
-  Name: string,
-  MainPhotoId: string,
+  id: string,
+  name: string,
+  mainPhotoId: string,
 }

@@ -8,7 +8,7 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <LangVersion>12</LangVersion>
         <SpaRoot>chocolate-angular-ui\</SpaRoot>
-        <SpaProxyServerUrl>https://localhost:44478</SpaProxyServerUrl>
+        <SpaProxyServerUrl>http://localhost:4200</SpaProxyServerUrl>
         <SpaProxyLaunchCommand>ng serve</SpaProxyLaunchCommand>
   </PropertyGroup>
 
