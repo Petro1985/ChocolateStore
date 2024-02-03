@@ -7,9 +7,7 @@ using Services.Product;
 
 namespace ChocolateBackEnd.Controllers;
 
-[ApiController]
-[Route("Categories")]
-public class CategoriesController : Controller
+public class CategoriesController : BaseApiController
 {
     private readonly IPhotoService _photoService;
     private readonly IProductService _productService;
@@ -23,7 +21,8 @@ public class CategoriesController : Controller
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
     {
-        return Ok(await _productService.GetAllCategories());
+        var result = await _productService.GetAllCategories();
+        return Ok(result);
     }
 
     [HttpGet("{categoryId:guid}", Name = "GetCategory")]

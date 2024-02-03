@@ -1,0 +1,832 @@
+{
+  "version": "6.0",
+  "nxVersion": "17.3.1",
+  "deps": {},
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {},
+    "nonProjectFiles": [
+      {
+        "file": ".dockerignore",
+        "hash": "10603417443085276272"
+      },
+      {
+        "file": ".dockerignore.bak",
+        "hash": "14366266307066679511"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "8207031799171478144"
+      },
+      {
+        "file": "ApiContracts/ApiContracts.csproj",
+        "hash": "10788391174277310004"
+      },
+      {
+        "file": "ApiContracts/Category/AddMainPhotoRequest.cs",
+        "hash": "354733086387694387"
+      },
+      {
+        "file": "ApiContracts/Category/CategoryDTO.cs",
+        "hash": "16081222075266305218"
+      },
+      {
+        "file": "ApiContracts/Photo/CreatePhotoRequest.cs",
+        "hash": "13635814112411110880"
+      },
+      {
+        "file": "ApiContracts/Photo/PhotoDTO.cs",
+        "hash": "15572693521725939868"
+      },
+      {
+        "file": "ApiContracts/Product/ProductCreateRequest.cs",
+        "hash": "9525040771110924796"
+      },
+      {
+        "file": "ApiContracts/Product/ProductDTO.cs",
+        "hash": "818964646780432625"
+      },
+      {
+        "file": "ApiContracts/User/UserInfoDTO.cs",
+        "hash": "2865271594926556304"
+      },
+      {
+        "file": "ApiContracts/User/UserLoginInfo.cs",
+        "hash": "11301930685935065786"
+      },
+      {
+        "file": "ChocolateBackEnd/APIStruct/Mapper/ProductMapperProfile.cs",
+        "hash": "1205467197626732803"
+      },
+      {
+        "file": "ChocolateBackEnd/APIStruct/PhotoDeleteRequest.cs",
+        "hash": "2424032924959356855"
+      },
+      {
+        "file": "ChocolateBackEnd/APIStruct/ProductAddRequest.cs",
+        "hash": "6222705799730324777"
+      },
+      {
+        "file": "ChocolateBackEnd/APIStruct/ProductDeleteRequest.cs",
+        "hash": "1877507084626645374"
+      },
+      {
+        "file": "ChocolateBackEnd/APIStruct/ProductResponse.cs",
+        "hash": "7709342800455677392"
+      },
+      {
+        "file": "ChocolateBackEnd/Auth/Policies.cs",
+        "hash": "2058921016047647990"
+      },
+      {
+        "file": "ChocolateBackEnd/ChocolateBackEnd.csproj",
+        "hash": "11906493490186054663"
+      },
+      {
+        "file": "ChocolateBackEnd/Controllers/BaseApiController.cs",
+        "hash": "12680319709778856366"
+      },
+      {
+        "file": "ChocolateBackEnd/Controllers/CategoriesController.cs",
+        "hash": "10087925896218944618"
+      },
+      {
+        "file": "ChocolateBackEnd/Controllers/DataBaseController.cs",
+        "hash": "15350163821619224642"
+      },
+      {
+        "file": "ChocolateBackEnd/Controllers/PhotosController.cs",
+        "hash": "4861975881140422713"
+      },
+      {
+        "file": "ChocolateBackEnd/Controllers/ProductsController.cs",
+        "hash": "138751515973659809"
+      },
+      {
+        "file": "ChocolateBackEnd/Controllers/Users.cs",
+        "hash": "10359425809999681938"
+      },
+      {
+        "file": "ChocolateBackEnd/Options/ConfigurationManagerExt.cs",
+        "hash": "17052895243053826701"
+      },
+      {
+        "file": "ChocolateBackEnd/Options/CorsOptions.cs",
+        "hash": "8098939531467899746"
+      },
+      {
+        "file": "ChocolateBackEnd/Program.cs",
+        "hash": "14133792972619195172"
+      },
+      {
+        "file": "ChocolateBackEnd/Properties/launchSettings.json",
+        "hash": "17250845191780970173"
+      },
+      {
+        "file": "ChocolateBackEnd/appsettings.Development.json",
+        "hash": "1952579075526721352"
+      },
+      {
+        "file": "ChocolateBackEnd/appsettings.Production.json",
+        "hash": "17175116245092080549"
+      },
+      {
+        "file": "ChocolateBackEnd/appsettings.json",
+        "hash": "16696633472795240279"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/.editorconfig",
+        "hash": "6686520031028425313"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/.gitignore",
+        "hash": "13044518069027839699"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/.vscode/extensions.json",
+        "hash": "5331566439708925252"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/.vscode/launch.json",
+        "hash": "17038929134016848735"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/.vscode/tasks.json",
+        "hash": "5336636969995539451"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/README.md",
+        "hash": "12025131809073022361"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/angular.json",
+        "hash": "4303323571135954720"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/package-lock.json",
+        "hash": "10811981312191117455"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/package.json",
+        "hash": "13965286898801370733"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/app-routing.module.ts",
+        "hash": "16999821817582820682"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/app.component.html",
+        "hash": "4553086900179775868"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/app.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/app.component.spec.ts",
+        "hash": "7304735308175894844"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/app.component.ts",
+        "hash": "14147845061550109814"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/app.module.ts",
+        "hash": "5316003884876220810"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/components/categories/categories.component.html",
+        "hash": "14068049916320636301"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/components/categories/categories.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/components/categories/categories.component.spec.ts",
+        "hash": "10241640906073474104"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/components/categories/categories.component.ts",
+        "hash": "7332948215983846363"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/components/category-card/category-card.component.html",
+        "hash": "8493816939310480500"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/components/category-card/category-card.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/components/category-card/category-card.component.spec.ts",
+        "hash": "17012937014180062581"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/components/category-card/category-card.component.ts",
+        "hash": "17713905561447193337"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/components/navigation/navigation.component.html",
+        "hash": "5169858103130362580"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/components/navigation/navigation.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/components/navigation/navigation.component.spec.ts",
+        "hash": "14062863120946732743"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/components/navigation/navigation.component.ts",
+        "hash": "2845731199561821118"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/core/core.module.ts",
+        "hash": "2883787688970685879"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/environments/environment.prod.ts",
+        "hash": "11894091039176579905"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/environments/environment.ts",
+        "hash": "5173593839092993185"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/home/home.component.html",
+        "hash": "4001010420285625699"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/home/home.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/home/home.component.spec.ts",
+        "hash": "15822127150444567963"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/home/home.component.ts",
+        "hash": "12011126076627837204"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/layouts/footer/footer.component.html",
+        "hash": "4870840326542635113"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/layouts/footer/footer.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/layouts/footer/footer.component.spec.ts",
+        "hash": "1944692066901072230"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/layouts/footer/footer.component.ts",
+        "hash": "14920457969305345040"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/layouts/header/header.component.html",
+        "hash": "3018698920875963768"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/layouts/header/header.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/layouts/header/header.component.spec.ts",
+        "hash": "372101361241028373"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/layouts/header/header.component.ts",
+        "hash": "3114890235828253524"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/app/services/fetch-service.ts",
+        "hash": "1154156019301012466"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/assets/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/assets/logo.png",
+        "hash": "17693195663254019675"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/favicon.ico",
+        "hash": "3464744996580215640"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/index.html",
+        "hash": "6094539041556074409"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/main.ts",
+        "hash": "12246588107753938993"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/src/styles.scss",
+        "hash": "9525514396149276363"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/tsconfig.app.json",
+        "hash": "17337579397915052279"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/tsconfig.json",
+        "hash": "1047940026627514556"
+      },
+      {
+        "file": "ChocolateBackEnd/chocolate-angular-ui/tsconfig.spec.json",
+        "hash": "15575553540147145788"
+      },
+      {
+        "file": "ChocolateBackEnd/web.config",
+        "hash": "2007944661804094521"
+      },
+      {
+        "file": "ChocolateData/ApplicationDbContext.cs",
+        "hash": "6013356496363118303"
+      },
+      {
+        "file": "ChocolateData/ChocolateData.csproj",
+        "hash": "663430340770728416"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230111134621_init.Designer.cs",
+        "hash": "16481797421416008971"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230111134621_init.cs",
+        "hash": "6367867735548805649"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230111180936_fkFix.Designer.cs",
+        "hash": "3054618468339029079"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230111180936_fkFix.cs",
+        "hash": "9927395271812380703"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230112165405_ImageIntoDB.Designer.cs",
+        "hash": "11069815841063344702"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230112165405_ImageIntoDB.cs",
+        "hash": "8269253004034334584"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230113161000_CategoriesAdded.Designer.cs",
+        "hash": "12178129405236724132"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230113161000_CategoriesAdded.cs",
+        "hash": "3452629403283928679"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230115121006_MainProductAdded.Designer.cs",
+        "hash": "2515520851679755093"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230115121006_MainProductAdded.cs",
+        "hash": "16938781362143392417"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230115123439_CategoryMainPhotoAdded.Designer.cs",
+        "hash": "5132440977508887347"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230115123439_CategoryMainPhotoAdded.cs",
+        "hash": "1098025165811222790"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230115174611_ProductChanged.Designer.cs",
+        "hash": "18273334348384896562"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230115174611_ProductChanged.cs",
+        "hash": "8108291612539326116"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230116165604_NavPropFix.Designer.cs",
+        "hash": "9023674720468362816"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230116165604_NavPropFix.cs",
+        "hash": "8665858775916336189"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230120164704_NavPropFix3.Designer.cs",
+        "hash": "11069331508885247314"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230120164704_NavPropFix3.cs",
+        "hash": "17524141918433630008"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230120165522_NavPropFix4.Designer.cs",
+        "hash": "7217491894166742583"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230120165522_NavPropFix4.cs",
+        "hash": "337977831071335908"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230124175404_MainPhotoSetNull.Designer.cs",
+        "hash": "15475124253448478931"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230124175404_MainPhotoSetNull.cs",
+        "hash": "14224805881285808849"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230125170447_PhotoProductIdNullable.Designer.cs",
+        "hash": "5397356946495545095"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230125170447_PhotoProductIdNullable.cs",
+        "hash": "16137182880590092592"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230714114354_thumbnailPhotos.Designer.cs",
+        "hash": "13064480304738120394"
+      },
+      {
+        "file": "ChocolateData/Migrations/20230714114354_thumbnailPhotos.cs",
+        "hash": "14586204940979400750"
+      },
+      {
+        "file": "ChocolateData/Migrations/ApplicationDbContextModelSnapshot.cs",
+        "hash": "13349622786537317077"
+      },
+      {
+        "file": "ChocolateData/Repositories/BaseRepository.cs",
+        "hash": "10137158038215965415"
+      },
+      {
+        "file": "ChocolateData/Repositories/CategoryRepository.cs",
+        "hash": "15837523524839754069"
+      },
+      {
+        "file": "ChocolateData/Repositories/ICategoryRepository.cs",
+        "hash": "12918235724998426244"
+      },
+      {
+        "file": "ChocolateData/Repositories/IPhotoRepository.cs",
+        "hash": "6392974216924283461"
+      },
+      {
+        "file": "ChocolateData/Repositories/PhotoRepository.cs",
+        "hash": "3710905462664016025"
+      },
+      {
+        "file": "ChocolateData/Repositories/ProductRepository.cs",
+        "hash": "57108805281857090"
+      },
+      {
+        "file": "ChocolateData/ServiceCollectionExt.cs",
+        "hash": "8895457320321089272"
+      },
+      {
+        "file": "ChocolateDomain/ChocolateDomain.csproj",
+        "hash": "17678377216298835228"
+      },
+      {
+        "file": "ChocolateDomain/Entities/CategoryEntity.cs",
+        "hash": "17921381517733584062"
+      },
+      {
+        "file": "ChocolateDomain/Entities/PhotoEntity.cs",
+        "hash": "8466740966508859178"
+      },
+      {
+        "file": "ChocolateDomain/Entities/ProductEntity.cs",
+        "hash": "12849059816723674698"
+      },
+      {
+        "file": "ChocolateDomain/Exceptions/EntityNotFoundException.cs",
+        "hash": "1088931115902482391"
+      },
+      {
+        "file": "ChocolateDomain/Exceptions/PhotoNotFoundException.cs",
+        "hash": "2244727636977156880"
+      },
+      {
+        "file": "ChocolateDomain/Interfaces/IDbRepository.cs",
+        "hash": "3186276582024715255"
+      },
+      {
+        "file": "ChocolateDomain/Interfaces/IEntity.cs",
+        "hash": "13234047362127847334"
+      },
+      {
+        "file": "ChocolateStore.sln",
+        "hash": "9149775417314217035"
+      },
+      {
+        "file": "ChocolateStoreApp.Dockerfile",
+        "hash": "7335034144413963928"
+      },
+      {
+        "file": "ChocolateUI/App.razor",
+        "hash": "6700459684888704796"
+      },
+      {
+        "file": "ChocolateUI/ChocolateUI.csproj",
+        "hash": "2115569513874974450"
+      },
+      {
+        "file": "ChocolateUI/CookieHandler.cs",
+        "hash": "12100765683584330933"
+      },
+      {
+        "file": "ChocolateUI/Pages/Components/ChoosePhoto.razor",
+        "hash": "2270332003472925430"
+      },
+      {
+        "file": "ChocolateUI/Pages/Components/DeleteItem.razor",
+        "hash": "9521844372329476994"
+      },
+      {
+        "file": "ChocolateUI/Pages/DisplayCategories/AddOrEditCategoryModal.razor",
+        "hash": "13513435148874973092"
+      },
+      {
+        "file": "ChocolateUI/Pages/DisplayCategories/Categories.razor",
+        "hash": "1358375152873962335"
+      },
+      {
+        "file": "ChocolateUI/Pages/DisplayCategories/CategoriesBase.cs",
+        "hash": "15161720597286151036"
+      },
+      {
+        "file": "ChocolateUI/Pages/DisplayCategories/DisplayCategories.razor",
+        "hash": "12229972919869111655"
+      },
+      {
+        "file": "ChocolateUI/Pages/DisplayCategories/DisplayCategoriesBase.cs",
+        "hash": "15937235303796909462"
+      },
+      {
+        "file": "ChocolateUI/Pages/DisplayProductInfo/AddPhotoModal.razor",
+        "hash": "2293066138717801223"
+      },
+      {
+        "file": "ChocolateUI/Pages/DisplayProductInfo/DisplayProductInfo.razor",
+        "hash": "45621247351568769"
+      },
+      {
+        "file": "ChocolateUI/Pages/DisplayProductInfo/DisplayProductInfo.razor.css",
+        "hash": "9098472612093408729"
+      },
+      {
+        "file": "ChocolateUI/Pages/DisplayProductInfo/ProductInfo.razor",
+        "hash": "5625437764634599951"
+      },
+      {
+        "file": "ChocolateUI/Pages/DisplayProducts/AddOrEditProductModal.razor",
+        "hash": "17347856849929470126"
+      },
+      {
+        "file": "ChocolateUI/Pages/DisplayProducts/DisplayProducts.razor",
+        "hash": "13219047427637233269"
+      },
+      {
+        "file": "ChocolateUI/Pages/DisplayProducts/Products.razor",
+        "hash": "14487789918019768214"
+      },
+      {
+        "file": "ChocolateUI/Pages/UserLogin/UserLogin.razor",
+        "hash": "12338067274756014603"
+      },
+      {
+        "file": "ChocolateUI/Pages/UserLogin/UserLoginBase.cs",
+        "hash": "7113631465357764960"
+      },
+      {
+        "file": "ChocolateUI/Pages/UserSignUp/UserSignUp.razor",
+        "hash": "18289827087652369370"
+      },
+      {
+        "file": "ChocolateUI/Pages/UserSignUp/UserSignUpBase.cs",
+        "hash": "676851818440842075"
+      },
+      {
+        "file": "ChocolateUI/Program.cs",
+        "hash": "3029973003484096589"
+      },
+      {
+        "file": "ChocolateUI/Properties/launchSettings.json",
+        "hash": "13874850127914986906"
+      },
+      {
+        "file": "ChocolateUI/Services/CategoryState.cs",
+        "hash": "12242119966496900641"
+      },
+      {
+        "file": "ChocolateUI/Services/FetchService.cs",
+        "hash": "3632981963579276272"
+      },
+      {
+        "file": "ChocolateUI/Services/ICategoryManager.cs",
+        "hash": "3275299035284553643"
+      },
+      {
+        "file": "ChocolateUI/Services/IFetchService.cs",
+        "hash": "11617757742858508752"
+      },
+      {
+        "file": "ChocolateUI/Services/IItem.cs",
+        "hash": "8970285618952439409"
+      },
+      {
+        "file": "ChocolateUI/Services/IProductManager.cs",
+        "hash": "16604592154667324400"
+      },
+      {
+        "file": "ChocolateUI/Services/IUserService.cs",
+        "hash": "5051945592836072131"
+      },
+      {
+        "file": "ChocolateUI/Services/UserService.cs",
+        "hash": "12970970096098215904"
+      },
+      {
+        "file": "ChocolateUI/Shared/MainLayout.razor",
+        "hash": "13558079507554038702"
+      },
+      {
+        "file": "ChocolateUI/Shared/MainLayout.razor.css",
+        "hash": "8326261576523462023"
+      },
+      {
+        "file": "ChocolateUI/Shared/NavMenu.razor",
+        "hash": "3930481291572909200"
+      },
+      {
+        "file": "ChocolateUI/Shared/NavMenu.razor.css",
+        "hash": "16376561908605570598"
+      },
+      {
+        "file": "ChocolateUI/Shared/SurveyPrompt.razor",
+        "hash": "10088348605787393785"
+      },
+      {
+        "file": "ChocolateUI/UserProfile.cs",
+        "hash": "18155688029399153571"
+      },
+      {
+        "file": "ChocolateUI/_Imports.razor",
+        "hash": "6179836725834770160"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/404.html",
+        "hash": "17475465968690615787"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/appsettings.Development.json",
+        "hash": "16786477201639673280"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/appsettings.Production.json",
+        "hash": "18096414408036236105"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/appsettings.json",
+        "hash": "18132658529998443094"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/css/app.css",
+        "hash": "17717265800245139153"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/css/bootstrap/bootstrap.min.css",
+        "hash": "17259682255554185577"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/css/bootstrap/bootstrap.min.css.map",
+        "hash": "9266382720785702020"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/css/open-iconic/FONT-LICENSE",
+        "hash": "6008683776615548970"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/css/open-iconic/ICON-LICENSE",
+        "hash": "10077280927513179529"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/css/open-iconic/README.md",
+        "hash": "2965089840438267429"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/css/open-iconic/font/css/open-iconic-bootstrap.min.css",
+        "hash": "6598737662845284424"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/css/open-iconic/font/fonts/open-iconic.eot",
+        "hash": "13575974754275579511"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/css/open-iconic/font/fonts/open-iconic.otf",
+        "hash": "16193819164696861846"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/css/open-iconic/font/fonts/open-iconic.svg",
+        "hash": "7900540837839515749"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/css/open-iconic/font/fonts/open-iconic.ttf",
+        "hash": "4682351682206217488"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/css/open-iconic/font/fonts/open-iconic.woff",
+        "hash": "5187638692873962145"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/favicon.ico",
+        "hash": "12480267382641409730"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/icon-192.png",
+        "hash": "9856232370300383825"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/images/NoImage.png",
+        "hash": "8021998842757977175"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/images/add_new_item.png",
+        "hash": "18139185525516338605"
+      },
+      {
+        "file": "ChocolateUI/wwwroot/index.html",
+        "hash": "8113640426123768342"
+      },
+      {
+        "file": "DbInitiator.Dockerfile",
+        "hash": "6059735692271017763"
+      },
+      {
+        "file": "InitialFilling/DbInitiator.cs",
+        "hash": "3611283121838523453"
+      },
+      {
+        "file": "InitialFilling/InitialFilling.csproj",
+        "hash": "13286723190830132817"
+      },
+      {
+        "file": "InitialFilling/Program.cs",
+        "hash": "366462083369315750"
+      },
+      {
+        "file": "Services/DataBaseBackup/BackupService.cs",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "Services/Photo/IPhotoService.cs",
+        "hash": "10353401843233185481"
+      },
+      {
+        "file": "Services/Photo/PhotoService.cs",
+        "hash": "1500833648552686160"
+      },
+      {
+        "file": "Services/Photo/PhotoServiceOptions.cs",
+        "hash": "12650652702846247223"
+      },
+      {
+        "file": "Services/Product/IProductService.cs",
+        "hash": "583473436956527719"
+      },
+      {
+        "file": "Services/Product/ProductService.cs",
+        "hash": "5353608279190174984"
+      },
+      {
+        "file": "Services/Profiler/ServicesProfile.cs",
+        "hash": "16588054532386186570"
+      },
+      {
+        "file": "Services/Services.csproj",
+        "hash": "12991802651387178356"
+      },
+      {
+        "file": "Tests/ChocolateBackEnd.Tests/ChocolateBackEnd.Tests.csproj",
+        "hash": "10282301881854575049"
+      },
+      {
+        "file": "Tests/ChocolateBackEnd.Tests/FullStackTest.cs",
+        "hash": "12738182087547786039"
+      },
+      {
+        "file": "Tests/ChocolateBackEnd.Tests/MyWebSite.cs",
+        "hash": "9807685361663678997"
+      }
+    ]
+  }
+}

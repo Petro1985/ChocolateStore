@@ -27,7 +27,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDataBase(builder.Configuration.GetConnectionString());
 
 builder.Services.AddOptions<PhotoServiceOptions>()
-    .BindConfiguration("PhotoService");
+    .BindConfiguration(PhotoServiceOptions.Path);
 
 builder.Services.AddCors(x =>
 {
@@ -110,8 +110,6 @@ app.UseStaticFiles(new StaticFileOptions()
 {
     ServeUnknownFileTypes = true
 });
-// app.UseBlazorFrameworkFiles();
-
 //app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -119,6 +117,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapFallbackToFile("index.html");
+// app.MapFallbackToFile("index.html");
 
 app.Run();

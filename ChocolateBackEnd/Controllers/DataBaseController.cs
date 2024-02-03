@@ -8,7 +8,7 @@ namespace ChocolateBackEnd.Controllers;
 public class DataBaseController : ControllerBase
 {
     [Authorize(Policy = Policies.Admin)]
-    [HttpPost("/DateBase/MakeBackup")]
+    [HttpPost("/Database/MakeBackup")]
     public IActionResult MakeBackup()
     {
         

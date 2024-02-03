@@ -18,8 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChocolateUI", "ChocolateUI\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitialFilling", "InitialFilling\InitialFilling.csproj", "{CEAEE241-9871-4496-89B1-C12DDE2D42A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChocolateAdminUI", "ChocolateAdminUI\ChocolateAdminUI.csproj", "{8FF09AB8-C827-4A5B-9CF1-C4D87D57214D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,10 +56,6 @@ Global
 		{CEAEE241-9871-4496-89B1-C12DDE2D42A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEAEE241-9871-4496-89B1-C12DDE2D42A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEAEE241-9871-4496-89B1-C12DDE2D42A5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8FF09AB8-C827-4A5B-9CF1-C4D87D57214D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8FF09AB8-C827-4A5B-9CF1-C4D87D57214D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8FF09AB8-C827-4A5B-9CF1-C4D87D57214D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8FF09AB8-C827-4A5B-9CF1-C4D87D57214D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1A6F8C78-6418-41F9-A87A-D0A45F07FADB} = {A3C03ABF-EFC7-45BD-B677-9808FCBEC8EC}

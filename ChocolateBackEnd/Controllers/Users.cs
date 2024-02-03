@@ -7,8 +7,7 @@ using Models.User;
 
 namespace ChocolateBackEnd.Controllers;
 
-[ApiController]
-public class UsersController : ControllerBase
+public class UsersController : BaseApiController
 {
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;

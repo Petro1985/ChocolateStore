@@ -12,9 +12,7 @@ using Services.Product;
 
 namespace ChocolateBackEnd.Controllers;
 
-[ApiController]
-[Route("Products")]
-public class ProductsController : Controller
+public class ProductsController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IPhotoService _photoService;

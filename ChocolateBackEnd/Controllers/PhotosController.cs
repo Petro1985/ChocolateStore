@@ -7,9 +7,7 @@ using Services.Photo;
 
 namespace ChocolateBackEnd.Controllers;
 
-[ApiController]
-[Route("/images/")]
-public class PhotosController : ControllerBase
+public class PhotosController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IPhotoService _photoService;
@@ -27,7 +25,7 @@ public class PhotosController : ControllerBase
         return File(stream, MediaTypeNames.Image.Jpeg);        
     }
     
-    [HttpGet("/Thumbnail/{photoId:Guid}")]
+    [HttpGet("Thumbnail/{photoId:Guid}")]
     public async Task<ActionResult<IFormFile>> GetThumbnail([FromRoute]Guid photoId)
     {
         var stream = await _photoService.GetThumbnail(photoId);
@@ -35,7 +33,7 @@ public class PhotosController : ControllerBase
     }
     
     [Authorize(Policy = Policies.Admin)]
-    [HttpPost("/Photos/Crop", Name = "CropPhoto")]
+    [HttpPost("Crop", Name = "CropPhoto")]
     public async Task<IActionResult> CropPhoto()
     {
         var stream = HttpContext.Request.BodyReader.AsStream();
@@ -45,7 +43,7 @@ public class PhotosController : ControllerBase
     }
     
     [Authorize(Policy = Policies.Admin)]
-    [HttpDelete("Photos/{photoId:guid}", Name = "DeletePhoto")]
+    [HttpDelete("{photoId:guid}", Name = "DeletePhoto")]
     public async Task<IActionResult> DeletePhoto([FromRoute]Guid photoId)
     {
         await _photoService.Delete(photoId);
