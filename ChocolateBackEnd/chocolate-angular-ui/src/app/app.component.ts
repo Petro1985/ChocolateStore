@@ -1,6 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
-import {CommonModule} from "@angular/common";
+import { Component } from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import {localstorageConstants} from "./constants/localstorage-constants";
 

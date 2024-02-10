@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterModule, RouterOutlet, Routes} from '@angular/router';
-import {CategoriesListComponent} from "./pages/categories-list/categories-list/categories-list.component";
+import { RouterModule, Routes } from '@angular/router';
 import {ProductsListComponent} from "./pages/products-list/products-list/products-list.component";
-import {CommonModule} from "@angular/common";
+import {CategoriesListComponent} from "./pages/categories-list/categories-list/categories-list.component";
 
 const routes: Routes = [
   {
@@ -20,10 +19,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes),
-    CommonModule, RouterOutlet, RouterLink, RouterLinkActive,
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
