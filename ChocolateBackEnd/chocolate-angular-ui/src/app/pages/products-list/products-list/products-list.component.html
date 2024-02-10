@@ -1,0 +1,17 @@
+<div class="container-fluid d-flex flex-row" >
+  <div class="categories-nav">
+<!--    Сделать красивую навигационную панель-->
+    <p>
+      Все категории
+    </p>
+    <p *ngFor="let category of (categories | async)">
+      {{category.name}}
+    </p>
+
+  </div>
+  <div class="d-flex flex-wrap justify-content-evenly">
+    <app-product-card
+                       *ngFor="let product of (products | async)" [product]="product">
+    </app-product-card>
+  </div>
+</div>

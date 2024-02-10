@@ -1,0 +1,40 @@
+
+.product-card
+{
+  //display: flex;
+  //width: 100%;
+  //grid-gap: 1px;
+  //grid-template-columns: repeat(12, 1fr);
+
+  .product-card--images
+  {
+    width: 450px;
+    padding: 10px;
+
+    .product-card--main-image
+    {
+      border: 2px solid #4a2916;
+      border-radius: 8px;
+      outline-offset: 3px;
+    }
+
+  }
+
+  .product-card--description
+  {
+    width: 70%;
+
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: .2px;
+  }
+
+  .product-card--price
+  {
+    width: 150px;
+    font-size: 32px;
+    line-height: 50px;
+  }
+}
+
+

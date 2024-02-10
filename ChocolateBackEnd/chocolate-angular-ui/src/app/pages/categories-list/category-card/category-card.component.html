@@ -1,0 +1,27 @@
+
+<a href="/Category/{{this.category.id}}">
+  <div class="card">
+    <div class="card-body">
+      <img class="img-thumbnail" ngSrc="{{imageUrl}}" width="400" height="400" alt="ProductMainPhoto"/>
+<!--        @if (UserProfile.IsAdmin())-->
+<!--        {-->
+<!--        <DeleteItem DeleteFunction="async (x) => await RemoveCategory(x.Id)" Element="item"></DeleteItem>-->
+<!--        }-->
+    </div>
+    <div class="card-footer position-relative">
+      <h5 class="card-title mb-3">
+        {{this.category.name}}
+      </h5>
+    </div>
+  </div>
+</a>
+
+
+<!--<div class="card" style="">-->
+<!--  <img ngSrc="{{imageUrl}}" width="400" height="400" priority class="card-img-top" alt="...">-->
+<!--  <div class="card-body">-->
+<!--    <h5 class="card-title">{{category.name}}</h5>-->
+<!--    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
+<!--    <a href="#" class="btn btn-primary">Go somewhere</a>-->
+<!--  </div>-->
+<!--</div>-->
