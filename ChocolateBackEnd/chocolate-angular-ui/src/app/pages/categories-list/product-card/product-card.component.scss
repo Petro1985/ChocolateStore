@@ -59,6 +59,22 @@
       display: table;
       width: 100%;
       margin-bottom: 10px;
+
+      .cost
+      {
+        display: table-cell;
+        width: 50%;
+        height: 36px;
+        background: #F3F3F3;
+        border-radius: 8px;
+        padding: 8px 5px 0;
+        font-size: 14px;
+        font-weight: 700;
+        color: #111;
+        line-height: 20px;
+        text-align: center;
+        box-sizing: border-box;
+      }
     }
   }
 }

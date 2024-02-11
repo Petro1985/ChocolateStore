@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {CategoriesListModule} from "./pages/categories-list/categories-list.module";
-import {ProductsListModule} from "./pages/products-list/products-list.module";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {NgOptimizedImage} from "@angular/common";
@@ -16,6 +15,7 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {StorageService} from "./services/storage-service/storage-service";
 import {FetchService} from "./services/fetch-service";
 import {ImageService} from "./services/imageService";
+import {SlickCarouselModule} from "ngx-slick-carousel";
 
 
 export function HttpLoaderFactory(http: HttpClient)
@@ -32,7 +32,6 @@ export function HttpLoaderFactory(http: HttpClient)
   ],
   imports: [
     CategoriesListModule,
-    ProductsListModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
@@ -45,8 +44,8 @@ export function HttpLoaderFactory(http: HttpClient)
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
-
+    }),
+    SlickCarouselModule,
   ],
   providers: [FetchService, ImageService, HttpClient, StorageService],
   bootstrap: [AppComponent]

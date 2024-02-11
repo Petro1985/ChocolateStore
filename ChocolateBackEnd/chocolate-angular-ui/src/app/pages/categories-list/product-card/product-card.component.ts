@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ImageService} from "../../../services/imageService";
-import {FetchService} from "../../../services/fetch-service";
 import {IProduct} from "../../../services/contracts/products";
+import {CategoryConstants} from "../../../constants/categoryConstants";
 
 @Component({
   selector: 'app-product-card',
@@ -12,11 +12,12 @@ export class ProductCardComponent implements OnInit {
   @Input() product!: IProduct;
   public imageUrl!: string;
 
-  constructor(private imageService: ImageService, private fetchService: FetchService) {
+  constructor(private imageService: ImageService) {
   }
 
   ngOnInit(): void {
     this.imageUrl = this.imageService.getImageUrl(this.product.mainPhotoId);
-    console.log('image -> ', this.imageUrl);
   }
+
+  protected readonly CategoryConstants = CategoryConstants;
 }

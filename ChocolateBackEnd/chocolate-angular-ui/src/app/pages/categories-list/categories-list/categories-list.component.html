@@ -1,4 +1,19 @@
-<div class="container d-flex flex-row">
-  <app-category-card class="col-xl-3 col-lg-4 col-md-6 col-sm-12 p-3" *ngFor="let category of (categories | async)" [category]="category">
-  </app-category-card>
+<div #categoriesContainer class="container">
+  <p class="category-header">Категории товаров которые вы можете заказать</p>
+  <ngx-slick-carousel class="carousel"
+                      #categoriesCarousel
+                      [config]="slideConfig"
+                      (init)="slickInit($event)"
+                      (breakpoint)="breakpoint($event)"
+                      (afterChange)="afterChange($event)"
+                      (beforeChange)="beforeChange($event)">
+    @for (category of categories | async; track category.id) {
+      <app-category-card ngxSlickItem class="slide" [category]="category" >
+      </app-category-card>
+    }
+  </ngx-slick-carousel>
+
+<!--  @for (category of categories | async; track category.id) {-->
+<!--    <app-products-carousel [category]="category" [containerWidth]="categoriesContainer.offsetWidth"  ></app-products-carousel>-->
+<!--  }-->
 </div>

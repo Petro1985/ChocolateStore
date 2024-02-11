@@ -1,13 +1,18 @@
 
 
-<a href="/Category/{{this.category.id}}" class="category-card">
+<a href="#" class="category-card">
   <div class="category-photo">
     <img class="" [style.width.px]="CategoryConstants.CardWidth-10" src="{{imageUrl}}" alt="ProductMainPhoto" />
   </div>
   <div class="desc">
-    <h5 class="name">
-      {{ this.category.name }}
-    </h5>
+    <div class="name">
+      {{ this.product.name }}
+    </div>
+    <div class="info">
+      <div class="cost">
+        {{ this.product.priceRub }} р.
+      </div>
+    </div>
   </div>
 </a>
 

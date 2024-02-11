@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ICategory} from "../../../services/contracts/category";
 import {ImageService} from "../../../services/imageService";
 import {FetchService} from "../../../services/fetch-service";
+import {CategoryConstants} from "../../../constants/categoryConstants";
 
 @Component({
   selector: 'app-category-card',
@@ -20,4 +21,6 @@ export class CategoryCardComponent implements OnInit {
     this.imageUrl = this.imageService.getImageUrl(this.category.mainPhotoId);
     this.categoryLink = this.fetchService.GetCategoryLink(this.category.id);
   }
+
+  protected readonly CategoryConstants = CategoryConstants;
 }
