@@ -1,6 +1,6 @@
-<p>products-carousel works!</p>
-<p class="category-header">Товаров категории {{category.name}}</p>
+<p id="{{category.id}}" class="category-header">Товаров категории {{category.name}}:</p>
 <ngx-slick-carousel class="carousel"
+                    #ProductModal="slick-carousel"
                     [config]="slideConfig">
   @for (product of products | async; track product.id) {
     <app-product-card ngxSlickItem class="slide" [product]="product" >

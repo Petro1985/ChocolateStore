@@ -11,6 +11,7 @@ import {CategoryConstants} from "../../../constants/categoryConstants";
 })
 export class CategoryCardComponent implements OnInit {
   @Input() category!: ICategory;
+  @Input() ScrollCallBack!: (categoryId: string) => void;
   public imageUrl!: string;
   categoryLink!: string;
 
@@ -23,4 +24,8 @@ export class CategoryCardComponent implements OnInit {
   }
 
   protected readonly CategoryConstants = CategoryConstants;
+
+  OnCategoryClick() {
+    this.ScrollCallBack(this.category.id);
+  }
 }

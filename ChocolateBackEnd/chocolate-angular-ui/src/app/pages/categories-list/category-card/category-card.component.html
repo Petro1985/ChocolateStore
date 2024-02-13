@@ -1,6 +1,6 @@
 
 
-<a href="/Category/{{this.category.id}}" class="category-card">
+<a (click)="OnCategoryClick()" class="category-card">
   <div class="category-photo">
     <img class="" [style.width.px]="CategoryConstants.CardWidth-10" src="{{imageUrl}}" alt="ProductMainPhoto" />
   </div>

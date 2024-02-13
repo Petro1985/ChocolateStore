@@ -18,12 +18,12 @@ import {CategoryConstants} from "../../../constants/categoryConstants";
 export class CategoriesListComponent implements AfterViewInit {
   @ViewChild('categoriesContainer') categoriesContainer!: ElementRef;
 
-  public categories: Observable<ICategory[]>;
+
+  public categories$: Observable<ICategory[]>;
   slideConfig: any;
-  allProducts: any;
 
   constructor(private fetchService: FetchService, private cd:ChangeDetectorRef) {
-    this.categories = this.fetchService.GetCategories();
+    this.categories$ = this.fetchService.GetCategories();
   }
 
   ngAfterViewInit(): void {
@@ -43,6 +43,16 @@ export class CategoriesListComponent implements AfterViewInit {
       slidesToShow: cardsOnPage,
       slidesToScroll: cardsOnPage,
     };
+  }
+
+  // {
+  //   console.log(categoryId);
+  // };
+
+  public ScrollTo: (categoryId: string) => void = categoryId =>
+  {
+    const el = this.categoriesContainer.nativeElement.querySelector(`[id="${categoryId}"]`);
+    el.scrollIntoView();
   }
 
   slickInit($event: { event: any; slick: any }) {
