@@ -1,0 +1,7 @@
+<p class="category-header">Категории товаров которые вы можете заказать</p>
+
+@for (category of categories$ | async; track category.id) {
+  <app-category-card [category]="category">
+  </app-category-card>
+}
+

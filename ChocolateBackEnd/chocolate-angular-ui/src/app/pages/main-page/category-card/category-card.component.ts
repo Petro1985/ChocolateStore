@@ -11,7 +11,6 @@ import {CategoryConstants} from "../../../constants/categoryConstants";
 })
 export class CategoryCardComponent implements OnInit {
   @Input() category!: ICategory;
-  @Input() ScrollCallBack!: (categoryId: string) => void;
   public imageUrl!: string;
   categoryLink!: string;
 
@@ -19,13 +18,10 @@ export class CategoryCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log()
     this.imageUrl = this.imageService.getImageUrl(this.category.mainPhotoId);
     this.categoryLink = this.fetchService.GetCategoryLink(this.category.id);
   }
 
   protected readonly CategoryConstants = CategoryConstants;
-
-  OnCategoryClick() {
-    this.ScrollCallBack(this.category.id);
-  }
 }

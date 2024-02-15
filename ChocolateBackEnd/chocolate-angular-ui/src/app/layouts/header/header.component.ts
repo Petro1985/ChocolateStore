@@ -4,7 +4,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {localstorageConstants} from "../../constants/localstorage-constants";
 import {Router} from "@angular/router";
 import {StorageService} from "../../services/storage-service/storage-service";
-import {Observable, tap} from "rxjs";
+import {Observable} from "rxjs";
 import {ICategory} from "../../services/contracts/category";
 
 @Component({

@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {CategoriesListComponent} from "./pages/categories-list/categories-list/categories-list.component";
+import {MainPageComponent} from "./pages/main-page/main-page/main-page.component";
 
 const routes: Routes = [
   {
-    path: 'Categories',
-    component: CategoriesListComponent
+    path: 'main',
+    component: MainPageComponent
   },
   {
     path: '**',
-    redirectTo: '/Categories',
+    redirectTo: '/main',
   }
 ];
 

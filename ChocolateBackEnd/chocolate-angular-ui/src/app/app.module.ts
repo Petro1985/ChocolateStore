@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {CategoriesListModule} from "./pages/categories-list/categories-list.module";
+import {MainPageModule} from "./pages/main-page/main-page.module";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {NgOptimizedImage} from "@angular/common";
@@ -31,7 +31,7 @@ export function HttpLoaderFactory(http: HttpClient)
     FooterComponent,
   ],
   imports: [
-    CategoriesListModule,
+    MainPageModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,

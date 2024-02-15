@@ -1,5 +1,5 @@
 
 export const CategoryConstants =
 {
-  CardWidth: 300,
+  CardWidth: 210,
 }
