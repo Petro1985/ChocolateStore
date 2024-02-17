@@ -16,6 +16,7 @@ import {StorageService} from "./services/storage-service/storage-service";
 import {FetchService} from "./services/fetch-service";
 import {ImageService} from "./services/imageService";
 import {SlickCarouselModule} from "ngx-slick-carousel";
+import {ModalModule} from "./_modal";
 
 
 export function HttpLoaderFactory(http: HttpClient)
@@ -38,6 +39,7 @@ export function HttpLoaderFactory(http: HttpClient)
     BrowserAnimationsModule,
     NgOptimizedImage,
     BrowserModule,
+    ModalModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

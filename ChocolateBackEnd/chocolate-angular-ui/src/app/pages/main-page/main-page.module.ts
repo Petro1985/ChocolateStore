@@ -6,6 +6,8 @@ import {SlickCarouselModule} from "ngx-slick-carousel";
 import {ProductsCarouselComponent} from "./products-carousel/products-carousel.component";
 import {ProductCardComponent} from "./product-card/product-card.component";
 import { MainPageComponent } from './main-page/main-page.component';
+import { ProductModalComponent } from './product-modal/product-modal.component';
+import {ModalModule} from "../../_modal";
 
 @NgModule({
   declarations: [
@@ -14,11 +16,13 @@ import { MainPageComponent } from './main-page/main-page.component';
     ProductsCarouselComponent,
     ProductCardComponent,
     MainPageComponent,
+    ProductModalComponent,
   ],
-    imports: [
-        CommonModule,
-        NgOptimizedImage,
-        SlickCarouselModule
-    ]
+  imports: [
+    CommonModule,
+    NgOptimizedImage,
+    SlickCarouselModule,
+    ModalModule
+  ]
 })
 export class MainPageModule { }

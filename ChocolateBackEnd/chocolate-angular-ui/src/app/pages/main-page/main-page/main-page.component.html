@@ -1,20 +1,22 @@
-<p>main-part works!</p>
-
-<!-- Заголовок? -->
-
 <!-- контейнер для категорий слева и продуктов справа -->
 <div class="container main-container">
-  <div class="col-3 p-3">
-    <app-categories-list [categories$]="categories$">
+  <div class="col-4 p-3">
+    <app-categories-list [categories$]="categories$" (chosenCategory)="currentCategoryChanged($event)">
     </app-categories-list>
   </div>
-  <div class="col-9 mt-3 p-3">
-    <p class="d-block">Продукты категории {{ currentCategory?.name }}</p>
-    <div class="d-flex flex-row flex-wrap">
+  <div class="col-8 mt-3 p-3">
+    <p class="d-block">Продукты категории {{ currentCategory?.name ?? ''}}</p>
+    <div class="d-flex flex-row flex-wrap justify-content-evenly">
       @for (product of products$ | async; track product.id) {
-        <app-product-card [product]="product" class="col-4">
+        <app-product-card [product]="product" (pickedProduct)="pickedProductChanged($event)">
         </app-product-card>
       }
     </div>
   </div>
 </div>
+
+<app-modal id="product-modal">
+  <app-product-modal [product]="pickedProduct" [closeFunction]="closeProductModal">
+  </app-product-modal>
+</app-modal>
+

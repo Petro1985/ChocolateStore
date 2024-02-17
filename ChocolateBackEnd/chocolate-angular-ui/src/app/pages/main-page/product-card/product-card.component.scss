@@ -6,7 +6,6 @@
   box-sizing: border-box;
 
   display: inline-block;
-  margin: 0 0 0 8px;
   background: #fff;
   color: #484848;
   border-radius: 8px;
@@ -14,6 +13,7 @@
   text-decoration: none;
   vertical-align: top;
   cursor: pointer;
+  margin: 10px;
 
   .category-photo {
     position: relative;

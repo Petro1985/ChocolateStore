@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ImageService} from "../../../services/imageService";
 import {IProduct} from "../../../services/contracts/products";
 import {CategoryConstants} from "../../../constants/categoryConstants";
+import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 
 @Component({
   selector: 'app-product-card',
@@ -10,6 +11,8 @@ import {CategoryConstants} from "../../../constants/categoryConstants";
 })
 export class ProductCardComponent implements OnInit {
   @Input() product!: IProduct;
+  @Output() pickedProduct: EventEmitter<IProduct> = new EventEmitter<IProduct>();
+
   public imageUrl!: string;
 
   constructor(private imageService: ImageService) {
@@ -20,4 +23,8 @@ export class ProductCardComponent implements OnInit {
   }
 
   protected readonly CategoryConstants = CategoryConstants;
+
+  pickProduct() {
+    this.pickedProduct.emit(this.product);
+  }
 }
