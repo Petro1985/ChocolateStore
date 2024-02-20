@@ -11,7 +11,7 @@ export class ProductModalComponent {
   @Input() product!: IProduct;
   @Input() closeFunction!: Function;
 
-  OnClose() {
+  Close() {
     this.closeFunction();
   }
 }

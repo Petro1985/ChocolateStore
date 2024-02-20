@@ -1,0 +1,26 @@
+
+
+.product-modal-wrapper
+{
+  position: relative;
+  display: flex;
+  flex-direction: row;
+
+  .left-part
+  {
+    width: 50%
+
+  }
+
+  .right-part
+  {
+    width: 50%
+  }
+
+  .close-button
+  {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
+}

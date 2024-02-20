@@ -1,3 +1,14 @@
-<p>product-modal works!</p>
-<p>Имя продукта: {{product.name}}</p>
-<button (click)="OnClose()">Закрыть</button>
+
+<div class="product-modal-wrapper">
+  <div class="left-part">
+<!--    <img alt="main photo" ngSrc="{{}}"/>-->
+  </div>
+  <div class="right-part">
+    <p>Имя продукта: {{product.name}}</p>
+    <p>******</p>
+    <p>{{ product.priceRub }} р.</p>
+  </div>
+
+  <button type="button" class="btn-close close-button" aria-label="Close" (click)="Close()"></button>
+</div>
+

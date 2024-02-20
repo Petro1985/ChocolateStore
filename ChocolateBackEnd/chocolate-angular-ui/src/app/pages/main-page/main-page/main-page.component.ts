@@ -11,6 +11,7 @@ import {FetchService} from "../../../services/fetch-service";
 import {IProduct} from "../../../services/contracts/products";
 import {CategoriesListComponent} from "../categories-list/categories-list.component";
 import {ModalService} from "../../../_modal";
+import {EmptyProduct} from "../../../constants/product-constants";
 
 @Component({
   selector: 'app-main-part',
@@ -23,7 +24,7 @@ export class MainPageComponent implements AfterViewChecked, OnChanges {
   public categories$: BehaviorSubject<ICategory[]> = new BehaviorSubject<ICategory[]>([]);
   public products$: Observable<IProduct[]> = new BehaviorSubject<IProduct[]>([]);
   @Input() currentCategory!: ICategory;
-  @Input() pickedProduct!: IProduct;
+  @Input() pickedProduct: IProduct = EmptyProduct;
   // public currentCategory!: ICategory;
 
   constructor(private fetchService: FetchService, public modalService: ModalService) {
