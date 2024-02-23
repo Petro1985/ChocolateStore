@@ -18,6 +18,19 @@ public class PhotoRepository : BaseRepository<PhotoEntity>, IPhotoRepository
             .ToListAsync();
     }
 
+    public async Task<Dictionary<Guid, IEnumerable<Guid>>> GetPhotoIdsByProductIds(IEnumerable<Guid> productIds)
+    {
+        var photo = await DbContext.Photos
+            .Where(x => productIds.Contains(x.ProductId!.Value))
+            .GroupBy(x => x.ProductId)
+            .Select(x => new { x.Key, Photos = x.Select(y => y.Id) })
+            .ToDictionaryAsync(x => 
+                x.Key!.Value, 
+                x => x.Photos);
+
+        return photo;
+    }
+
     public async Task<IEnumerable<PhotoEntity>> GetPhotosByProduct(Guid productId)
     {
         return await DbContext.Photos.Where(photo => photo.Product.Id == productId).ToListAsync();

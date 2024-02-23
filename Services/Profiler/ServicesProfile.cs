@@ -11,7 +11,8 @@ public class ServicesProfile : Profile
     public ServicesProfile()
     {
         CreateMap<ProductEntity, ProductDTO>()
-            .ForMember(x => x.TimeToMakeInHours, op => op.MapFrom(x => x.TimeToMake.Hours));
+            .ForMember(x => x.TimeToMakeInHours, op => op.MapFrom(x => x.TimeToMake.Hours))
+            .ForMember(x => x.Photos, op => op.Ignore());
         CreateMap<ProductDTO, ProductEntity>()
             .ForMember(x => x.Category, op => op.Ignore())
             .ForMember(x => x.TimeToMake, op => op.MapFrom(x => TimeSpan.FromHours(x.TimeToMakeInHours)));

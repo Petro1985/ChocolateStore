@@ -26,6 +26,7 @@ public class ProductService : IProductService
     {
         var product = await _productDb
             .GetQuery()
+            .Include(x => x.Photos)
             .Include(x => x.Category).ToListAsync();
 
         return product.Select(x =>
@@ -38,7 +39,20 @@ public class ProductService : IProductService
 
     public async Task<IEnumerable<ProductDTO>> GetProductsByCategory(Guid categoryId)
     {
-        return _mapper.Map<IEnumerable<ProductDTO>>(await _productDb.GetProductsByCategory(categoryId));
+        var products = (await _productDb.GetProductsByCategory(categoryId)).ToList();
+        var productsPhotos = await _photoDb.GetPhotoIdsByProductIds(products.Select(x => x.Id));
+
+        var mappedPhotos = _mapper.Map<IEnumerable<ProductDTO>>(products);
+        
+        foreach (var productDto in mappedPhotos)
+        {
+            if (productsPhotos.TryGetValue(productDto.Id, out var photos))
+            {
+                productDto.Photos = photos;
+            }
+        }
+        
+        return mappedPhotos;
     }
 
     public async Task<IEnumerable<CategoryDTO>> GetAllCategories()

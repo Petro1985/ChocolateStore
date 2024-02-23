@@ -3,6 +3,7 @@ using ChocolateDomain.Entities;
 using ChocolateDomain.Exceptions;
 using ChocolateDomain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace ChocolateData.Repositories;
 

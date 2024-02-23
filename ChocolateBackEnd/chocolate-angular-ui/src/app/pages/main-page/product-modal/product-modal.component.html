@@ -1,10 +1,26 @@
-
 <div class="product-modal-wrapper">
   <div class="left-part">
-<!--    <img alt="main photo" ngSrc="{{}}"/>-->
+    <swiper-container
+      #mainSwiper>
+    </swiper-container>
+
+    <div class="thumbnail-swiper-container">
+      <swiper-container
+        #thumbnailSwiper>
+      </swiper-container>
+    </div>
+
+    <!--    <div class="thumbnail-swiper">-->
+    <!--      <swiper-container #thumbnailSwiper-->
+    <!--                        slides-per-view="5"-->
+    <!--                        speed="500"-->
+    <!--                        loop="false"-->
+    <!--      >-->
+    <!--      </swiper-container>-->
+    <!--    </div>-->
   </div>
   <div class="right-part">
-    <p>Имя продукта: {{product.name}}</p>
+    <p>Имя продукта: {{ product.name }}</p>
     <p>******</p>
     <p>{{ product.priceRub }} р.</p>
   </div>
