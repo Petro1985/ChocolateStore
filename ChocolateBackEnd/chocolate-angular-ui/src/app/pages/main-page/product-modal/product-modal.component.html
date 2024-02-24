@@ -1,12 +1,35 @@
 <div class="product-modal-wrapper">
   <div class="left-part">
     <swiper-container
+      slides-per-view="1"
+      loop="false"
+      (doubleClick)="OnMainSwiperUpdate()"
       #mainSwiper>
+      @for (photo of product.photos; track photo)
+      {
+        <swiper-slide>
+          <div class="main-swiper-slide-image">
+            <img src="{{imageService.getImageUrl(photo)}}" alt=""/>
+          </div>
+        </swiper-slide>
+      }
     </swiper-container>
 
     <div class="thumbnail-swiper-container">
       <swiper-container
+        free-mode="true"
+        space-between="3"
+        id="thumbnailSwiper"
+        slides-per-view="4"
         #thumbnailSwiper>
+        @for (photo of product.photos; track photo)
+        {
+          <swiper-slide>
+            <div class="swiper-thumbnail-slide-image {{$index === 0 ? 'thumb-slide-active' : ''}}" (click)="onThumbnailClick($index, $event)">
+              <img src="{{imageService.getThumbnailImageUrl(photo)}}" alt=""/>
+            </div>
+          </swiper-slide>
+        }
       </swiper-container>
     </div>
 
@@ -28,3 +51,8 @@
   <button type="button" class="btn-close close-button" aria-label="Close" (click)="Close()"></button>
 </div>
 
+<div class="test">
+  <swiper-container
+    #testSwiper>
+  </swiper-container>
+</div>

@@ -18,7 +18,7 @@ import {EmptyProduct} from "../../../constants/product-constants";
   templateUrl: './main-page.component.html',
   styleUrl: './main-page.component.scss'
 })
-export class MainPageComponent implements AfterViewChecked, OnChanges {
+export class MainPageComponent implements OnChanges {
   @ViewChild(CategoriesListComponent) categoriesList!: CategoriesListComponent;
 
   public categories$: BehaviorSubject<ICategory[]> = new BehaviorSubject<ICategory[]>([]);
@@ -40,16 +40,6 @@ export class MainPageComponent implements AfterViewChecked, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const q = changes["currentCategory"]
 
-  }
-
-  ngAfterViewChecked() {
-    // viewChild is updated after the view has been checked
-    // if (this.currentCategory === this.categoriesList.chosenCategory) {
-    //   console.log('AfterViewChecked (no change)');
-    // } else {
-    //   this.currentCategory = this.categoriesList.chosenCategory;
-    //   console.log('AfterViewChecked');
-    // }
   }
 
   currentCategoryChanged($event: ICategory) {

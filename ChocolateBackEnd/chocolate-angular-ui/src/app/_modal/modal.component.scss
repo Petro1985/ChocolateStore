@@ -1,3 +1,31 @@
+@media (max-width: 1000px) {
+  app-modal {
+    .app-modal {
+      .app-modal-body {
+        height: 100vh;
+        width: 100vw;
+        padding: 0;
+        border-radius: 0;
+        margin: 0;
+      }
+    }
+  }
+}
+
+@media (min-width: 1000px) {
+  app-modal {
+    .app-modal {
+      .app-modal-body {
+        height: calc(100vh - 70px);
+        width: 904px;
+        padding: 0;
+        border-radius: 20px;
+        margin: 30px calc((100vw - 904px) / 2);
+      }
+    }
+  }
+}
+
 app-modal {
   display: none;
 
@@ -13,12 +41,6 @@ app-modal {
     overflow: auto;
 
     .app-modal-body {
-      height: calc(100vh - 70px);
-      width: 904px;
-      padding: 0;
-      border-radius: 20px;
-      margin: 30px calc((100vw - 904px)/2);
-
       position: absolute;
       background: #fff;
       overflow: hidden;
