@@ -18,17 +18,12 @@
     }
 
     .thumbnail-swiper-container {
-      //background-color: #4a2916;
-      //width: 100%;
-      //height: auto;
-
       .swiper-thumbnail-slide-image {
-        //background: #f6f6f6;
-        //border-radius: 4px;
-        //cursor: pointer;
-        //overflow: hidden;
+        cursor: pointer;
+        overflow: hidden;
 
         img {
+          border-radius: 15px;
           opacity: .6;
           width: 100%;
           height: 100%;
