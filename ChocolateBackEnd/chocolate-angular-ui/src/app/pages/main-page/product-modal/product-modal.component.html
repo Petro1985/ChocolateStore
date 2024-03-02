@@ -33,16 +33,19 @@
     </div>
   </div>
   <div class="right-part">
-    <p>Имя продукта: {{ product.name }}</p>
-    <p>******</p>
-    <p>{{ product.priceRub }} р.</p>
+    <div class="header">
+      <p>{{ product.name }}</p>
+    </div>
+
+    <div class="price">
+      <span class="number">{{ product.priceRub }}</span>
+      <span >₽</span>
+    </div>
+
+    <div class="property-item">
+      <h3 class="property-name">Состав</h3>
+    </div>
   </div>
 
   <button type="button" class="btn-close close-button" aria-label="Close" (click)="Close()"></button>
-</div>
-
-<div class="test">
-  <swiper-container
-    #testSwiper>
-  </swiper-container>
 </div>
