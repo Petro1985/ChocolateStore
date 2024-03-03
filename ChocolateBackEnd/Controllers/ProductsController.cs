@@ -35,6 +35,7 @@ public class ProductsController : BaseApiController
     }
     
     [HttpGet]
+    [Authorize(Policy = PoliciesConstants.Client)]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByCategory([FromQuery]Guid? categoryId)
     {
         return categoryId is null 

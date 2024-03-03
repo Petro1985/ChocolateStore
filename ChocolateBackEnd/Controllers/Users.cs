@@ -20,7 +20,7 @@ public class UsersController : BaseApiController
 
 
     [Authorize]
-    [HttpGet("User/info", Name = "WhoIAm")]
+    [HttpGet("info")]
     public ActionResult<UserInfoDTO> UserInfo()
     {
         var user = User.Identity;
@@ -35,31 +35,30 @@ public class UsersController : BaseApiController
     }
 
     [Authorize]
-    [HttpPost("User/SignOut", Name = "SignOut")]
+    [HttpPost("SignOut")]
     public async Task<IActionResult> UserSignOut()
     {
         await _signInManager.SignOutAsync();
         return Ok();
     }
 
-    [HttpPost("User/SignUp", Name = "SignUp")]
-    public async Task<IActionResult> UserSignUp([FromBody]UserLoginRequest userInfo)
+    [HttpPost("SignUp")]
+    public async Task<IActionResult> UserSignUp([FromBody] UserLoginRequest userInfo)
     {
         var user = new IdentityUser
         {
-            UserName = userInfo.UserName
+            UserName = userInfo.UserName,
+            PhoneNumber = "+79029921915"
         };
-        
+
         var result = await _signInManager.UserManager.CreateAsync(user, userInfo.Password);
 
-        if (result.Succeeded)
-        {
-            return Ok();
-        }
-        else
+        if (!result.Succeeded)
         {
             return BadRequest(result.Errors);
         }
+
+        return Ok();
     }
 
     public record UserLoginRequest
@@ -67,19 +66,26 @@ public class UsersController : BaseApiController
         public string UserName { get; set; }
         public string Password { get; set; }
     }
-    
-    [HttpPost("User", Name = "LogIn")]
-    public async Task<IActionResult> UserLoggingIn([FromBody]UserLoginRequest userInfo)
+
+    [HttpPost("Login")]
+    public async Task<IActionResult> UserLoggingIn([FromBody] UserLoginRequest userInfo)
     {
-        var result = await _signInManager.PasswordSignInAsync(userInfo.UserName, userInfo.Password, true, false);
-        
-        if (result.Succeeded)
+        var userCandidate = await _signInManager.UserManager.FindByNameAsync(userInfo.UserName);
+        if (userCandidate is null)
         {
-            return Ok();
-        } 
-        else
-        {
-            return BadRequest("Wrong user name or password");
+            return BadRequest("Неверное имя пользователя или пароль");
         }
+        
+        var isValid = await _signInManager.UserManager.CheckPasswordAsync(userCandidate, userInfo.Password);
+
+        if (!isValid) return Ok();
+        var customClaims = new List<Claim>();
+        if (userCandidate.PhoneNumber is not null)
+        {
+            customClaims.Add(new Claim("PhoneNumber", userCandidate.PhoneNumber));
+        }
+        await _signInManager.SignInWithClaimsAsync(userCandidate, true, customClaims);
+
+        return Ok();
     }
 }

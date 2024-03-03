@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using Asp.Versioning;
 using ChocolateBackEnd.APIStruct.Mapper;
 using ChocolateBackEnd.Auth;
 using ChocolateBackEnd.Options;
@@ -24,8 +25,14 @@ builder.Services.AddAutoMapper(opt =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDataBase(builder.Configuration.GetConnectionString());
+var connectionString = builder.Configuration.GetConnectionString();
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new ApplicationException("Не задана строка подключения к БД в файле конфигурации");
+}
+builder.Services.AddDataBase(connectionString);
 
+// Регистрация опций
 builder.Services.AddOptions<PhotoServiceOptions>()
     .BindConfiguration(PhotoServiceOptions.Path);
 
@@ -86,17 +93,25 @@ builder.Services.ConfigureApplicationCookie(conf =>
     };
 });
 
+builder.Services.AddApiVersioning(x =>
+{
+    x.DefaultApiVersion = new ApiVersion(1, 0);
+    x.AssumeDefaultVersionWhenUnspecified = true;
+    x.ReportApiVersions = true;
+    x.ApiVersionReader = new UrlSegmentApiVersionReader();
+});
+
 builder.Services.AddAuthorization(options =>
 {
     var adminPolicyBuilder = new AuthorizationPolicyBuilder();
-    adminPolicyBuilder.RequireClaim("Admin");
+    adminPolicyBuilder.RequireClaim(PoliciesConstants.AdminClaim);
     var adminPolicy = adminPolicyBuilder.Build();
     options.AddPolicy(PoliciesConstants.Admin, adminPolicy);
     
     var clientPolicyBuilder = new AuthorizationPolicyBuilder();
-    clientPolicyBuilder.RequireClaim("PhoneNumber");
-    var userPolicy = clientPolicyBuilder.Build();
-
+    clientPolicyBuilder.RequireClaim(PoliciesConstants.ClientClaim);
+    var clientPolicy = clientPolicyBuilder.Build();
+    options.AddPolicy(PoliciesConstants.Client, clientPolicy);
 });
 
 var app = builder.Build();
