@@ -69,35 +69,116 @@
     display: flex;
     flex-direction: column;
 
-    .header
-    {
+    .header {
       font-size: 24px;
       font-weight: 500;
       line-height: 32px;
+      margin-bottom: 20px;
     }
 
-    .price
-    {
-      display: inline-flex;
-      font-size: 24px;
-      font-weight: 700;
-      line-height: 32px;
+    .footer-info-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
 
-      .number
+      .price {
+        display: inline-flex;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 32px;
+
+        .number {
+          margin-right: 4px;
+        }
+      }
+
+      .counter
       {
-        margin-right: 4px;
+        width: 140px;
+
+        .btn
+        {
+          align-items: center;
+          background: #f6f6f6;
+          border: none;
+          //border-radius: 8px;
+          box-sizing: border-box;
+          display: flex;
+          height: 50px;
+          justify-content: center;
+          top: 0;
+          width: 40px;
+          font-size: 32px;
+
+          -webkit-appearance: none;
+          text-align: center;
+        }
+        .btn:hover
+        {
+          color: #6c757d !important;
+        }
+
+        input
+        {
+          background-color: #f6f6f6;
+          border: none;
+          box-sizing: border-box;
+          color: #111;
+          font-size: 20px;
+          font-weight: 700;
+          height: 50px;
+          line-height: 22px;
+          user-select: none;
+          text-align: center;
+        }
       }
     }
 
-    .property-item
+    .size-item
     {
-      margin-bottom: 20px;
-      .property-name
+      align-items: center;
+      display: flex;
+      margin-bottom: 4px;
+
+      .size-icon
       {
+        margin-right: 2px;
+      }
+
+      .size-text
+      {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 26px;
+      }
+    }
+
+    .property-item {
+      margin-bottom: 20px;
+
+      .property-name {
         font-size: 16px;
         font-weight: 700;
         line-height: 22px;
         margin-bottom: 8px;
+      }
+
+      .content.text {
+        -webkit-box-orient: vertical;
+        display: block;
+        display: -webkit-box;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 26px;
+        margin-bottom: 8px;
+        overflow: hidden;
+        padding: 0 !important;
+        position: relative;
+        text-overflow: ellipsis;
+      }
+
+      .pre-line {
+        white-space: pre-line;
       }
     }
   }
@@ -109,4 +190,5 @@
     z-index: 1200;
   }
 }
+
 

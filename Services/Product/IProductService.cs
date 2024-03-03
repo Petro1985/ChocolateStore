@@ -6,14 +6,21 @@ namespace Services.Product;
 
 public interface IProductService
 {
-    Task<IEnumerable<ProductDTO>> GetAllProducts();
-    Task<IEnumerable<ProductDTO>> GetProductsByCategory(Guid categoryId);
+    Task<IEnumerable<ProductDto>> GetAllProducts();
+    Task<IEnumerable<ProductDto>> GetProductsByCategory(Guid categoryId);
     Task<IEnumerable<CategoryDTO>> GetAllCategories();
-    Task<ProductDTO> GetProduct(Guid productId);
-    Task<ProductDTO> GetProductWithPhotoIds(Guid productId);
+    Task<ProductDto> GetProduct(Guid productId);
+    
+    /// <summary>
+    /// Получить продукт с заполненым массивом идентификаторов фотографий
+    /// </summary>
+    /// <param name="productId">Идентификатор товара</param>
+    /// <returns></returns>
+    Task<ProductDto> GetProductWithPhotoIds(Guid productId);
+    
     Task<CategoryDTO> GetCategory(Guid categoryId);
     Task<Guid> AddNewProduct(ProductCreateRequest product);
-    Task UpdateProduct(ProductDTO product);
+    Task UpdateProduct(ProductDto product);
     Task UpdateCategory(CategoryDTO category);
     Task SetProductPhoto(Guid productId, Guid photoId);
     Task SetCategoryPhoto(Guid categoryId, Guid photoId);

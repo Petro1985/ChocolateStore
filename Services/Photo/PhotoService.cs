@@ -23,7 +23,7 @@ public class PhotoService : IPhotoService
         _options = options.Value;
     }
 
-    public Task<IEnumerable<PhotoDTO>> GetPhotos(ProductDTO productEntity)
+    public Task<IEnumerable<PhotoDto>> GetPhotos(ProductDto productEntity)
     {
         throw new NotImplementedException();
     }
@@ -108,7 +108,7 @@ public class PhotoService : IPhotoService
         return newPhotoId;
     }
 
-    public async Task Delete(PhotoDTO photo)
+    public async Task Delete(PhotoDto photo)
     {
         var photoEntity = await _photoDb.Get(photo.Id);
         await _photoDb.Delete(photoEntity);
@@ -119,7 +119,7 @@ public class PhotoService : IPhotoService
         await _photoDb.Delete(id);
     }
 
-    public async Task UpdatePhoto(PhotoDTO photo)
+    public async Task UpdatePhoto(PhotoDto photo)
     {
         var photoEntity = await _photoDb.Get(photo.Id);
         photoEntity.ProductId = photo.ProductId;
@@ -127,7 +127,7 @@ public class PhotoService : IPhotoService
         await _photoDb.Update(photoEntity);
     }
 
-    public Task<Stream> GetPhoto(PhotoDTO photo)
+    public Task<Stream> GetPhoto(PhotoDto photo)
     {
         throw new NotImplementedException();
     }
@@ -151,9 +151,9 @@ public class PhotoService : IPhotoService
         return new MemoryStream(thumbnail);
     }
 
-    public async Task<IEnumerable<PhotoDTO>> GetPhotosByProductId(Guid productId)
+    public async Task<IEnumerable<PhotoDto>> GetPhotosByProductId(Guid productId)
     {
-        return _mapper.Map<IEnumerable<PhotoDTO>>(await _photoDb.GetPhotosByProduct(productId));
+        return _mapper.Map<IEnumerable<PhotoDto>>(await _photoDb.GetPhotosByProduct(productId));
     }
     
 }

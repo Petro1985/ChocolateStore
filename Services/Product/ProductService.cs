@@ -22,7 +22,7 @@ public class ProductService : IProductService
         _photoDb = photoDb;
     }
 
-    public async Task<IEnumerable<ProductDTO>> GetAllProducts()
+    public async Task<IEnumerable<ProductDto>> GetAllProducts()
     {
         var product = await _productDb
             .GetQuery()
@@ -31,18 +31,18 @@ public class ProductService : IProductService
 
         return product.Select(x =>
         {
-            var prod = _mapper.Map<ProductDTO>(x);
+            var prod = _mapper.Map<ProductDto>(x);
             prod.CategoryName = x.Category.Name;
             return prod;
         });
     }
 
-    public async Task<IEnumerable<ProductDTO>> GetProductsByCategory(Guid categoryId)
+    public async Task<IEnumerable<ProductDto>> GetProductsByCategory(Guid categoryId)
     {
         var products = (await _productDb.GetProductsByCategory(categoryId)).ToList();
         var productsPhotos = await _photoDb.GetPhotoIdsByProductIds(products.Select(x => x.Id));
 
-        var mappedPhotos = _mapper.Map<IEnumerable<ProductDTO>>(products);
+        var mappedPhotos = _mapper.Map<IEnumerable<ProductDto>>(products);
         
         foreach (var productDto in mappedPhotos)
         {
@@ -82,23 +82,23 @@ public class ProductService : IProductService
         await _categoryDb.Update(categoryEntity);
     }
 
-    public async Task UpdateProduct(ProductDTO product)
+    public async Task UpdateProduct(ProductDto product)
     {
         var productEntity = _mapper.Map<ProductEntity>(product);
         await _productDb.Update(productEntity);
     }
 
-    public async Task<ProductDTO> GetProduct(Guid productId)
+    public async Task<ProductDto> GetProduct(Guid productId)
     {
         var product = await _productDb.Get(productId);
-        var mappedProduct = _mapper.Map<ProductDTO>(product);
+        var mappedProduct = _mapper.Map<ProductDto>(product);
         return mappedProduct;
     }
 
-    public async Task<ProductDTO> GetProductWithPhotoIds(Guid productId)
+    public async Task<ProductDto> GetProductWithPhotoIds(Guid productId)
     {
         var product = await _productDb.Get(productId);
-        var mappedProduct = _mapper.Map<ProductDTO>(product);
+        var mappedProduct = _mapper.Map<ProductDto>(product);
         mappedProduct.Photos = await _photoDb.GetPhotoIdsByProduct(productId); 
         return mappedProduct;
     }

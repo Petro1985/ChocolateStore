@@ -33,7 +33,9 @@ public class PhotoRepository : BaseRepository<PhotoEntity>, IPhotoRepository
 
     public async Task<IEnumerable<PhotoEntity>> GetPhotosByProduct(Guid productId)
     {
-        return await DbContext.Photos.Where(photo => photo.Product.Id == productId).ToListAsync();
+        return await DbContext.Photos
+            .Where(photo => photo.Product.Id == productId)
+            .ToListAsync();
     }
 
     public async Task<byte[]> GetPhoto(Guid photoId)

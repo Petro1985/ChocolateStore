@@ -22,14 +22,14 @@ class FetchService : IFetchService
         _serverUrl = _httpClient.BaseAddress?.ToString() ?? "";
     }
 
-    public async Task<ICollection<ProductDTO>> GetProductByCategory(Guid categoryId)
+    public async Task<ICollection<ProductDto>> GetProductByCategory(Guid categoryId)
     {
         try
         {
             Console.WriteLine(_httpClient.BaseAddress);
             var response = await _httpClient.GetAsync($"Products?categoryId={categoryId}");
-            var responseBody = await response.Content.ReadFromJsonAsync<ICollection<ProductDTO>>();
-            return responseBody ?? new List<ProductDTO>();
+            var responseBody = await response.Content.ReadFromJsonAsync<ICollection<ProductDto>>();
+            return responseBody ?? new List<ProductDto>();
         }
         catch (Exception e)
         {
@@ -54,14 +54,14 @@ class FetchService : IFetchService
         }
     }
 
-    public async Task<ProductDTO> GetProduct(Guid productId)
+    public async Task<ProductDto> GetProduct(Guid productId)
     {
         try
         {
             var response = await _httpClient.GetAsync($"Products/{productId}");
     
-            var responseBody = await response.Content.ReadFromJsonAsync<ProductDTO>();
-            return responseBody ?? new ProductDTO();
+            var responseBody = await response.Content.ReadFromJsonAsync<ProductDto>();
+            return responseBody ?? new ProductDto();
         }
         catch (Exception e)
         {
@@ -86,7 +86,7 @@ class FetchService : IFetchService
         }
     }
 
-    public async Task<Guid> CreateNewProduct(ProductDTO newProduct)
+    public async Task<Guid> CreateNewProduct(ProductDto newProduct)
     {
         try
         {
@@ -95,7 +95,7 @@ class FetchService : IFetchService
                 Description = newProduct.Description,
                 Name = newProduct.Name,
                 CategoryId = newProduct.CategoryId,
-                PriceRub = newProduct.PriceRub,
+                Price = newProduct.Price,
                 TimeToMakeInHours = newProduct.TimeToMakeInHours,
             };
             var response = await _httpClient.PostAsJsonAsync("Products", productRequest);
@@ -244,7 +244,7 @@ class FetchService : IFetchService
         }
     }
     
-    public async Task UpdateProduct(ProductDTO product)
+    public async Task UpdateProduct(ProductDto product)
     {
         try
         {

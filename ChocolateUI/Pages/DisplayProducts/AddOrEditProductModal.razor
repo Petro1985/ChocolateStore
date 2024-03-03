@@ -28,7 +28,7 @@
 
                 <div class="form-floating mt-2">
                     <div class="input-group" id="PriceRubInput">
-                        <input class="form-control" type="number" @bind="CurrentProduct.PriceRub" placeholder="Price"/>
+                        <input class="form-control" type="number" @bind="CurrentProduct.Price" placeholder="Price"/>
                         <div class="input-group-text">руб.</div>
                     </div>
                     <label for="PriceRubInput"></label>
@@ -70,9 +70,9 @@
     public CategoryDTO? Category { get; set; }
 
     [Parameter]
-    public Func<ProductDTO, Task>? AddProductFunc {get; set; } 
+    public Func<ProductDto, Task>? AddProductFunc {get; set; } 
     [Parameter]
-    public Func<ProductDTO, Task>? UpdateProductFunc {get; set; } 
+    public Func<ProductDto, Task>? UpdateProductFunc {get; set; } 
 
     private ChoosePhoto? _choosePhoto;
     public Guid Guid = Guid.NewGuid();
@@ -80,15 +80,15 @@
     public string ModalClass = "";
     public bool ShowBackdrop = false;
 
-    public ProductDTO CurrentProduct { get; set; }
+    public ProductDto CurrentProduct { get; set; }
 
     protected override void OnInitialized()
     {
-        CurrentProduct = new ProductDTO();
+        CurrentProduct = new ProductDto();
         Category = new CategoryDTO();
     }
 
-    public void Open(ProductDTO product)
+    public void Open(ProductDto product)
     {
         CurrentProduct = product;
         ModalDisplay = "block;";

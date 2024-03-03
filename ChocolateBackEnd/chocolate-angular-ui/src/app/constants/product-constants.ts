@@ -4,7 +4,7 @@ export const EmptyProduct: IProduct = {
   id: '',
   name: '',
   description: '',
-  priceRub: 0,
+  price: 0,
   timeToMakeInHours: 0,
   mainPhotoId: '',
   categoryId: '',

@@ -2,10 +2,15 @@ export interface IProduct {
   id: string,
   name: string,
   description: string,
-  priceRub: number,
+  price: number,
   timeToMakeInHours: number,
   mainPhotoId: string,
   categoryId: string,
   categoryName: string,
+  composition?: string,
+  weight?: number,
+  width?: number,
+  height?: number,
+
   photos: string[],
 }

@@ -26,6 +26,15 @@ public class ApplicationDbContext : IdentityDbContext
         modelBuilder.Entity<ProductEntity>()
             .HasOne(x => x.Category)
             .WithMany(x => x.Products);
+        modelBuilder.Entity<ProductEntity>()
+            .Property(x => x.Price)
+            .HasPrecision(8, 2);
+        modelBuilder.Entity<ProductEntity>()
+            .Property(x => x.Width)
+            .HasPrecision(6, 2);
+        modelBuilder.Entity<ProductEntity>()
+            .Property(x => x.Height)
+            .HasPrecision(6, 2);
         
         modelBuilder.Entity<PhotoEntity>()
             .ToTable("Photos")

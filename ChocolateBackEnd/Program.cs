@@ -88,12 +88,15 @@ builder.Services.ConfigureApplicationCookie(conf =>
 
 builder.Services.AddAuthorization(options =>
 {
-    var authorizationPolicyBuilder = new AuthorizationPolicyBuilder();
+    var adminPolicyBuilder = new AuthorizationPolicyBuilder();
+    adminPolicyBuilder.RequireClaim("Admin");
+    var adminPolicy = adminPolicyBuilder.Build();
+    options.AddPolicy(PoliciesConstants.Admin, adminPolicy);
+    
+    var clientPolicyBuilder = new AuthorizationPolicyBuilder();
+    clientPolicyBuilder.RequireClaim("PhoneNumber");
+    var userPolicy = clientPolicyBuilder.Build();
 
-    authorizationPolicyBuilder.RequireClaim("Admin");
-    var authorizationPolicy = authorizationPolicyBuilder.Build();
-
-    options.AddPolicy(Policies.Admin, authorizationPolicy);
 });
 
 var app = builder.Build();

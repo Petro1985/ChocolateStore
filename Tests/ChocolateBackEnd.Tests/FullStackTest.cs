@@ -21,19 +21,19 @@ public class FullStackTest
         {
             new ProductAddRequest
             {
-                Description = "The TANK!!!!!", PriceRub = 888, TimeToMakeInHours = 12
+                Description = "The TANK!!!!!", Price = 888, TimeToMakeInHours = 12
             },
             new ProductAddRequest
             {
-                Description = "The TANK 2!!!!!", PriceRub = 333, TimeToMakeInHours = 23
+                Description = "The TANK 2!!!!!", Price = 333, TimeToMakeInHours = 23
             },
             new ProductAddRequest
             {
-                Description = "The TANK 3!!!!!", PriceRub = 66666, TimeToMakeInHours = 342
+                Description = "The TANK 3!!!!!", Price = 66666, TimeToMakeInHours = 342
             },
             new ProductAddRequest
             {
-                Description = "The TANK 4!!!!!", PriceRub = 999, TimeToMakeInHours = 48
+                Description = "The TANK 4!!!!!", Price = 999, TimeToMakeInHours = 48
             },
         };
         

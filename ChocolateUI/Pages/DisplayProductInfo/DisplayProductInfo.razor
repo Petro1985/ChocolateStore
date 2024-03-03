@@ -42,7 +42,7 @@
                 }
             </div>
             <h3 class="mt-4">
-                <p>Цена: <b>@(Product.PriceRub.ToString("N2") + " руб.")</b></p>
+                <p>Цена: <b>@(Product.Price.ToString("N2") + " руб.")</b></p>
             </h3>
         </div>
     </div>
@@ -52,7 +52,7 @@
 @code
 {
     [Parameter]
-    public ProductDTO Product { get; set; }
+    public ProductDto Product { get; set; }
 
     [Parameter]
     public ICollection<Guid> Photos { get; set; }

@@ -22,7 +22,7 @@
                         @item.Name
                     </h5>
                     <p class="card-text">
-                        <b>@item.PriceRub.ToString("C")</b>
+                        <b>@item.Price.ToString("C")</b>
                     </p>
                     @if (UserProfile.IsAdmin())
                     {
@@ -44,14 +44,14 @@
 @code
 {
     [Parameter] 
-    public Dictionary<Guid, ProductDTO>? Products { get; set; }
+    public Dictionary<Guid, ProductDto>? Products { get; set; }
     [Parameter]
-    public Func<ProductDTO, Task>? UpdateProductFunc { get; set; }
+    public Func<ProductDto, Task>? UpdateProductFunc { get; set; }
     [Parameter]
     public Func<Guid, Task>? DeleteProductFunc { get; set; }
 
     private AddOrEditProductModal? _editProductForm;
-    private DeleteItem<ProductDTO>? _deleteButton;
+    private DeleteItem<ProductDto>? _deleteButton;
     
     private async Task RemoveProduct(Guid id)
     {

@@ -1,6 +1,6 @@
 ﻿namespace Models.Photo;
 
-public class PhotoDTO
+public class PhotoDto
 {
     public Guid Id { get; init; }
     public Guid ProductId { get; set; }

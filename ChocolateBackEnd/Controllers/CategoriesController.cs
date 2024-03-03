@@ -31,7 +31,7 @@ public class CategoriesController : BaseApiController
         return Ok(await _productService.GetCategory(categoryId));
     }
 
-    [Authorize(Policy = Policies.Admin)]
+    [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpPost("Photos")]
     public async Task<IActionResult> AddCategoryPhoto(AddMainPhotoRequest request)
     {
@@ -41,14 +41,14 @@ public class CategoriesController : BaseApiController
         return Ok(newPhotoId);
     }
 
-    [Authorize(Policy = Policies.Admin)]
+    [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpPost]
     public async Task<ActionResult<Guid>> AddCategory(CategoryDTO category)
     {
         return Ok(await _productService.AddNewCategory(category));
     }
 
-    [Authorize(Policy = Policies.Admin)]
+    [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpPut]
     public async Task<IActionResult> UpdateCategory([FromBody] CategoryDTO category)
     {
@@ -56,7 +56,7 @@ public class CategoriesController : BaseApiController
         return Ok();
     }
 
-    [Authorize(Policy = Policies.Admin)]
+    [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpDelete("{categoryId:guid}")]
     public async Task<IActionResult> DeleteCategory([FromRoute] Guid categoryId)
     {

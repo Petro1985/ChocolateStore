@@ -27,7 +27,7 @@ public class ProductsController : BaseApiController
 
    
     [HttpGet("{productId:Guid}", Name = "GetProduct")]
-    public async Task<ActionResult<ProductDTO>> GetProduct(Guid productId)
+    public async Task<ActionResult<ProductDto>> GetProduct(Guid productId)
     {
         var product = await _productService.GetProductWithPhotoIds(productId);
 
@@ -35,7 +35,7 @@ public class ProductsController : BaseApiController
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProductsByCategory([FromQuery]Guid? categoryId)
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByCategory([FromQuery]Guid? categoryId)
     {
         return categoryId is null 
             ? Ok(await _productService.GetAllProducts()) 
@@ -52,7 +52,7 @@ public class ProductsController : BaseApiController
     //     return Ok(newPhotoId);
     // }
 
-    [Authorize(Policy = Policies.Admin)]
+    [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpPost]
     public async Task<ActionResult<Guid>> AddProduct([FromBody]ProductCreateRequest product)
     {
@@ -60,15 +60,15 @@ public class ProductsController : BaseApiController
         return Ok(newProductId);
     }
 
-    [Authorize(Policy = Policies.Admin)]
+    [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpPut]
-    public async Task<ActionResult<Guid>> UpdateProduct([FromBody]ProductDTO product)
+    public async Task<ActionResult<Guid>> UpdateProduct([FromBody]ProductDto product)
     {
         await _productService.UpdateProduct(product);
         return Ok();
     }
 
-    [Authorize(Policy = Policies.Admin)]
+    [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpPost("{productId:Guid}/Photos")]
     public async Task<IActionResult> AddPhotos([FromBody]AddPhotoRequest addPhotoRequest)
     {
@@ -86,7 +86,7 @@ public class ProductsController : BaseApiController
         }
     }
 
-    [Authorize(Policy = Policies.Admin)]
+    [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpDelete("{productId:guid}", Name = "DeleteProduct")]
     public async Task<IActionResult> DeleteProduct([FromRoute]Guid productId)
     {

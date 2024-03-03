@@ -6,16 +6,16 @@ namespace ChocolateUI.Services;
 public interface IFetchService
 {
     public string BaseUrl { get; }
-    Task<ICollection<ProductDTO>> GetProductByCategory(Guid categoryId);
+    Task<ICollection<ProductDto>> GetProductByCategory(Guid categoryId);
     Task<ICollection<CategoryDTO>> GetCategories();
-    Task<ProductDTO> GetProduct(Guid productId);
+    Task<ProductDto> GetProduct(Guid productId);
     Task<Guid> CreateNewCategory(CategoryDTO categoryDto);
-    Task<Guid> CreateNewProduct(ProductDTO newProduct);
+    Task<Guid> CreateNewProduct(ProductDto newProduct);
     Task<CategoryDTO> GetCategory(Guid categoryId);
     Task AddPhoto(string photo, Guid productId);
     Task DeleteCategory(Guid categoryId);
     Task UpdateCategory(CategoryDTO category);
-    Task UpdateProduct(ProductDTO product);
+    Task UpdateProduct(ProductDto product);
     Task DeleteProduct(Guid productId);
     Task<string> CropPhoto(Stream photo);
     Task DeletePhoto(Guid photoId);

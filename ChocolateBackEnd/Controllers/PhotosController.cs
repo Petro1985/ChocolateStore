@@ -32,7 +32,7 @@ public class PhotosController : BaseApiController
         return File(stream, MediaTypeNames.Image.Jpeg);        
     }
     
-    [Authorize(Policy = Policies.Admin)]
+    [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpPost("Crop", Name = "CropPhoto")]
     public async Task<IActionResult> CropPhoto()
     {
@@ -42,7 +42,7 @@ public class PhotosController : BaseApiController
         return Ok(newPhotoBase64);
     }
     
-    [Authorize(Policy = Policies.Admin)]
+    [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpDelete("{photoId:guid}", Name = "DeletePhoto")]
     public async Task<IActionResult> DeletePhoto([FromRoute]Guid photoId)
     {

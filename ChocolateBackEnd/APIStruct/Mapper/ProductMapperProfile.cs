@@ -10,7 +10,7 @@ public class ProductMapperProfile : Profile
     {
         base.CreateMap<ProductEntity, ProductResponse>()
             .ForMember(response => response.Id, option => option.MapFrom(taskToDo => taskToDo.Id))
-            .ForMember(response => response.PriceRub, option => option.MapFrom(taskToDo => taskToDo.PriceRub))
+            .ForMember(response => response.Price, option => option.MapFrom(taskToDo => taskToDo.Price))
             .ForMember(response => response.Description, option => option.MapFrom(taskToDo => taskToDo.Description))
             .ForMember(response => response.TimeToMakeInHours, option => option.MapFrom(product => (int)product.TimeToMake.TotalHours));
     }

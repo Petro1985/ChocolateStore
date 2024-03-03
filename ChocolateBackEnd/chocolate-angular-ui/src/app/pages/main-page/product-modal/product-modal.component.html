@@ -5,12 +5,12 @@
       loop="false"
       #mainSwiper>
       @for (photo of product.photos; track photo) {
-      <swiper-slide>
-        <div class="main-swiper-slide-image">
-          <img src="{{imageService.getImageUrl(photo)}}" alt=""/>
-        </div>
-      </swiper-slide>
-    }
+        <swiper-slide>
+          <div class="main-swiper-slide-image">
+            <img src="{{imageService.getImageUrl(photo)}}" alt=""/>
+          </div>
+        </swiper-slide>
+      }
     </swiper-container>
 
     <div class="thumbnail-swiper-container">
@@ -21,10 +21,10 @@
         slides-per-view="4"
         centered-slides="true"
         #thumbnailSwiper>
-        @for (photo of product.photos; track photo)
-        {
-        <swiper-slide>
-          <div class="swiper-thumbnail-slide-image {{$index === 0 ? 'thumb-slide-active' : ''}}" (click)="onThumbnailClick($index, $event)">
+        @for (photo of product.photos; track photo) {
+          <swiper-slide>
+            <div class="swiper-thumbnail-slide-image {{$index === 0 ? 'thumb-slide-active' : ''}}"
+                 (click)="onThumbnailClick($index, $event)">
               <img src="{{imageService.getThumbnailImageUrl(photo)}}" alt=""/>
             </div>
           </swiper-slide>
@@ -32,18 +32,77 @@
       </swiper-container>
     </div>
   </div>
+
   <div class="right-part">
     <div class="header">
       <p>{{ product.name }}</p>
     </div>
 
-    <div class="price">
-      <span class="number">{{ product.priceRub }}</span>
-      <span >₽</span>
+    <div class="footer-info-wrapper">
+      <div class="price">
+        <span class="number">{{ product.price }}</span>
+        <span>₽</span>
+      </div>
+
+      <div class="input-group counter">
+        <button class="btn btn-outline-secondary" type="button">-</button>
+        <input type="text" class="form-control" value="0">
+        <button class="btn btn-outline-secondary" type="button">+</button>
+      </div>
     </div>
 
     <div class="property-item">
+      <h3 class="property-name">Описание</h3>
+      <div class="content text">
+        <p class="pre-line">
+          <span>
+            {{ product.description }}
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div class="property-item" *ngIf="product.composition">
       <h3 class="property-name">Состав</h3>
+      <div class="content text">
+        <p class="pre-line">
+          <span>
+            {{ product.composition }}
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div class="property-item" *ngIf="product.width || product.height ">
+      <h3 class="property-name">Размер</h3>
+      <div class="size-item" *ngIf="product.width">
+        <span class="size-icon">
+          <img ngSrc="assets/Icons/width.svg" height="24" width="24" alt="width">
+        </span>
+        <span class="size-text">
+          Ширина - {{ product.width }} см
+        </span>
+      </div>
+
+      <div class="size-item" *ngIf="product.height">
+        <span class="size-icon">
+          <img ngSrc="assets/Icons/height.svg" height="24" width="24" alt="height">
+        </span>
+        <span class="size-text">
+          Высота - {{ product.height }} см
+        </span>
+      </div>
+    </div>
+
+    <div class="property-item" *ngIf="product.weight">
+      <h3 class="property-name">Вес товара</h3>
+      <div class="content text">
+        <p class="pre-line">
+          <span>
+            {{ product.weight }} гр.
+          </span>
+        </p>
+      </div>
     </div>
   </div>
 
