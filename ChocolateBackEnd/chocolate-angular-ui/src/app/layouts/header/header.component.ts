@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {FetchService} from "../../services/fetch-service";
 import {TranslateService} from "@ngx-translate/core";
 import {localstorageConstants} from "../../constants/localstorage-constants";
@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {StorageService} from "../../services/storage-service/storage-service";
 import {Observable} from "rxjs";
 import {ICategory} from "../../services/contracts/category";
+import {ModalComponent} from "../../_modal/modal.component";
 
 @Component({
   selector: 'app-header',
@@ -14,14 +15,22 @@ import {ICategory} from "../../services/contracts/category";
 })
 export class HeaderComponent {
   public category$: Observable<ICategory>;
+  @ViewChild('loginModal') loginModal?: ModalComponent;
 
-
-  constructor(private fetchService: FetchService, private translateService: TranslateService, private router: Router, private storageService: StorageService) {
+  constructor(private translateService: TranslateService, private router: Router, private storageService: StorageService) {
     this.category$ = this.storageService.GetCurrentCategory();
   }
 
   onLanguageChange(event: any) {
     localStorage.setItem(localstorageConstants.language, event.target.value);
     this.translateService.use(event.target.value)
+  }
+
+  onLoginClick() {
+
+    if (this.loginModal)
+    {
+      this.loginModal.open();
+    }
   }
 }

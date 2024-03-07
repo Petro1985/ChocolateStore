@@ -13,21 +13,15 @@
       </select>
     </div>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" routerLink="Categories" routerLinkActive="active">Категории</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" routerLink="Category" routerLinkActive="active">Товары
-            категории "{{ (category$ | async)?.name }}"</a>
-        </li>
-      </ul>
+    <div class="login-wrapper" (click)="onLoginClick()">
+      <img ngSrc="./assets/Icons/login.svg" alt="login" width="24" height="24"/>
+      <span class="login-text">Войти</span>
     </div>
+
+    <app-modal #loginModal>
+      <div>
+        <p>Тут могла бы быть форма для входа на сайт</p>
+      </div>
+    </app-modal>
   </nav>
 </div>
