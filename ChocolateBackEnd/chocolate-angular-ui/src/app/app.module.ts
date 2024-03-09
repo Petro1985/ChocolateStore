@@ -18,6 +18,7 @@ import {SlickCarouselModule} from "ngx-slick-carousel";
 import {ModalModule} from "./_modal";
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 export function HttpLoaderFactory(http: HttpClient)
@@ -50,6 +51,8 @@ export function HttpLoaderFactory(http: HttpClient)
       }
     }),
     SlickCarouselModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [FetchService, ImageService, HttpClient, StorageService],
   bootstrap: [AppComponent],

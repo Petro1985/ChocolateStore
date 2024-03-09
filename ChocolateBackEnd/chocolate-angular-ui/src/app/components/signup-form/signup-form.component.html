@@ -1,9 +1,31 @@
 <div class="container pt-4 pb-2 ps-5 pe-5">
-  <h5 class="card-title text-center mb-5 fw-light fs-5">Вход</h5>
-  <form>
+  <h5 class="card-title text-center mb-5 fw-light fs-5">{{'Регистрация' | translate}}</h5>
+
+  <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)" novalidate>
     <div class="form-floating mb-3">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-      <label for="floatingInput">{{'Электронная почта' | translate}}</label>
+      <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <label for="floatingInput">{{'Электронная_почта' | translate}}</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input name="phoneNumber" type="text" class="form-control" id="floatingPhoneNumber" placeholder="PhoneNumber"
+             (change)="phoneNumberChange()" [(ngModel)]="phone">
+      <label for="floatingPhoneNumber">{{'Номер_телефона' | translate}}</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+      <label for="floatingPassword">{{'Пароль' | translate}}</label>
+    </div>
+    <div class="form-floating mb-3">
+      <input type="password" class="form-control" id="floatingPasswordRepeat" placeholder="Repeat password">
+      <label for="floatingPassword">{{'Повторить_пароль' | translate}}</label>
+    </div>
+
+    <div class="d-grid">
+      <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">
+        {{'Зарегистрироваться' | translate}}
+      </button>
     </div>
   </form>
 </div>
