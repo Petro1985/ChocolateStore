@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ElementRef, Input, OnInit, OnDestroy } from '@angular/core';
+import {Component, ViewEncapsulation, ElementRef, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
 
 import { ModalService } from './modal.service';
 
@@ -10,10 +10,15 @@ import { ModalService } from './modal.service';
 })
 export class ModalComponent implements OnInit, OnDestroy {
   @Input() id!: string;
-  private readonly element: any;
   @Input() closeOnClickOutside: boolean = true;
+  @Input() width!:number;
+  @Input() height!:number;
 
-  constructor(private modalService: ModalService, private el: ElementRef) {
+  @ViewChild('modalBody') modalBody?: ElementRef;
+
+  private readonly element: any;
+
+  constructor(private modalService: ModalService, el: ElementRef) {
     this.element = el.nativeElement;
   }
 

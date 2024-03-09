@@ -1,5 +1,12 @@
-<div class="app-modal" (click)="onClickOutside($event)">
-  <div class="app-modal-body">
+<div class="app-modal" (click)="onClickOutside($event)" #wrapper>
+  <div class="app-modal-body" #modalBody
+       [style.width.px]="this.width"
+       [style.height.vh]="this.height"
+       [style.margin-top.px]="(wrapper.offsetHeight - wrapper.offsetHeight*this.height/100) / 2"
+       [style.margin-bottom.px]="(wrapper.offsetHeight - wrapper.offsetHeight*this.height/100) / 2"
+       [style.margin-left.px]="(wrapper.offsetWidth - this.width) / 2"
+       [style.margin-right.px]="(wrapper.offsetWidth - this.width) / 2"
+  >
     <ng-content></ng-content>
   </div>
 </div>

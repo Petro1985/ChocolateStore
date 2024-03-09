@@ -16,6 +16,8 @@ import {FetchService} from "./services/fetch-service";
 import {ImageService} from "./services/imageService";
 import {SlickCarouselModule} from "ngx-slick-carousel";
 import {ModalModule} from "./_modal";
+import { LoginFormComponent } from './components/login-form/login-form.component';
+import { SignupFormComponent } from './components/signup-form/signup-form.component';
 
 
 export function HttpLoaderFactory(http: HttpClient)
@@ -29,6 +31,8 @@ export function HttpLoaderFactory(http: HttpClient)
     NavigationComponent,
     HeaderComponent,
     FooterComponent,
+    LoginFormComponent,
+    SignupFormComponent,
   ],
   imports: [
     MainPageModule,
@@ -37,7 +41,6 @@ export function HttpLoaderFactory(http: HttpClient)
     AppRoutingModule,
     BrowserAnimationsModule,
     NgOptimizedImage,
-    BrowserModule,
     ModalModule,
     TranslateModule.forRoot({
       loader: {

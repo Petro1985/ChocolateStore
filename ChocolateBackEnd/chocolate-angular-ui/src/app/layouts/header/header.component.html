@@ -18,10 +18,12 @@
       <span class="login-text">Войти</span>
     </div>
 
-    <app-modal #loginModal>
-      <div>
-        <p>Тут могла бы быть форма для входа на сайт</p>
-      </div>
+    <app-modal [id]="'loginModal'" #loginModal [width]="500" [height]="50" >
+      <app-login-form></app-login-form>
+    </app-modal>
+
+    <app-modal [id]="'signupModal'" #signupModal [width]="500" [height]="70" >
+      <app-signup-form></app-signup-form>
     </app-modal>
   </nav>
 </div>

@@ -15,6 +15,11 @@ export class ModalService {
   }
 
   open(id: string) {
+    // Закрываем все модальные окна
+    this.modals.forEach(x =>
+    {
+      x.close();
+    });
     // open modal specified by id
     const modal = this.modals.find(x => x.id === id);
     modal.open();
