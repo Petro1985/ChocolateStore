@@ -10,6 +10,8 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<ProductEntity> Products { get; set; }
     public DbSet<PhotoEntity> Photos { get; set; }
     
+    public DbSet<ApplicationUser> Users { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ProductEntity>()

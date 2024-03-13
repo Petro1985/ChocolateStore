@@ -7,9 +7,12 @@
       <label for="floatingInput">{{'Электронная_почта' | translate}}</label>
     </div>
 
+<!--    <input class="phone__input" type="text"  [(ngModel)]="phone" />-->
+
     <div class="form-floating mb-3">
-      <input name="phoneNumber" type="text" class="form-control" id="floatingPhoneNumber" placeholder="PhoneNumber"
-             (change)="phoneNumberChange()" [(ngModel)]="phone">
+      <input name="phoneNumber" type="text" class="form-control" id="floatingPhoneNumber" placeholder="+7 (___) ___-__-__"
+             [inputMask]="phoneInputMask"
+      >
       <label for="floatingPhoneNumber">{{'Номер_телефона' | translate}}</label>
     </div>
 

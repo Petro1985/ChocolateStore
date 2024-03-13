@@ -2,14 +2,17 @@ import {FetchService} from "./fetch-service";
 import {BehaviorSubject} from "rxjs";
 import {IProduct} from "./contracts/products";
 import {ActivatedRoute} from "@angular/router";
+import {Injectable} from "@angular/core";
 
+@Injectable({
+  providedIn: 'root'
+})
 export class ProductService
 {
   private _products: BehaviorSubject<IProduct[] | null> = new BehaviorSubject<IProduct[] | null>(null);
   private _categoryId: string = '';
 
   constructor(private fetchService: FetchService, private route:ActivatedRoute) {
-
     // this.fetchService.GetProducts()
   }
 

@@ -1,11 +1,8 @@
 import {Component, ElementRef, Input, OnInit, Renderer2, SimpleChanges, ViewChild} from '@angular/core';
 import {IProduct} from "../../../services/contracts/products";
-import {ImageService} from "../../../services/imageService";
+import {ImageService} from "../../../services/image-service";
 import {SwiperContainer} from "swiper/swiper-element";
 import {Swiper} from "swiper";
-// import {SwiperOptions} from "swiper/types";
-// import { A11y, Mousewheel, Navigation, Pagination, Thumbs} from "swiper/types/modules";
-// import { Thumbs } from "swiper/types/modules";
 
 @Component({
   selector: 'app-product-modal',

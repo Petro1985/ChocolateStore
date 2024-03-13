@@ -3,8 +3,10 @@
   "Электронная_почта": "Email",
   "Запомнить_пароль": "Remember password",
   "Войти": "Login",
+  "Вход": "Login",
   "Зарегистрироваться": "Signup",
   "Пароль": "Password",
   "Номер_телефона": "Phone number",
-  "Повторить_пароль": "Repeat password"
+  "Повторить_пароль": "Repeat password",
+  "Регистрация": "Registration"
 }

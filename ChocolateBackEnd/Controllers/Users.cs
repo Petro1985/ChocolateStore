@@ -1,7 +1,10 @@
 ﻿using System.Security.Claims;
+using ChocolateBackEnd.Auth;
+using ChocolateDomain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Models;
 using Models.User;
 
@@ -9,10 +12,10 @@ namespace ChocolateBackEnd.Controllers;
 
 public class UsersController : BaseApiController
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public UsersController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+    public UsersController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -23,15 +26,8 @@ public class UsersController : BaseApiController
     [HttpGet("info")]
     public ActionResult<UserInfoDTO> UserInfo()
     {
-        var user = User.Identity;
-
-        var result = new UserInfoDTO()
-        {
-            Name = user?.Name ?? "",
-            IsAdmin = User.Claims.Any(x => x.Type == "Admin"),
-        };
-
-        return Ok(result);
+        var userClaims = User.Claims.Select(x => new Claim(x.Type, x.Value)).ToList();
+        return Ok(userClaims);
     }
 
     [Authorize]
@@ -42,13 +38,21 @@ public class UsersController : BaseApiController
         return Ok();
     }
 
-    [HttpPost("SignUp")]
-    public async Task<IActionResult> UserSignUp([FromBody] UserLoginRequest userInfo)
+    public class UserSignupRequest
     {
-        var user = new IdentityUser
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string PhoneNumber { get; set; }
+    }
+    
+    [HttpPost("SignUp")]
+    public async Task<IActionResult> UserSignUp([FromBody] UserSignupRequest userInfo)
+    {
+        var user = new ApplicationUser
         {
-            UserName = userInfo.UserName,
-            PhoneNumber = "+79029921915"
+            UserName = userInfo.Email,
+            Email = userInfo.Email,
+            PhoneNumber = userInfo.PhoneNumber,
         };
 
         var result = await _signInManager.UserManager.CreateAsync(user, userInfo.Password);
@@ -65,6 +69,7 @@ public class UsersController : BaseApiController
     {
         public string UserName { get; set; }
         public string Password { get; set; }
+        public bool Remember { get; set; }
     }
 
     [HttpPost("Login")]
@@ -78,14 +83,9 @@ public class UsersController : BaseApiController
         
         var isValid = await _signInManager.UserManager.CheckPasswordAsync(userCandidate, userInfo.Password);
 
-        if (!isValid) return Ok();
-        var customClaims = new List<Claim>();
-        if (userCandidate.PhoneNumber is not null)
-        {
-            customClaims.Add(new Claim("PhoneNumber", userCandidate.PhoneNumber));
-        }
-        await _signInManager.SignInWithClaimsAsync(userCandidate, true, customClaims);
+        if (!isValid) return BadRequest("Неверное имя пользователя или пароль");
 
+        await _signInManager.SignInAsync(userCandidate, userInfo.Remember);
         return Ok();
     }
 }

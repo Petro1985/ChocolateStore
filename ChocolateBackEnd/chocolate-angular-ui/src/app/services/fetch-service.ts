@@ -6,15 +6,18 @@ import {Injectable} from "@angular/core";
 import {IProduct} from "./contracts/products";
 import {Router} from "@angular/router";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FetchService {
   private _serverUrl: string = environment.serverApiUrl;
 
   private _getCategoriesRequest: Observable<ICategory[]> | null = null;
+  // TODO: Вынести кэширование в отдельный сервис.
   private readonly _categoriesMap: Map<string, Observable<IProduct[]>> = new Map<string, Observable<IProduct[]>>();
   private readonly _categoryMap: Map<string, Observable<ICategory>> = new Map<string, Observable<ICategory>>();
 
-  constructor(private client: HttpClient, private router: Router) {
+  constructor(private client: HttpClient) {
   }
 
   public GetCategoryLink(categoryId: string) {

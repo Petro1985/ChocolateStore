@@ -1,17 +1,17 @@
 <div class="container pt-4 pb-2 ps-5 pe-5">
   <h5 class="card-title text-center mb-5 fw-light fs-5">{{'Вход' | translate}}</h5>
-  <form>
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate>
     <div class="form-floating mb-3">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-      <label for="floatingInput">{{'Электронная_почта' | translate}}</label>
+      <input name="email" ngModel type="email" class="form-control" id="EmailInput" placeholder="name@example.com">
+      <label for="EmailInput">{{'Электронная_почта' | translate}}</label>
     </div>
     <div class="form-floating mb-3">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+      <input name="password" ngModel type="password" class="form-control" id="floatingPassword" placeholder="Password">
       <label for="floatingPassword">{{'Пароль' | translate}}</label>
     </div>
 
     <div class="form-check mb-3">
-      <input class="form-check-input" type="checkbox" value="" id="rememberPasswordCheck">
+      <input name="remember" ngModel class="form-check-input" type="checkbox" value="" id="rememberPasswordCheck">
       <label class="form-check-label pt-1" for="rememberPasswordCheck">
         {{'Запомнить_пароль' | translate}}
       </label>

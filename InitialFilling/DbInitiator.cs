@@ -1,5 +1,5 @@
 ﻿using ChocolateData;
-using Microsoft.AspNetCore.Identity;
+using ChocolateDomain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace InitialFilling;
@@ -19,24 +19,15 @@ public class DbInitiator
         if (await context.Users.AnyAsync())
             return;
 
-        var adminUser = new IdentityUser
+        var adminUser = new ApplicationUser
         {
             PasswordHash = "AQAAAAIAAYagAAAAELkZJp+TRucpvVdt7xY1R8yKqkxLDIDbXQtrqTVKmMyXSjPohHhmbpL6C7l/EYCPFg==",
             UserName = "Admin",
             NormalizedUserName = "ADMIN",
+            IsAdmin = true,
         };
         
         context.Users.Add(adminUser);
-
-        var usersClaim = new IdentityUserClaim<string>
-        {
-            Id = 1,
-            ClaimType = "Admin",
-            ClaimValue = "It's me'",
-            UserId = adminUser.Id
-        };
-
-        context.UserClaims.Add(usersClaim);
 
         await context.SaveChangesAsync();
     }

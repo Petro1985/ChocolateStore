@@ -13,18 +13,26 @@ import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {StorageService} from "./services/storage-service/storage-service";
 import {FetchService} from "./services/fetch-service";
-import {ImageService} from "./services/imageService";
+import {ImageService} from "./services/image-service";
 import {SlickCarouselModule} from "ngx-slick-carousel";
 import {ModalModule} from "./_modal";
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-
+// import {IConfig, NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
+import { InputMaskModule } from '@ngneat/input-mask';
 
 export function HttpLoaderFactory(http: HttpClient)
 {
   return new TranslateHttpLoader(http);
 }
+
+// const maskConfigFunction: () => Partial<IConfig> = () => {
+//   return {
+//     validation: false,
+//   };
+// };
+
 
 @NgModule({
   declarations: [
@@ -36,6 +44,8 @@ export function HttpLoaderFactory(http: HttpClient)
     SignupFormComponent,
   ],
   imports: [
+    InputMaskModule.forRoot({ inputSelector: 'input', isAsync: true }),
+    // NgxMaskDirective, NgxMaskPipe,
     MainPageModule,
     BrowserModule,
     HttpClientModule,
