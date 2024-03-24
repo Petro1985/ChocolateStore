@@ -1,10 +1,13 @@
 {
   "name": "chocolate-angular-ui",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "run-script-os",
+    "start:windows": "ng serve --port 44401 --ssl --ssl-cert \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.pem\" --ssl-key \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.key\"",
+    "start:default": "ng serve --port 44401 --ssl --ssl-cert \"$HOME/.aspnet/https/${npm_package_name}.pem\" --ssl-key \"$HOME/.aspnet/https/${npm_package_name}.key\"",
     "build": "ng build",
+    "build:ssr": "ng run ASP.NETCoreWebApplication1:server:dev",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -22,6 +25,7 @@
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "@types/swiper": "^6.0.0",
+    "angular-auth-oidc-client": "^17.0.0",
     "bootstrap": "^5.3.2",
     "bootstrap-icons": "^1.11.3",
     "jquery": "^3.7.1",

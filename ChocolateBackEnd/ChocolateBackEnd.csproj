@@ -8,14 +8,15 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <LangVersion>12</LangVersion>
         <SpaRoot>chocolate-angular-ui\</SpaRoot>
-        <SpaProxyServerUrl>http://localhost:4200</SpaProxyServerUrl>
-        <SpaProxyLaunchCommand>ng serve</SpaProxyLaunchCommand>
+        <SpaProxyServerUrl>https://localhost:44401</SpaProxyServerUrl>
+        <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
   </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Asp.Versioning.Mvc" Version="8.0.0" />
         <PackageReference Include="AutoMapper" Version="12.0.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="Fido2" Version="3.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.1" />
@@ -23,6 +24,10 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="OpenIddict.AspNetCore" Version="5.3.0" />
+        <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="5.3.0" />
+        <PackageReference Include="OpenIddict.Quartz" Version="5.3.0" />
+        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.8.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="System.Drawing.Common" Version="8.0.1" />
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
@@ -53,6 +58,30 @@
       <Content Update="appsettings.Production.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Don't publish the SPA source files, but do show them in the project files list -->
+        <Content Remove="$(SpaRoot)**"/>
+        <None Remove="$(SpaRoot)**"/>
+        <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Authorization\Authorize.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Authorization\Logout.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\_ViewStart.cshtml" />
+      <_ContentIncludedByDefault Remove="ViewModels\Views\Authorization\Authorize.cshtml" />
+      <_ContentIncludedByDefault Remove="ViewModels\Views\Authorization\Logout.cshtml" />
+      <_ContentIncludedByDefault Remove="ViewModels\Views\Home\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="ViewModels\Views\Home\Privacy.cshtml" />
+      <_ContentIncludedByDefault Remove="ViewModels\Views\Shared\Error.cshtml" />
+      <_ContentIncludedByDefault Remove="ViewModels\Views\Shared\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="ViewModels\Views\Shared\_LoginPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="ViewModels\Views\Shared\_ValidationScriptsPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="ViewModels\Views\_ViewImports.cshtml" />
+      <_ContentIncludedByDefault Remove="ViewModels\Views\_ViewStart.cshtml" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

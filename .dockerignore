@@ -22,5 +22,6 @@
 **/secrets.dev.yaml
 **/values.dev.yaml
 ChocolateBackEnd/wwwroot
+cert/
 LICENSE
 README.md

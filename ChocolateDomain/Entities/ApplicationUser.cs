@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Identity;
 
 namespace ChocolateDomain.Entities;

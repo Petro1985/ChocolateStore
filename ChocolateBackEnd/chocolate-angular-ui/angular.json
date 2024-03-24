@@ -88,7 +88,11 @@
               "buildTarget": "chocolate-angular-ui:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "sslKey": "<relative path from angular.json>/server.key",
+            "sslCert": "<relative path from angular.json>/server.crt"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -124,5 +128,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

@@ -21,6 +21,8 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 // import {IConfig, NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
 import { InputMaskModule } from '@ngneat/input-mask';
+import {AuthModule, LogLevel} from "angular-auth-oidc-client";
+import {environment} from "../environments/environment";
 
 export function HttpLoaderFactory(http: HttpClient)
 {
@@ -45,7 +47,23 @@ export function HttpLoaderFactory(http: HttpClient)
   ],
   imports: [
     InputMaskModule.forRoot({ inputSelector: 'input', isAsync: true }),
-    // NgxMaskDirective, NgxMaskPipe,
+    AuthModule.forRoot({
+      config: {
+        secureRoutes: ['http://localhost:7131', environment.authUrl, 'https://localhost:7132'],
+        authority: environment.authUrl,
+        redirectUrl: window.location.origin,
+        postLogoutRedirectUri: window.location.origin,
+        silentRenewUrl: window.location.origin,
+        ignoreNonceAfterRefresh: true,
+        clientId: 'MonitoringUI',
+        scope: 'openid profile email offline_access',
+        responseType: 'code',
+        silentRenew: true,
+        renewTimeBeforeTokenExpiresInSeconds: 10,
+        useRefreshToken: true,
+        logLevel: LogLevel.Debug,
+      }
+    }),
     MainPageModule,
     BrowserModule,
     HttpClientModule,

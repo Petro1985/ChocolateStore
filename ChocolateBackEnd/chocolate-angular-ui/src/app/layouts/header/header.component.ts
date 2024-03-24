@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {ICategory} from "../../services/contracts/category";
 import {ModalComponent} from "../../_modal/modal.component";
 import {ModalService} from "../../_modal";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-header',
@@ -19,7 +20,8 @@ export class HeaderComponent implements AfterViewInit {
 
   constructor(private translateService: TranslateService,
               private storageService: StorageService,
-              private modalService: ModalService) {
+              private modalService: ModalService,
+              private authService: AuthService) {
     this.category$ = this.storageService.GetCurrentCategory();
   }
 
@@ -33,7 +35,10 @@ export class HeaderComponent implements AfterViewInit {
     this.translateService.use(event.target.value)
   }
 
-  onLoginClick() {
-    this.modalService.open('loginModal');
+  async onLoginClick() {
+
+    const user = (await this.authService.logIn()).data;
+
+    // this.modalService.open('loginModal');
   }
 }

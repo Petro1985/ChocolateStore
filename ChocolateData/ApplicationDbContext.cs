@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChocolateData;
 
-public class ApplicationDbContext : IdentityDbContext
+public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions options) : base(options) { }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
     public DbSet<ProductEntity> Products { get; set; }
     public DbSet<PhotoEntity> Photos { get; set; }
     
-    public DbSet<ApplicationUser> Users { get; set; }
+    // public DbSet<ApplicationUser> Users { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

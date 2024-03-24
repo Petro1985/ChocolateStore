@@ -4,15 +4,26 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:47007",
+//      "applicationUrl": "http://localhost:47007;https://localhost:47001",
+      "applicationUrl": "https://localhost:8085;http://localhost:8086",
       "sslPort": 44370
     }
   },
   "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:8085;http://localhost:8086",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "UseDangerTracingIntercepting": "false"
+      }
+    },
     "ChocolateBackEnd": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:8086",
+      "applicationUrl": "https://localhost:8085;http://localhost:8086",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"

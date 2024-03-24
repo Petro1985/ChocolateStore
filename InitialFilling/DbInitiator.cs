@@ -16,18 +16,18 @@ public class DbInitiator
         var context = new ApplicationDbContext(optBuilder.Options);
         await context.Database.MigrateAsync();
 
-        if (await context.Users.AnyAsync())
-            return;
-
-        var adminUser = new ApplicationUser
-        {
-            PasswordHash = "AQAAAAIAAYagAAAAELkZJp+TRucpvVdt7xY1R8yKqkxLDIDbXQtrqTVKmMyXSjPohHhmbpL6C7l/EYCPFg==",
-            UserName = "Admin",
-            NormalizedUserName = "ADMIN",
-            IsAdmin = true,
-        };
-        
-        context.Users.Add(adminUser);
+        // if (await context.Users.AnyAsync())
+        //     return;
+        //
+        // var adminUser = new ApplicationUser
+        // {
+        //     PasswordHash = "AQAAAAIAAYagAAAAELkZJp+TRucpvVdt7xY1R8yKqkxLDIDbXQtrqTVKmMyXSjPohHhmbpL6C7l/EYCPFg==",
+        //     UserName = "Admin",
+        //     NormalizedUserName = "ADMIN",
+        //     IsAdmin = true,
+        // };
+        //
+        // context.Users.Add(adminUser);
 
         await context.SaveChangesAsync();
     }
