@@ -1,4 +1,3 @@
-using ChocolateBackEnd.Auth.Data;
 using OpenIddict.Abstractions;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
@@ -17,11 +16,11 @@ public class Worker : IHostedService
 
         var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
 
-        if (await manager.FindByClientIdAsync("mvc") == null)
+        if (await manager.FindByClientIdAsync("ChocolateStore") == null)
         {
             await manager.CreateAsync(new OpenIddictApplicationDescriptor
             {
-                ClientId = "mvc",
+                ClientId = "ChocolateStore",
                 ClientSecret = "901564A5-E7FE-42CB-B10D-61EF6A8F3654",
                 ConsentType = ConsentTypes.Explicit,
                 DisplayName = "MVC client application",

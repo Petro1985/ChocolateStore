@@ -152,6 +152,24 @@ builder.Services.AddQuartzHostedService(options => options.WaitForJobsToComplete
 
 builder.Services.AddOpenIddict()
 
+    .AddValidation(options =>
+    {
+        // var authOptions = new AuthOptions();
+        // builder.Configuration
+        //     .GetSection("Security")
+        //     .Bind(authOptions);
+        // options.SetIssuer(authOptions.JwtOptions.Issuer ?? string.Empty);
+        // options.AddAudiences(authOptions.IntrospectionOptions.ClientId);
+        // options.UseIntrospection()
+        //     .SetClientId(authOptions.IntrospectionOptions.ClientId)
+        //     .SetClientSecret(authOptions.IntrospectionOptions.ClientSecret);
+        // options.UseSystemNetHttp();
+        // options.UseAspNetCore();
+
+        options.UseLocalServer();
+        options.UseAspNetCore();
+    })
+    
     // Register the OpenIddict core components.
     .AddCore(options =>
     {

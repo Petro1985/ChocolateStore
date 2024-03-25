@@ -1,4 +1,4 @@
-﻿using ChocolateBackEnd.Auth.Data;
+﻿using ChocolateDomain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace ChocolateBackEnd.Auth.Fido2;

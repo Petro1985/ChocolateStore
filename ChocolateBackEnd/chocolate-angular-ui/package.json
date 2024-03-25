@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "run-script-os",
-    "start:windows": "ng serve --port 44401 --ssl --ssl-cert \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.pem\" --ssl-key \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.key\"",
-    "start:default": "ng serve --port 44401 --ssl --ssl-cert \"$HOME/.aspnet/https/${npm_package_name}.pem\" --ssl-key \"$HOME/.aspnet/https/${npm_package_name}.key\"",
+    "start:windows": "ng serve --port 44401 --ssl --ssl-cert \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.crt\" --ssl-key \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.key\"",
+    "start:default": "ng serve --port 44401 --ssl --ssl-cert \"$HOME/.aspnet/https/${npm_package_name}.crt\" --ssl-key \"$HOME/.aspnet/https/${npm_package_name}.key\"",
     "build": "ng build",
     "build:ssr": "ng run ASP.NETCoreWebApplication1:server:dev",
     "watch": "ng build --watch --configuration development",
@@ -30,6 +30,7 @@
     "bootstrap-icons": "^1.11.3",
     "jquery": "^3.7.1",
     "ngx-slick-carousel": "^17.0.0",
+    "run-script-os": "^1.1.6",
     "rxjs": "~7.8.0",
     "slick-carousel": "^1.8.1",
     "swiper": "^11.0.6",

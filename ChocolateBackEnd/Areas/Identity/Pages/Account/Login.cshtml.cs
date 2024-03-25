@@ -3,8 +3,8 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
-using ChocolateBackEnd.Auth.Data;
 using ChocolateBackEnd.Auth.Fido2;
+using ChocolateDomain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

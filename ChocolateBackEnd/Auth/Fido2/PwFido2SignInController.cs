@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using ChocolateBackEnd.Auth.Data;
+using ChocolateDomain.Entities;
 using Fido2NetLib;
 using Fido2NetLib.Objects;
 using Microsoft.AspNetCore.Identity;

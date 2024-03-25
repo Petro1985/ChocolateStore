@@ -49,14 +49,15 @@ export function HttpLoaderFactory(http: HttpClient)
     InputMaskModule.forRoot({ inputSelector: 'input', isAsync: true }),
     AuthModule.forRoot({
       config: {
-        secureRoutes: ['http://localhost:7131', environment.authUrl, 'https://localhost:7132'],
+        secureRoutes: [environment.authUrl],
         authority: environment.authUrl,
         redirectUrl: window.location.origin,
         postLogoutRedirectUri: window.location.origin,
         silentRenewUrl: window.location.origin,
         ignoreNonceAfterRefresh: true,
-        clientId: 'MonitoringUI',
-        scope: 'openid profile email offline_access',
+        clientId: 'ChocolateStore',
+        // scope: 'openid profile email offline_access',
+        scope: 'openid profile email',
         responseType: 'code',
         silentRenew: true,
         renewTimeBeforeTokenExpiresInSeconds: 10,
