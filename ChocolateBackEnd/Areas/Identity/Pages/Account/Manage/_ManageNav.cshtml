@@ -1,5 +1,6 @@
 ﻿@using ChocolateBackEnd.Areas.Identity.Pages.Account.Manage
-@using ChocolateBackEnd.Auth.Data
+@using ChocolateDomain.Entities
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();

@@ -1,4 +1,4 @@
-using ChocolateBackEnd.Auth.Data;
+using ChocolateDomain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

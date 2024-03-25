@@ -88,14 +88,14 @@ public class ProductService : IProductService
         await _productDb.Update(productEntity);
     }
 
-    public async Task<ProductDto> GetProduct(Guid productId)
+    public async Task<ProductDto> GetProductById(Guid productId)
     {
         var product = await _productDb.Get(productId);
         var mappedProduct = _mapper.Map<ProductDto>(product);
         return mappedProduct;
     }
 
-    public async Task<ProductDto> GetProductWithPhotoIds(Guid productId)
+    public async Task<ProductDto> GetProductWithPhotoById(Guid productId)
     {
         var product = await _productDb.Get(productId);
         var mappedProduct = _mapper.Map<ProductDto>(product);

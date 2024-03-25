@@ -68,7 +68,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
         options.Password.RequireUppercase = false;
         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
         options.Lockout.MaxFailedAccessAttempts = 3;
-    }).AddEntityFrameworkStores<OpenIddictDbContext>()
+    })
+    .AddEntityFrameworkStores<OpenIddictDbContext>()
     .AddDefaultTokenProviders();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsFactory>();
 
@@ -150,8 +151,44 @@ builder.Services.AddQuartz(options =>
 // Register the Quartz.NET service and configure it to block shutdown until jobs are complete.
 builder.Services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Configure Identity to use the same JWT claims as OpenIddict instead
+    // of the legacy WS-Federation claims it uses by default (ClaimTypes),
+    // which saves you from doing the mapping in your authorization controller.
+    options.ClaimsIdentity.UserNameClaimType = OpenIddictConstants.Claims.Name;
+    options.ClaimsIdentity.UserIdClaimType = OpenIddictConstants.Claims.Subject;
+    options.ClaimsIdentity.RoleClaimType = OpenIddictConstants.Claims.Role;
+    options.ClaimsIdentity.EmailClaimType = OpenIddictConstants.Claims.Email;
+
+    // Note: to require account confirmation before login,
+    // register an email sender service (IEmailSender) and
+    // set options.SignIn.RequireConfirmedAccount to true.
+    //
+    // For more information, visit https://aka.ms/aspaccountconf.
+    options.SignIn.RequireConfirmedAccount = false;
+});
+
 builder.Services.AddOpenIddict()
 
+    .AddValidation(options =>
+    {
+        // var authOptions = new AuthOptions();
+        // builder.Configuration
+        //     .GetSection("Security")
+        //     .Bind(authOptions);
+        // options.SetIssuer(authOptions.JwtOptions.Issuer ?? string.Empty);
+        // options.AddAudiences(authOptions.IntrospectionOptions.ClientId);
+        // options.UseIntrospection()
+        //     .SetClientId(authOptions.IntrospectionOptions.ClientId)
+        //     .SetClientSecret(authOptions.IntrospectionOptions.ClientSecret);
+        // options.UseSystemNetHttp();
+        // options.UseAspNetCore();
+
+        options.UseLocalServer();
+        options.UseAspNetCore();
+    })
+    
     // Register the OpenIddict core components.
     .AddCore(options =>
     {

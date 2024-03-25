@@ -29,7 +29,7 @@ public class ProductsController : BaseApiController
     [HttpGet("{productId:Guid}", Name = "GetProduct")]
     public async Task<ActionResult<ProductDto>> GetProduct(Guid productId)
     {
-        var product = await _productService.GetProductWithPhotoIds(productId);
+        var product = await _productService.GetProductWithPhotoById(productId);
 
         return Ok(product);
     }
