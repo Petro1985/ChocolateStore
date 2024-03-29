@@ -1,0 +1,45 @@
+@page
+@model AdminUI.Pages.Categories
+
+@{
+    Layout = "_Layout";
+}
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                <a class="page-link" href="?page=@i">@i</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+<table>
+    <tr>
+        <th>
+            Id
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            MainPhotoId
+        </th>
+    </tr>
+    @foreach (var category in Model.CategoriesList) {
+        <tr>
+            <td>
+                @category.Id
+            </td>
+            <td>
+                @category.Name
+            </td>
+            <td>
+                @category.MainPhotoId
+            </td>
+        </tr>
+    }
+
+</table>

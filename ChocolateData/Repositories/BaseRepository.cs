@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using ChocolateData.Repositories.Specifications;
 using ChocolateDomain;
 using ChocolateDomain.Exceptions;
 using ChocolateDomain.Interfaces;
@@ -54,5 +55,33 @@ public class BaseRepository<TEntity> : IDbRepository<TEntity> where TEntity : cl
     public virtual IQueryable<TEntity> GetQuery()
     {
         return DbContext.Set<TEntity>(); 
-    }    
+    }
+
+    protected IQueryable<TEntity> ApplySpecification(IQueryable<TEntity> query, Specification<TEntity> specification) {
+        if (specification.Criteria is not null) {
+            query = query.Where(specification.Criteria);
+        }
+
+        query = specification.IncludeExpressions
+            .Aggregate(query, (current, expression) => current.Include(expression));
+
+        if (specification.OrderByExpression is not null) {
+            query = query.OrderBy(specification.OrderByExpression);
+        }
+
+        if (specification.OrderByDescendingExpression is not null) {
+            query = query.OrderByDescending(specification.OrderByDescendingExpression);
+        }
+
+        if (specification.PagingParameters is not null) {
+            query = query
+                .Skip(specification.PagingParameters.Value.PageNumber * specification.PagingParameters.Value.PageSize)
+                .Take(specification.PagingParameters.Value.PageSize);
+        }
+
+        return query;
+    }
+
+    protected IQueryable<TEntity> ApplySpecification(Specification<TEntity> specification) =>
+        ApplySpecification(DbContext.Set<TEntity>(), specification);
 }
