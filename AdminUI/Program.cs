@@ -1,5 +1,7 @@
 using ChocolateData;
 using ChocolateData.Repositories;
+using Services;
+using Services.Photo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +13,16 @@ if (string.IsNullOrWhiteSpace(connectionString))
 {
     throw new ApplicationException("Не задана строка подключения к ChocolateDb в файле конфигурации");
 }
+
 builder.Services.AddDataBase(connectionString);
+builder.Services.AddControllers();
+// регистрация сервисов
+builder.Services.AddAppServices();
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+// Регистрация опций
+builder.Services.AddOptions<PhotoServiceOptions>()
+    .BindConfiguration(PhotoServiceOptions.Path);
 
 var app = builder.Build();
 
@@ -25,14 +34,13 @@ if (!app.Environment.IsDevelopment()) {
 }
 
 
-
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapControllers();
 
 app.Run();

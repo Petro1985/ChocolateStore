@@ -1,6 +1,6 @@
 using ChocolateDomain.Entities;
 
-namespace ChocolateData.Repositories.Specifications;
+namespace ChocolateDomain.Specifications;
 
 public class CategoriesSortedByNameSpecification : Specification<CategoryEntity>
 {

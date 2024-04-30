@@ -1,8 +1,9 @@
 ﻿using System.Linq.Expressions;
-using ChocolateData.Repositories.Specifications;
+using System.Runtime;
 using ChocolateDomain;
 using ChocolateDomain.Exceptions;
 using ChocolateDomain.Interfaces;
+using ChocolateDomain.Specifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChocolateData.Repositories;
@@ -52,12 +53,18 @@ public class BaseRepository<TEntity> : IDbRepository<TEntity> where TEntity : cl
         return entity;
     }
 
-    public virtual IQueryable<TEntity> GetQuery()
+    public async Task<int> CountBySpecification(ISpecification<TEntity> specification)
     {
-        return DbContext.Set<TEntity>(); 
+        var countQuery = ApplySpecification(specification);
+        return await countQuery.CountAsync();
     }
 
-    protected IQueryable<TEntity> ApplySpecification(IQueryable<TEntity> query, Specification<TEntity> specification) {
+    private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> specification)
+        => ApplySpecification(specification, DbContext.Set<TEntity>());
+    
+
+    private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> specification, IQueryable<TEntity> query)
+    {
         if (specification.Criteria is not null) {
             query = query.Where(specification.Criteria);
         }
@@ -75,13 +82,16 @@ public class BaseRepository<TEntity> : IDbRepository<TEntity> where TEntity : cl
 
         if (specification.PagingParameters is not null) {
             query = query
-                .Skip(specification.PagingParameters.Value.PageNumber * specification.PagingParameters.Value.PageSize)
+                .Skip((specification.PagingParameters.Value.PageNumber - 1) * specification.PagingParameters.Value.PageSize)
                 .Take(specification.PagingParameters.Value.PageSize);
         }
 
         return query;
     }
 
-    protected IQueryable<TEntity> ApplySpecification(Specification<TEntity> specification) =>
-        ApplySpecification(DbContext.Set<TEntity>(), specification);
+    public async Task<IReadOnlyCollection<TEntity>> GetBySpecification(ISpecification<TEntity> specification)
+    {
+        var query = ApplySpecification(specification);
+        return await query.ToListAsync();
+    }
 }

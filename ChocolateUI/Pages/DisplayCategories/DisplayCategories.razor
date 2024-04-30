@@ -41,9 +41,9 @@
 @code
 {
     [Parameter] 
-    public Dictionary<Guid, CategoryDTO>? Categories { get; set; }
+    public Dictionary<Guid, CategoryDto>? Categories { get; set; }
     [Parameter]
-    public Func<CategoryDTO, Task>? UpdateCategory { get; set; }
+    public Func<CategoryDto, Task>? UpdateCategory { get; set; }
     [Parameter]
     public Func<Guid, Task>? DeleteCategory { get; set; }
 

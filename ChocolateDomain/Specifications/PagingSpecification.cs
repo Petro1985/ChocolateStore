@@ -1,7 +1,6 @@
-using System.Linq.Expressions;
 using ChocolateDomain.Interfaces;
 
-namespace ChocolateData.Repositories.Specifications;
+namespace ChocolateDomain.Specifications;
 
 public class PagingSpecification<TEntity> : Specification<TEntity> where TEntity : class, IEntity {
     

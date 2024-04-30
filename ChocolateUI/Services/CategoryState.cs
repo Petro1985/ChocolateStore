@@ -4,5 +4,5 @@ namespace ChocolateUI.Services;
 
 public class CategoryState
 {
-    public Dictionary<Guid, CategoryDTO> Categories { get; set; } = new ();
+    public Dictionary<Guid, CategoryDto> Categories { get; set; } = new ();
 }

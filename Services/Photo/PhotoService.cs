@@ -119,6 +119,18 @@ public class PhotoService : IPhotoService
         await _photoDb.Delete(id);
     }
 
+    public async Task TryDelete(Guid id)
+    {
+        try
+        {
+            await _photoDb.Delete(id);
+        }
+        catch (Exception e)
+        {
+            // ignored
+        }
+    }
+
     public async Task UpdatePhoto(PhotoDto photo)
     {
         var photoEntity = await _photoDb.Get(photo.Id);

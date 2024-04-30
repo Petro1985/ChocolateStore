@@ -38,14 +38,14 @@ class FetchService : IFetchService
         }
     }
 
-    public async Task<ICollection<CategoryDTO>> GetCategories()
+    public async Task<ICollection<CategoryDto>> GetCategories()
     {
         try
         {
             var response = await _httpClient.GetAsync("Categories");
     
-            var responseBody = await response.Content.ReadFromJsonAsync<ICollection<CategoryDTO>>();
-            return responseBody ?? new List<CategoryDTO>();
+            var responseBody = await response.Content.ReadFromJsonAsync<ICollection<CategoryDto>>();
+            return responseBody ?? new List<CategoryDto>();
         }
         catch (Exception e)
         {
@@ -70,7 +70,7 @@ class FetchService : IFetchService
         }
     }
 
-    public async Task<Guid> CreateNewCategory(CategoryDTO categoryDto)
+    public async Task<Guid> CreateNewCategory(CategoryDto categoryDto)
     {
         try
         {
@@ -110,15 +110,15 @@ class FetchService : IFetchService
         }
     }
 
-    public async Task<CategoryDTO> GetCategory(Guid categoryId)
+    public async Task<CategoryDto> GetCategory(Guid categoryId)
     {
         try
         {
             var response = await _httpClient.GetAsync($"Categories/{categoryId}");
     
             response.EnsureSuccessStatusCode();
-            var responseBody = await response.Content.ReadFromJsonAsync<CategoryDTO>();
-            return responseBody ?? new CategoryDTO();
+            var responseBody = await response.Content.ReadFromJsonAsync<CategoryDto>();
+            return responseBody ?? new CategoryDto();
         }
         catch (Exception e)
         {
@@ -230,7 +230,7 @@ class FetchService : IFetchService
         }
     }
     
-    public async Task UpdateCategory(CategoryDTO category)
+    public async Task UpdateCategory(CategoryDto category)
     {
         try
         {

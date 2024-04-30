@@ -19,6 +19,6 @@ public class ServicesProfile : Profile
 
         CreateMap<ProductCreateRequest, ProductEntity>();
 
-        CreateMap<CategoryEntity, CategoryDTO>().ReverseMap();
+        CreateMap<CategoryEntity, CategoryDto>().ReverseMap();
     }
 }

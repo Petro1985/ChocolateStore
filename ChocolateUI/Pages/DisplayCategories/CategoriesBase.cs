@@ -10,7 +10,7 @@ public class CategoryBase : ComponentBase
     [Inject] public IUserProfile UserProfile { get; set; }
     [Inject] public ILogger<CategoryBase> Logger { get; set; }
 
-    public Dictionary<Guid, CategoryDTO>? Categories { get; set; }
+    public Dictionary<Guid, CategoryDto>? Categories { get; set; }
 
     public bool IsAddingNew { get; set; }
     protected override async Task OnInitializedAsync()

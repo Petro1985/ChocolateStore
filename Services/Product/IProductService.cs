@@ -7,8 +7,11 @@ namespace Services.Product;
 public interface IProductService
 {
     Task<IEnumerable<ProductDto>> GetAllProducts();
+    
     Task<IEnumerable<ProductDto>> GetProductsByCategory(Guid categoryId);
-    Task<IEnumerable<CategoryDTO>> GetAllCategories();
+    
+    Task<IEnumerable<CategoryDto>> GetAllCategories();
+    
     Task<ProductDto> GetProduct(Guid productId);
     
     /// <summary>
@@ -18,13 +21,13 @@ public interface IProductService
     /// <returns></returns>
     Task<ProductDto> GetProductWithPhotoIds(Guid productId);
     
-    Task<CategoryDTO> GetCategory(Guid categoryId);
+    Task<CategoryDto> GetCategory(Guid categoryId);
     Task<Guid> AddNewProduct(ProductCreateRequest product);
     Task UpdateProduct(ProductDto product);
-    Task UpdateCategory(CategoryDTO category);
+    Task UpdateCategory(CategoryDto category);
     Task SetProductPhoto(Guid productId, Guid photoId);
     Task SetCategoryPhoto(Guid categoryId, Guid photoId);
-    Task<Guid> AddNewCategory(CategoryDTO category);
+    Task<Guid> AddNewCategory(CategoryDto category);
     Task DeleteCategory(Guid categoryId);
     Task DeleteProduct(Guid productId);
 }

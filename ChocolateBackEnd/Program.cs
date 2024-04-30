@@ -7,6 +7,7 @@ using ChocolateData.Repositories;
 using ChocolateDomain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Services;
 using Services.Photo;
 using Services.Product;
 using Services.Profiler;
@@ -15,9 +16,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+// Регистрация автомапера
 builder.Services.AddAutoMapper(opt =>
 {
-    opt.AddProfile<ServicesProfile>();
     opt.AddProfile<ProductMapperProfile>();
 });
 
@@ -67,15 +69,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsFactory>();
 
-
-// Регистрация репозиториев
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IPhotoRepository, PhotoRepository>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-
 // регистрация сервисов
-builder.Services.AddScoped<IPhotoService, PhotoService>();
-builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddAppServices();
 
 builder.Services.ConfigureApplicationCookie(conf =>
 {
@@ -129,7 +124,7 @@ app.UseStaticFiles(new StaticFileOptions()
 {
     ServeUnknownFileTypes = true
 });
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

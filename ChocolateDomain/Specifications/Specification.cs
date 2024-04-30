@@ -1,10 +1,9 @@
 using System.Linq.Expressions;
 using ChocolateDomain.Interfaces;
 
-namespace ChocolateData.Repositories.Specifications;
+namespace ChocolateDomain.Specifications;
 
-public class Specification<TEntity>(Expression<Func<TEntity, bool>>? criteria)
-    where TEntity : IEntity
+public class Specification<TEntity>(Expression<Func<TEntity, bool>>? criteria) : ISpecification<TEntity> where TEntity : IEntity
 {
     public List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = [];
 

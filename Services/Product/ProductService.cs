@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ChocolateData.Repositories;
 using ChocolateDomain.Entities;
+using ChocolateDomain.Specifications;
 using Microsoft.EntityFrameworkCore;
 using Models.Category;
 using Models.Product;
@@ -9,27 +10,25 @@ namespace Services.Product;
 
 public class ProductService : IProductService
 {
-    private readonly IProductRepository _productDb;
-    private readonly ICategoryRepository _categoryDb;
-    private readonly IPhotoRepository _photoDb;
+    private readonly IProductRepository _productRepository;
+    private readonly ICategoryRepository _categoryRepository;
+    private readonly IPhotoRepository _photoRepository;
     private readonly IMapper _mapper;
 
-    public ProductService(IProductRepository productDb, ICategoryRepository categoryDb, IPhotoRepository photoDb, IMapper mapper)
+    public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IPhotoRepository photoRepository, IMapper mapper)
     {
-        _productDb = productDb;
+        _productRepository = productRepository;
         _mapper = mapper;
-        _categoryDb = categoryDb;
-        _photoDb = photoDb;
+        _categoryRepository = categoryRepository;
+        _photoRepository = photoRepository;
     }
 
     public async Task<IEnumerable<ProductDto>> GetAllProducts()
     {
-        var product = await _productDb
-            .GetQuery()
-            .Include(x => x.Photos)
-            .Include(x => x.Category).ToListAsync();
+        var specification = new ProductsWithCategorySpecification();
+        var result = await _productRepository.GetBySpecification(specification);
 
-        return product.Select(x =>
+        return result.Select(x =>
         {
             var prod = _mapper.Map<ProductDto>(x);
             prod.CategoryName = x.Category.Name;
@@ -39,8 +38,8 @@ public class ProductService : IProductService
 
     public async Task<IEnumerable<ProductDto>> GetProductsByCategory(Guid categoryId)
     {
-        var products = (await _productDb.GetProductsByCategory(categoryId)).ToList();
-        var productsPhotos = await _photoDb.GetPhotoIdsByProductIds(products.Select(x => x.Id));
+        var products = (await _productRepository.GetProductsByCategory(categoryId)).ToList();
+        var productsPhotos = await _photoRepository.GetPhotoIdsByProductIds(products.Select(x => x.Id));
 
         var mappedPhotos = _mapper.Map<IEnumerable<ProductDto>>(products);
         
@@ -55,95 +54,96 @@ public class ProductService : IProductService
         return mappedPhotos;
     }
 
-    public async Task<IEnumerable<CategoryDTO>> GetAllCategories()
+    public async Task<IEnumerable<CategoryDto>> GetAllCategories()
     {
-        var categories = await _categoryDb.GetQuery().ToListAsync();
-        return _mapper.Map<IEnumerable<CategoryDTO>>(categories);
+        var specification = new CategoriesSortedByNameSpecification();
+        var categories = await _categoryRepository.GetBySpecification(specification);
+        return _mapper.Map<IEnumerable<CategoryDto>>(categories);
     }
 
-    public async Task<CategoryDTO> GetCategory(Guid categoryId)
+    public async Task<CategoryDto> GetCategory(Guid categoryId)
     {
-        var category = await _categoryDb.Get(categoryId);
-        return _mapper.Map<CategoryDTO>(category);
+        var category = await _categoryRepository.Get(categoryId);
+        return _mapper.Map<CategoryDto>(category);
     }
 
     public async Task<Guid> AddNewProduct(ProductCreateRequest product)
     {
         var productEntity = _mapper.Map<ProductEntity>(product);
-        await _productDb.Add(productEntity);
+        await _productRepository.Add(productEntity);
         
         return productEntity.Id;
     }
 
-    public async Task UpdateCategory(CategoryDTO category)
+    public async Task UpdateCategory(CategoryDto category)
     {
         var categoryEntity = _mapper.Map<CategoryEntity>(category);
 
-        await _categoryDb.Update(categoryEntity);
+        await _categoryRepository.Update(categoryEntity);
     }
 
     public async Task UpdateProduct(ProductDto product)
     {
         var productEntity = _mapper.Map<ProductEntity>(product);
-        await _productDb.Update(productEntity);
+        await _productRepository.Update(productEntity);
     }
 
     public async Task<ProductDto> GetProduct(Guid productId)
     {
-        var product = await _productDb.Get(productId);
+        var product = await _productRepository.Get(productId);
         var mappedProduct = _mapper.Map<ProductDto>(product);
         return mappedProduct;
     }
 
     public async Task<ProductDto> GetProductWithPhotoIds(Guid productId)
     {
-        var product = await _productDb.Get(productId);
+        var product = await _productRepository.Get(productId);
         var mappedProduct = _mapper.Map<ProductDto>(product);
-        mappedProduct.Photos = await _photoDb.GetPhotoIdsByProduct(productId); 
+        mappedProduct.Photos = await _photoRepository.GetPhotoIdsByProduct(productId); 
         return mappedProduct;
     }
 
     public async Task SetProductPhoto(Guid productId, Guid photoId)
     {
-        var product = await _productDb.Get(productId);
+        var product = await _productRepository.Get(productId);
         if (product.MainPhotoId.HasValue && product.MainPhotoId.Value != default)
         {
-            await _photoDb.Delete(product.MainPhotoId.Value);
+            await _photoRepository.Delete(product.MainPhotoId.Value);
         }
 
         product.MainPhotoId = photoId;
-        await _productDb.Update(product);
+        await _productRepository.Update(product);
     }
 
     public async Task SetCategoryPhoto(Guid categoryId, Guid photoId)
     {
-        var category = await _categoryDb.Get(categoryId);
+        var category = await _categoryRepository.Get(categoryId);
         if (category.MainPhotoId.HasValue && category.MainPhotoId.Value != default)
         {
-            await _photoDb.Delete(category.MainPhotoId.Value);
+            await _photoRepository.Delete(category.MainPhotoId.Value);
         }
         
         category.MainPhotoId = photoId;
-        await _categoryDb.Update(category);
+        await _categoryRepository.Update(category);
     }
 
-    public async Task<Guid> AddNewCategory(CategoryDTO category)
+    public async Task<Guid> AddNewCategory(CategoryDto category)
     {
         var categoryEntity = new CategoryEntity
         {
             Name = category.Name
         };
 
-        return await _categoryDb.Add(categoryEntity);    
+        return await _categoryRepository.Add(categoryEntity);    
     }
 
     public async Task DeleteCategory(Guid categoryId)
     {
-        await _categoryDb.Delete(categoryId);
+        await _categoryRepository.Delete(categoryId);
     }
 
     public async Task DeleteProduct(Guid productId)
     {
-        await _productDb.Delete(productId);
+        await _productRepository.Delete(productId);
     }
 }

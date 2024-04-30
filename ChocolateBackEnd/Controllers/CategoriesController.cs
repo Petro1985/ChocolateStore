@@ -19,14 +19,14 @@ public class CategoriesController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
+    public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
     {
         var result = await _productService.GetAllCategories();
         return Ok(result);
     }
 
     [HttpGet("{categoryId:guid}", Name = "GetCategory")]
-    public async Task<ActionResult<CategoryDTO>> GetCategory([FromRoute] Guid categoryId)
+    public async Task<ActionResult<CategoryDto>> GetCategory([FromRoute] Guid categoryId)
     {
         return Ok(await _productService.GetCategory(categoryId));
     }
@@ -43,14 +43,14 @@ public class CategoriesController : BaseApiController
 
     [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpPost]
-    public async Task<ActionResult<Guid>> AddCategory(CategoryDTO category)
+    public async Task<ActionResult<Guid>> AddCategory(CategoryDto category)
     {
         return Ok(await _productService.AddNewCategory(category));
     }
 
     [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpPut]
-    public async Task<IActionResult> UpdateCategory([FromBody] CategoryDTO category)
+    public async Task<IActionResult> UpdateCategory([FromBody] CategoryDto category)
     {
         await _productService.UpdateCategory(category);
         return Ok();

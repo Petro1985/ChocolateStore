@@ -7,14 +7,14 @@ public interface IFetchService
 {
     public string BaseUrl { get; }
     Task<ICollection<ProductDto>> GetProductByCategory(Guid categoryId);
-    Task<ICollection<CategoryDTO>> GetCategories();
+    Task<ICollection<CategoryDto>> GetCategories();
     Task<ProductDto> GetProduct(Guid productId);
-    Task<Guid> CreateNewCategory(CategoryDTO categoryDto);
+    Task<Guid> CreateNewCategory(CategoryDto categoryDto);
     Task<Guid> CreateNewProduct(ProductDto newProduct);
-    Task<CategoryDTO> GetCategory(Guid categoryId);
+    Task<CategoryDto> GetCategory(Guid categoryId);
     Task AddPhoto(string photo, Guid productId);
     Task DeleteCategory(Guid categoryId);
-    Task UpdateCategory(CategoryDTO category);
+    Task UpdateCategory(CategoryDto category);
     Task UpdateProduct(ProductDto product);
     Task DeleteProduct(Guid productId);
     Task<string> CropPhoto(Stream photo);
