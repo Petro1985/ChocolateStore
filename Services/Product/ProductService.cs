@@ -5,6 +5,7 @@ using ChocolateDomain.Specifications;
 using Microsoft.EntityFrameworkCore;
 using Models.Category;
 using Models.Product;
+using Services.Models;
 
 namespace Services.Product;
 
@@ -145,5 +146,30 @@ public class ProductService : IProductService
     public async Task DeleteProduct(Guid productId)
     {
         await _productRepository.Delete(productId);
+    }
+
+    public async Task<PagedItems<ProductEntity>> GetPagedProductsSortedByName(int pageSize, int pageNumber)
+    {
+        if (pageSize <= 0) {
+            throw new ArgumentException("Размер страницы должен быть больше 0", nameof(pageSize));
+        }
+        if (pageNumber <= 0) {
+            throw new ArgumentException("Номер страницы должен быть больше 0 (нумерация с 1)", nameof(pageNumber));
+        }
+
+        var totalCount = await _categoryRepository.CountBySpecification(new CategoriesSortedByNameSpecification());
+
+        Specification<ProductEntity> specification = new ProductsSortedByNameSpecification()
+            .And(new PagingSpecification<ProductEntity>(pageSize, pageNumber));
+
+        var result = await _productRepository.GetBySpecification(specification);
+        
+        return new PagedItems<ProductEntity>
+        {
+            Items = result,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+        };    
     }
 }

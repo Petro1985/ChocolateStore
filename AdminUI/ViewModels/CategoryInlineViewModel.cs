@@ -15,6 +15,4 @@ public class CategoryInlineViewModel
 
     [DisplayName("Основное фото")]
     public Guid? MainPhotoId { get; set; }
-
-    public bool PhotoChanged { get; set; }
 }
