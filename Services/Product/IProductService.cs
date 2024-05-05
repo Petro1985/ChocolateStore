@@ -32,12 +32,13 @@ public interface IProductService
     Task<Guid> AddNewCategory(CategoryDto category);
     Task DeleteCategory(Guid categoryId);
     Task DeleteProduct(Guid productId);
-    
+
     /// <summary>
     ///  Получение пагинированного списка продуктов отсортированного по имени
     /// </summary>
+    /// <param name="categoryId"></param>
     /// <param name="pageSize"></param>
     /// <param name="pageNumber"></param>
     /// <returns></returns>
-    Task<PagedItems<ProductEntity>> GetPagedProductsSortedByName(int pageSize, int pageNumber);
+    Task<PagedItems<ProductEntity>> GetPagedCategoryProductsSortedByName(Guid? categoryId, int pageSize, int pageNumber);
 }

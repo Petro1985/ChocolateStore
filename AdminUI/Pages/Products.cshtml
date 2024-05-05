@@ -3,16 +3,33 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model AdminUI.Pages.ProductsListModel
 
-<nav aria-label="Page navigation">
-    <ul class="pagination">
-        @for (int i = 1; i <= Model.TotalPages; i++)
+<form method="get" id="paging-form">
+    <select id="category-selector" asp-for="CategoryId" class="form-select">
+        <option value="Model.CategoryId" selected>@(Model.Categories.FirstOrDefault(x => x.Id == Model.CategoryId)?.Name ?? "Категория не выбрана")</option>
+        @foreach (var category in Model.Categories)
         {
-            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                <a class="page-link" href="?page=@i">@i</a>
-            </li>
+            if (Model.CategoryId == category.Id)
+            {
+                continue;
+            }
+            <option value="@category.Id">@category.Name</option>
         }
-    </ul>
-</nav>
+    </select>
+
+
+    <nav aria-label="Page navigation" class="mt-5">
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li page="@i" class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <span class="page-link">@i</span>
+                </li>
+            }
+        </ul>
+    </nav>
+    <input hidden="hidden" asp-for="CurrentPage" id="input-currentPage">
+    <input hidden="hidden" asp-for="PageSize" id="input-pageSize" value="10">
+</form>
 
 <table class="table">
     <thead>
@@ -52,14 +69,14 @@
                     @Html.DisplayFor(x => x.ProductsList[j].CategoryName)
                 </td>
                 <td class="col-1">
-                    <button class="btn btn-outline-secondary" type="submit">Сохранить</button>
-                </td>
-                <td class="col-1">
                     @* <div class="accordion__icon toggled" btn btn-primary> *@
                     <button id="collapse-button" class="btn btn-primary accordion__icon toggled" type="button" data-bs-toggle="collapse" href="#collapse-items-@j" aria-expanded="false" aria-controls="collapse-items-@j">
                         <img src="/images/arrow.svg" alt="">
                     </button>
                     @* </div> *@
+                </td>
+                <td class="col-1">
+                    <button class="btn btn-outline-secondary" type="submit">Сохранить</button>
                 </td>
             </tr>
             <tr>
@@ -106,4 +123,7 @@
     }
 </table>
 
-<script src="/js/categories.js" defer asp-append-version="true"></script>
+<script src="/js/products.js" defer asp-append-version="true"></script>
+@section Styles {
+    <link href="@Url.Content("~/css/products.css")" rel="stylesheet" type="text/css" />
+}

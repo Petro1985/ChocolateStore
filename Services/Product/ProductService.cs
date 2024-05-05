@@ -148,7 +148,8 @@ public class ProductService : IProductService
         await _productRepository.Delete(productId);
     }
 
-    public async Task<PagedItems<ProductEntity>> GetPagedProductsSortedByName(int pageSize, int pageNumber)
+    public async Task<PagedItems<ProductEntity>> GetPagedCategoryProductsSortedByName(Guid? categoryId, int pageSize,
+        int pageNumber)
     {
         if (pageSize <= 0) {
             throw new ArgumentException("Размер страницы должен быть больше 0", nameof(pageSize));
@@ -157,11 +158,16 @@ public class ProductService : IProductService
             throw new ArgumentException("Номер страницы должен быть больше 0 (нумерация с 1)", nameof(pageNumber));
         }
 
-        var totalCount = await _categoryRepository.CountBySpecification(new CategoriesSortedByNameSpecification());
 
-        Specification<ProductEntity> specification = new ProductsSortedByNameSpecification()
-            .And(new PagingSpecification<ProductEntity>(pageSize, pageNumber));
 
+        Specification<ProductEntity> specification = new ProductsSortedByNameSpecification();
+        if (categoryId is not null)
+        {
+            specification = specification.And(new ProductsCriteriaSpecification(x => x.CategoryId == categoryId));
+        }
+        var totalCount = await _productRepository.CountBySpecification(specification);
+
+        specification = specification.And(new PagingSpecification<ProductEntity>(pageSize, pageNumber));
         var result = await _productRepository.GetBySpecification(specification);
         
         return new PagedItems<ProductEntity>

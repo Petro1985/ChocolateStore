@@ -1,0 +1,11 @@
+#collapse-button.toggled img {
+  transition: 0.25s ease-out;
+  transform: rotate(0);
+}
+
+#collapse-button img {
+  transition: 0.25s ease-out;
+  transform: rotate(180deg);
+}
+
+/*# sourceMappingURL=products.css.map */

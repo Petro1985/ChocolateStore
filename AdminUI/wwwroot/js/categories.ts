@@ -8,7 +8,7 @@ interface Category
 }
 
 const changeFlagInputElements: Map<number, Category> = new Map<number, Category>();
-    
+
 document.addEventListener('DOMContentLoaded', () =>
 {
     // const categoryRoots = document.querySelectorAll<HTMLTableRowElement>('tr[id^="category-@j"]');
@@ -31,17 +31,8 @@ document.addEventListener('DOMContentLoaded', () =>
     //     const index = Number(x.getAttribute('index'));
     //     changeFlagInputElements.set(index, );
     // });
-    
+    const q = 2;
+
+    console.log(q);
     
 })
-
-
-function onFileLoaded(e: Event)
-{
-    // @ts-ignore
-    // const inputElement:HTMLInputElement = e.target;
-    // const index = inputElement.getAttribute('index');
-    //
-    // document.querySelector(``);
-
-}

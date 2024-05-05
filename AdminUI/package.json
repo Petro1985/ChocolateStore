@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "ngx-mask": "^17.0.4"
+    "sass": "^1.76.0"
   }
 }

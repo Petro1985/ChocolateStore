@@ -21,12 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //     const index = Number(x.getAttribute('index'));
     //     changeFlagInputElements.set(index, );
     // });
+    const q = 2;
+    console.log(q);
 });
-function onFileLoaded(e) {
-    // @ts-ignore
-    // const inputElement:HTMLInputElement = e.target;
-    // const index = inputElement.getAttribute('index');
-    //
-    // document.querySelector(``);
-}
 //# sourceMappingURL=categories.js.map

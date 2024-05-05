@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using AdminUI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,17 +12,23 @@ public class ProductsListModel : PageModel
 {
     private readonly IProductService _productService;
     private readonly IPhotoService _photoService;
+    private readonly ICategoryService _categoryService;
 
-    public ProductsListModel(IProductService productService, IPhotoService photoService)
+    public IReadOnlyCollection<CategoryDto> Categories { get; set; }
+
+    public ProductsListModel(IProductService productService, IPhotoService photoService, ICategoryService categoryService)
     {
         _productService = productService;
         _photoService = photoService;
+        _categoryService = categoryService;
     }
 
     [BindProperty(SupportsGet = true)] 
     public int CurrentPage { get; set; } = 1;
-    public int Count { get; set; }
+    [BindProperty(SupportsGet = true)] 
     public int PageSize { get; set; } = 10;
+
+    public int Count { get; set; }
     public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
     public List<ProductsInlineViewModel> ProductsList { get; set; } = [];
 
@@ -39,6 +44,7 @@ public class ProductsListModel : PageModel
 
     public Guid? MainPhotoId { get; set; }
 
+    [BindProperty(SupportsGet = true)]
     public Guid CategoryId { get; set; }
 
     public string CategoryName { get; set; }
@@ -56,10 +62,13 @@ public class ProductsListModel : PageModel
 
     #endregion
     
-    public async Task OnGet([FromQuery] int pageSize = 10, [FromQuery] int page = 1)
+    public async Task OnGet(/*Guid? categoryId, [FromQuery] int pageSize = 10, [FromQuery] int page = 1*/)
     {
+        // Получаем список категорий для Select элемента
+        Categories = await _categoryService.GetAllCategories();
+            
         var pagedProducts = await _productService
-            .GetPagedProductsSortedByName(pageSize, page);
+            .GetPagedCategoryProductsSortedByName(CategoryId, PageSize, CurrentPage);
 
         PageSize = pagedProducts.PageSize;
         CurrentPage = pagedProducts.PageNumber;

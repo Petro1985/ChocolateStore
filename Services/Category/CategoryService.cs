@@ -49,4 +49,11 @@ public class CategoryService : ICategoryService
         var newCategory = _mapper.Map<CategoryEntity>(category);
         await _categoryRepository.Update(newCategory);
     }
+
+    public async Task<IReadOnlyCollection<CategoryDto>> GetAllCategories()
+    {
+        var categories = await _categoryRepository.GetBySpecification(new CategoriesSortedByNameSpecification());
+        var categoriesDto = _mapper.Map<List<CategoryDto>>(categories);
+        return categoriesDto;
+    }
 }
