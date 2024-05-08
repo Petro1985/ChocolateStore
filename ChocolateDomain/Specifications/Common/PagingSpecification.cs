@@ -1,6 +1,6 @@
 using ChocolateDomain.Interfaces;
 
-namespace ChocolateDomain.Specifications;
+namespace ChocolateDomain.Specifications.Common;
 
 public class PagingSpecification<TEntity> : Specification<TEntity> where TEntity : class, IEntity {
     

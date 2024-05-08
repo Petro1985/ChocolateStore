@@ -1,7 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using System.Net;
 using AdminUI.ViewModels;
+using ChocolateDomain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Models.Category;
 using Services.Category;
 using Services.Photo;
@@ -19,6 +23,9 @@ public class CategoriesListModel : PageModel
         _photoService = photoService;
     }
 
+    [BindProperty(SupportsGet = true)] 
+    public string SearchString { get; set; }
+    
     [BindProperty(SupportsGet = true)] 
     public int CurrentPage { get; set; } = 1;
     public int Count { get; set; }
@@ -44,10 +51,17 @@ public class CategoriesListModel : PageModel
     
     #endregion
     
-    public async Task OnGet([FromQuery] int pageSize = 10, [FromQuery] int page = 1)
+    public async Task OnGet()
     {
+        Expression<Func<CategoryEntity, bool>>? criteria = null;
+
+        if (!string.IsNullOrWhiteSpace(SearchString))
+        {
+            criteria = (x) => EF.Functions.Like(x.Name.ToLower(), $"%{SearchString.ToLower()}%");
+        }
+        
         var pagedCategories = await _categoryService
-            .GetPagedCategoriesSortedByName(pageSize, page);
+            .GetPagedCategoriesSortedByName(PageSize, CurrentPage, criteria);
 
         PageSize = pagedCategories.PageSize;
         CurrentPage = pagedCategories.PageNumber;
@@ -84,7 +98,7 @@ public class CategoriesListModel : PageModel
         
         await _categoryService.UpdateCategory(category);
 
-        return Redirect($"/Categories/Categories?page={CurrentPage}");
+        return Redirect($"/Categories/Categories?page={CurrentPage}&SearchString={WebUtility.UrlEncode(SearchString)}");
     }
 
 }

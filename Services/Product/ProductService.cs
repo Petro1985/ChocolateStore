@@ -2,6 +2,9 @@
 using ChocolateData.Repositories;
 using ChocolateDomain.Entities;
 using ChocolateDomain.Specifications;
+using ChocolateDomain.Specifications.Categories;
+using ChocolateDomain.Specifications.Common;
+using ChocolateDomain.Specifications.Products;
 using Microsoft.EntityFrameworkCore;
 using Models.Category;
 using Models.Product;
@@ -163,7 +166,7 @@ public class ProductService : IProductService
         Specification<ProductEntity> specification = new ProductsSortedByNameSpecification();
         if (categoryId is not null)
         {
-            specification = specification.And(new ProductsCriteriaSpecification(x => x.CategoryId == categoryId));
+            specification = specification.And(new Specification<ProductEntity>(x => x.CategoryId == categoryId));
         }
         var totalCount = await _productRepository.CountBySpecification(specification);
 

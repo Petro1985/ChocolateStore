@@ -62,7 +62,7 @@ public class ProductsListModel : PageModel
 
     #endregion
     
-    public async Task OnGet(/*Guid? categoryId, [FromQuery] int pageSize = 10, [FromQuery] int page = 1*/)
+    public async Task OnGet()
     {
         // Получаем список категорий для Select элемента
         Categories = await _categoryService.GetAllCategories();

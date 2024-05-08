@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using ChocolateDomain.Interfaces;
 
-namespace ChocolateDomain.Specifications;
+namespace ChocolateDomain.Specifications.Common;
 
 public interface ISpecification<TEntity> where TEntity : IEntity
 {

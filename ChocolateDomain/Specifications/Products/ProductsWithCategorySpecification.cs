@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
 using ChocolateDomain.Entities;
+using ChocolateDomain.Specifications.Common;
 
-namespace ChocolateDomain.Specifications;
+namespace ChocolateDomain.Specifications.Products;
 
 public class ProductsWithCategorySpecification : Specification<ProductEntity>
 {

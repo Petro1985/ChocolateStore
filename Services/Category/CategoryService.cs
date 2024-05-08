@@ -1,8 +1,11 @@
+using System.Linq.Expressions;
 using System.Security.AccessControl;
 using AutoMapper;
 using ChocolateData.Repositories;
 using ChocolateDomain.Entities;
 using ChocolateDomain.Specifications;
+using ChocolateDomain.Specifications.Categories;
+using ChocolateDomain.Specifications.Common;
 using Models.Category;
 using Services.Models;
 
@@ -19,7 +22,8 @@ public class CategoryService : ICategoryService
         _mapper = mapper;
     }
 
-    public async Task<PagedItems<CategoryEntity>> GetPagedCategoriesSortedByName(int pageSize, int pageNumber) {
+    public async Task<PagedItems<CategoryEntity>> GetPagedCategoriesSortedByName(int pageSize, int pageNumber,
+        Expression<Func<CategoryEntity, bool>>? criteria = null) {
 
         if (pageSize <= 0) {
             throw new ArgumentException("Размер страницы должен быть больше 0", nameof(pageSize));
@@ -27,10 +31,10 @@ public class CategoryService : ICategoryService
         if (pageNumber <= 0) {
             throw new ArgumentException("Номер страницы должен быть больше 0 (нумерация с 1)", nameof(pageNumber));
         }
+        
+        var totalCount = await _categoryRepository.CountBySpecification(new Specification<CategoryEntity>(criteria));
 
-        var totalCount = await _categoryRepository.CountBySpecification(new CategoriesSortedByNameSpecification());
-
-        Specification<CategoryEntity> specification = new CategoriesSortedByNameSpecification()
+        Specification<CategoryEntity> specification = new CategoriesSortedByNameSpecification(criteria)
             .And(new PagingSpecification<CategoryEntity>(pageSize, pageNumber));
 
         var result = await _categoryRepository.GetBySpecification(specification);

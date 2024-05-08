@@ -3,16 +3,26 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model AdminUI.Pages.CategoriesListModel
 
-<nav aria-label="Page navigation">
-    <ul class="pagination">
-        @for (int i = 1; i <= Model.TotalPages; i++)
-        {
-            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                <a class="page-link" href="?page=@i">@i</a>
-            </li>
-        }
-    </ul>
-</nav>
+<form id="paging-form">
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Поиск</span>
+        <input class="form-control" id="search-input" type="text" asp-for="SearchString" placeholder="Введите часть имени категории"/>
+    </div>
+    
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li page="@i" class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <span class="page-link">@i</span>
+                </li>
+            }
+        </ul>
+    </nav>
+
+    <input hidden="hidden" asp-for="CurrentPage" id="input-currentPage">
+    <input hidden="hidden" asp-for="PageSize" id="input-pageSize">
+</form>
 
 <table class="table table-hover">
     <thead>
@@ -35,7 +45,9 @@
             <form method="post" enctype="multipart/form-data">
                 <input type="hidden" asp-for="CurrentPage" value="@Model.CurrentPage">
                 <td class="col-2">
-                    @Html.DisplayFor(x => x.CategoriesList[j].Id)
+                    <a asp-page="Products" asp-all-route-data="@(new Dictionary<string, string> {{"CategoryId", category.Id.ToString()}})">
+                        @Html.DisplayFor(x => x.CategoriesList[j].Id)
+                    </a>
                     <input type="hidden" asp-for="CategoryId" value="@category.Id">
                 </td>
                 <td class="col-5">
@@ -43,8 +55,7 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </td>
                 <td class="col-4">
-                    @* @Html.DisplayFor(x => x.CategoriesList[i].MainPhotoId) *@
-                    <input type="file" asp-for="PhotoFile" class="form-control oi-file">
+                    <input type="file" asp-for="PhotoFile" class="form-control oi-image input-image">
                     <image src="@PhotoHelpers.GetPhotoUrl(Model.CategoriesList[j].MainPhotoId ?? default)" width="400px" height="400px"></image>
                     <input type="text" hidden="hidden" asp-for="MainPhotoId" value="@category.MainPhotoId">
                 </td>

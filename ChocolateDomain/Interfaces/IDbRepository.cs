@@ -1,4 +1,5 @@
 ﻿using ChocolateDomain.Specifications;
+using ChocolateDomain.Specifications.Common;
 
 namespace ChocolateDomain.Interfaces;
 
