@@ -1,18 +1,39 @@
 import {Component, ViewEncapsulation, ElementRef, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {trigger, style, animate, transition, state} from '@angular/animations';
 
-import { ModalService } from './modal.service';
+import {ModalService} from './modal.service';
 
 @Component({
   selector: 'app-modal',
   templateUrl: 'modal.component.html',
   styleUrls: ['modal.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  animations: [
+    trigger('modalAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'scale(0.9)' }),
+        animate('200ms ease-out', style({ opacity: 1, transform: 'scale(1)' }))
+      ]),
+      transition(':leave', [
+        animate('150ms ease-in', style({ opacity: 0, transform: 'scale(0.9)' }))
+      ])
+    ]),
+    trigger('backgroundAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('200ms ease-out', style({ opacity: 0.5 }))
+      ]),
+      transition(':leave', [
+        animate('150ms ease-in', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class ModalComponent implements OnInit, OnDestroy {
   @Input() id!: string;
   @Input() closeOnClickOutside: boolean = true;
-  @Input() width!:number;
-  @Input() height!:number;
+  @Input() width!: number;
+  @Input() height!: number;
 
   @ViewChild('modalBody') modalBody?: ElementRef;
 
@@ -48,8 +69,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   }
 
   onClickOutside(e: any) {
-    if (this.closeOnClickOutside && e.target.className === 'app-modal')
-    {
+    if (this.closeOnClickOutside && e.target.className === 'app-modal') {
       this.close();
     }
   }

@@ -4,6 +4,7 @@
 @model AdminUI.Pages.ProductsListModel
 
 <form method="get" id="paging-form">
+    <span class="fs-2">Категория</span>
     <select id="category-selector" asp-for="CategoryId" class="form-select">
         <option value="Model.CategoryId" selected>@(Model.Categories.FirstOrDefault(x => x.Id == Model.CategoryId)?.Name ?? "Категория не выбрана")</option>
         @foreach (var category in Model.Categories)
@@ -15,7 +16,6 @@
             <option value="@category.Id">@category.Name</option>
         }
     </select>
-
 
     <nav aria-label="Page navigation" class="mt-5">
         <ul class="pagination">
@@ -56,14 +56,14 @@
                 <input type="hidden" asp-for="CurrentPage" value="@Model.CurrentPage">
                 <td class="col">
                     @Html.DisplayFor(x => x.ProductsList[j].Id)
-                    <input type="hidden" asp-for="CategoryId" value="@product.Id">
+                    <input type="hidden" asp-for="UpdateProduct.Id" value="@product.Id">
                 </td>
                 <td class="col">
-                    <input type="text" asp-for="Name" value="@product.Name" class="form-control">
-                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <input type="text" asp-for="UpdateProduct.Name" value="@product.Name" class="form-control">
+                    <span asp-validation-for="UpdateProduct.Name" class="text-danger"></span>
                 </td>
                 <td class="col">
-                    <input type="text" asp-for="Name" value="@product.Price" class="form-control">
+                    <input type="text" asp-for="UpdateProduct.Price" value="@product.Price" class="form-control">
                 </td>
                 <td class="col">
                     @Html.DisplayFor(x => x.ProductsList[j].CategoryName)
@@ -83,37 +83,30 @@
                 <td colspan="5">
                     <div class="collapse" id="collapse-items-@j">
                         <div class="d-flex flex-column">
-                            @* <div class="row"> *@
-                            @*     <div class="collapse" id="collapse-items-@j"> *@
-                            @*         <div class="card card-body"> *@
-                            @*             Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger. *@
-                            @*         </div> *@
-                            @*     </div> *@
-                            @* </div> *@
                             <div class="">
-                                <input type="file" asp-for="PhotoFile" class="form-control oi-file">
+                                <input type="file" asp-for="PhotoFile" class="form-control oi-file input-image">
                                 <image src="@PhotoHelpers.GetPhotoUrl(Model.ProductsList[j].MainPhotoId ?? default)" width="400px" height="400px"></image>
-                                <input type="text" hidden="hidden" asp-for="MainPhotoId" value="@product.MainPhotoId">
+                                <input type="text" hidden="hidden" asp-for="UpdateProduct.MainPhotoId" value="@product.MainPhotoId">
                             </div>
                             <div class="">
                                 <label for="description-input-@j" class="form-label">Описание</label>
-                                <input type="text" asp-for="Name" value="@product.Description" class="form-control" id="description-input-@j">
+                                <input type="text" asp-for="UpdateProduct.Description" value="@product.Description" class="form-control" id="description-input-@j">
                             </div>
                             <div class="">
                                 <label for="composition-input-@j" class="form-label">Состав</label>
-                                <input type="text" asp-for="Composition" value="@product.Composition" class="form-control" id="composition-input-@j">
+                                <input type="text" asp-for="UpdateProduct.Composition" value="@product.Composition" class="form-control" id="composition-input-@j">
                             </div>
                             <div class="">
                                 <label for="weight-input-@j" class="form-label">Вес</label>
-                                <input type="text" asp-for="Weight" value="@product.Weight" class="form-control" id="weight-input-@j">
+                                <input type="text" asp-for="UpdateProduct.Weight" value="@product.Weight" class="form-control" id="weight-input-@j">
                             </div>
                             <div class="">
                                 <label for="width-input-@j" class="form-label">Ширина</label>
-                                <input type="text" asp-for="Width" value="@product.Width" class="form-control" id="width-input-@j">
+                                <input type="text" asp-for="UpdateProduct.Width" value="@product.Width" class="form-control" id="width-input-@j">
                             </div>
                             <div class="">
                                 <label for="height-input-@j" class="form-label">Высота</label>
-                                <input type="text" asp-for="Height" value="@product.Height" class="form-control" id="height-input-@j">
+                                <input type="text" asp-for="UpdateProduct.Height" value="@product.Height" class="form-control" id="height-input-@j">
                             </div>
                         </div>
                     </div>
@@ -123,7 +116,41 @@
     }
 </table>
 
-<script src="/js/products.js" defer asp-append-version="true"></script>
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
+    <script src="/js/products.js" defer asp-append-version="true"></script>
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const elements = document.querySelectorAll('[id^="weight-input-"]');
+        elements.forEach(element => {
+            Inputmask({"regex": "^[0-9]*$"}).mask(element);
+            console.log(element);
+        });
+
+        const widthElements = document.querySelectorAll('[id^="width-input-"]');
+        widthElements.forEach(element => {
+            Inputmask({"regex": "^[0-9]*(\\,[0-9]{0,2})?$"}).mask(element);
+            console.log(element);
+        });
+        
+        const heightElements = document.querySelectorAll('[id^="height-input-"]');
+        heightElements.forEach(element => {
+            Inputmask({"regex": "^[0-9]*(\\,[0-9]{0,2})?$"}).mask(element);
+            console.log(element);
+        });
+
+        const priceElements = document.querySelectorAll('[id="UpdateProduct_Price"]');
+        priceElements.forEach(element => {
+            Inputmask({"regex": "^[0-9]*(\\,[0-9]{0,2})?$"}).mask(element);
+            console.log(element);
+        });
+    });
+
+</script>
+
 @section Styles {
     <link href="@Url.Content("~/css/products.css")" rel="stylesheet" type="text/css" />
 }

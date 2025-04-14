@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
     pageLinks.forEach(x => {
         x.addEventListener('click', onPageLinkClick);
     });
+    const inputImages = document.querySelectorAll('.input-image');
+    inputImages.forEach(x => {
+        x.addEventListener('change', OnInputImageChange);
+    });
 });
 function LoadCategory(e) {
     //@ts-ignore

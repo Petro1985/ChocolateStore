@@ -3,14 +3,11 @@ using ChocolateBackEnd.APIStruct.Mapper;
 using ChocolateBackEnd.Auth;
 using ChocolateBackEnd.Options;
 using ChocolateData;
-using ChocolateData.Repositories;
 using ChocolateDomain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Services;
 using Services.Photo;
-using Services.Product;
-using Services.Profiler;
 
 var builder = WebApplication.CreateBuilder(args);
 

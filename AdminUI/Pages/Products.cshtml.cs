@@ -1,7 +1,9 @@
+using System.Net;
 using AdminUI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Models.Category;
+using Models.Product;
 using Services.Category;
 using Services.Photo;
 using Services.Product;
@@ -34,28 +36,37 @@ public class ProductsListModel : PageModel
 
     #region UpdateProperties
 
-    public Guid Id { get; init; }
+    // public Guid ProductId { get; init; }
+    //
+    // public string Name { get; set; }
+    //
+    // public string Description { get; set; }
+    //
+    // public decimal Price { get; set; }
+
+    [BindProperty]
+    public ProductDto UpdateProduct { get; set; }
     
-    public string Name { get; set; }
-
-    public string Description { get; set; }
-
-    public decimal Price { get; set; }
-
-    public Guid? MainPhotoId { get; set; }
+    // [BindProperty]
+    // public Guid MainPhotoId { get; set; }
 
     [BindProperty(SupportsGet = true)]
     public Guid CategoryId { get; set; }
 
-    public string CategoryName { get; set; }
-
-    public string? Composition { get; set; }
-
-    public int? Weight { get; set; }
-
-    public decimal? Width { get; set; }
-
-    public decimal? Height { get; set; }
+    // [BindProperty]
+    // public string CategoryName { get; set; }
+    //
+    // [BindProperty]
+    // public string? Composition { get; set; }
+    //
+    // [BindProperty]
+    // public int? Weight { get; set; }
+    //
+    // [BindProperty]
+    // public decimal? Width { get; set; }
+    //
+    // [BindProperty]
+    // public decimal? Height { get; set; }
     
     [BindProperty]
     public IFormFile? PhotoFile { get; set; }
@@ -79,7 +90,7 @@ public class ProductsListModel : PageModel
                 Name = x.Name,
                 Id = x.Id,
                 MainPhotoId = x.MainPhotoId,
-                CategoryId = x.CategoryId,
+                CategoryId = CategoryId,
                 CategoryName = x.Category.Name,
                 Composition = x.Composition,
                 Description = x.Description,
@@ -93,7 +104,35 @@ public class ProductsListModel : PageModel
     
     public async Task<IActionResult> OnPost()
     {
-        throw new NotImplementedException();
+
+        if (PhotoFile is not null)
+        {
+            await _photoService.TryDelete(UpdateProduct.MainPhotoId);
+            await using var stream = PhotoFile.OpenReadStream();
+
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+            UpdateProduct.MainPhotoId = await _photoService.AddPhoto(null, memoryStream.ToArray());
+        }
+
+        var product = new ProductDto
+        {
+            Id = UpdateProduct.Id,
+            Name = UpdateProduct.Name,
+            MainPhotoId = UpdateProduct.MainPhotoId,
+            CategoryId = CategoryId,
+            Composition = UpdateProduct.Composition,
+            Width = UpdateProduct.Width,
+            Height = UpdateProduct.Height,
+            Description = UpdateProduct.Description,
+            Price = UpdateProduct.Price,
+            Weight = UpdateProduct.Weight,
+        };
+        
+        await _productService.UpdateProduct(product);
+
+        return Redirect($"/Products/Products?CategoryId={CategoryId}");
     }
 
 }

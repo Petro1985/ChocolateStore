@@ -9,6 +9,7 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { ProductModalComponent } from './product-modal/product-modal.component';
 import {ModalModule} from "../../_modal";
 import {SwiperDirective} from "../../directives/swiper.directive";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {SwiperDirective} from "../../directives/swiper.directive";
         CommonModule,
         NgOptimizedImage,
         SlickCarouselModule,
-        ModalModule
+        ModalModule,
+        BrowserAnimationsModule
     ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

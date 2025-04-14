@@ -30,6 +30,11 @@ document.addEventListener('DOMContentLoaded', () =>
         x.addEventListener('click', onPageLinkClick);
     })
 
+    const inputImages = document.querySelectorAll<HTMLInputElement>('.input-image');
+    inputImages.forEach(x =>
+    {
+        x.addEventListener('change', OnInputImageChange)
+    })
 })
 
 function LoadCategory(e: Event)

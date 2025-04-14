@@ -62,10 +62,16 @@ public class CategoriesListModel : PageModel
         
         var pagedCategories = await _categoryService
             .GetPagedCategoriesSortedByName(PageSize, CurrentPage, criteria);
+        // Если на текущей странице нет элементов, но при этом в результате что-то есть -> переходим на первую страницу
+        if (pagedCategories is { TotalCount: > 0, Items.Count: 0 }) 
+        {
+            pagedCategories = await _categoryService
+                .GetPagedCategoriesSortedByName(PageSize, 1, criteria);
+        }
 
+        Count = pagedCategories.TotalCount; 
         PageSize = pagedCategories.PageSize;
         CurrentPage = pagedCategories.PageNumber;
-        Count = pagedCategories.TotalCount; 
         
         CategoriesList = pagedCategories.Items.Select(x => new CategoryInlineViewModel
             {
