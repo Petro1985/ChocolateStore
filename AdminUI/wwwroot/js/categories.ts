@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () =>
     const inputImages = document.querySelectorAll<HTMLInputElement>('.input-image');
     inputImages.forEach(x =>
     {
-        x.addEventListener('change', OnInputImageChange)
+        x.addEventListener('change', OnMainPhotoInputChange)
     })
     
     searchInput?.focus();

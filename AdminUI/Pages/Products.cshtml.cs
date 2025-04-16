@@ -1,4 +1,3 @@
-using System.Net;
 using AdminUI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -98,6 +97,7 @@ public class ProductsListModel : PageModel
                 Weight = x.Weight,
                 Width = x.Width,
                 Height = x.Height,
+                Photos = x.Photos.Select(y => y.Id).ToList(),
             })
             .ToList();
     }

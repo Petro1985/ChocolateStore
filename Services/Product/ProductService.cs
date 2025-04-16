@@ -161,8 +161,6 @@ public class ProductService : IProductService
             throw new ArgumentException("Номер страницы должен быть больше 0 (нумерация с 1)", nameof(pageNumber));
         }
 
-
-
         Specification<ProductEntity> specification = new ProductsSortedByNameSpecification();
         if (categoryId is not null)
         {

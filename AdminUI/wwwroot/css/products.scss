@@ -7,3 +7,16 @@
   transition: 0.25s ease-out;
   transform: rotate(180deg);
 }
+
+.product-photo {
+  width: fit-content;
+  position: relative;
+
+  img {
+    display: block;
+  }
+
+  button {
+    z-index: 10;
+  }
+}

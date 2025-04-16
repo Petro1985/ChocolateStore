@@ -22,6 +22,8 @@ public class ProductsInlineViewModel
     [DisplayName("Основная фотография")]
     public Guid? MainPhotoId { get; set; }
 
+    public List<Guid> Photos { get; set; }
+
     public Guid CategoryId { get; set; }
 
     [DisplayName("Категория")]

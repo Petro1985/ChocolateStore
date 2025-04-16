@@ -17,11 +17,11 @@ function _arrayBufferToBase64(buffer) {
     }
     return window.btoa(binary);
 }
-function OnInputImageChange(e) {
+function OnMainPhotoInputChange(e) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a;
+        var _a, _b;
         const inputElement = e.target;
-        const imageElement = (_a = inputElement.parentElement) === null || _a === void 0 ? void 0 : _a.querySelector('img');
+        const imageElement = (_b = (_a = inputElement.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement) === null || _b === void 0 ? void 0 : _b.querySelector('img');
         const files = inputElement === null || inputElement === void 0 ? void 0 : inputElement.files;
         if (files && files.length > 0) {
             const file = files[0];

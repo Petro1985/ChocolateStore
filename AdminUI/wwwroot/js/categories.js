@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput === null || searchInput === void 0 ? void 0 : searchInput.addEventListener('change', ApplySearch);
     const inputImages = document.querySelectorAll('.input-image');
     inputImages.forEach(x => {
-        x.addEventListener('change', OnInputImageChange);
+        x.addEventListener('change', OnMainPhotoInputChange);
     });
     searchInput === null || searchInput === void 0 ? void 0 : searchInput.focus();
 });

@@ -8,5 +8,6 @@ public class ProductsSortedByNameSpecification : Specification<ProductEntity>
     public ProductsSortedByNameSpecification() : base(null) {
         AddOrderBy(x => x.Name);
         AddInclude(x => x.Category);
+        AddInclude(x => x.Photos);
     }
 }

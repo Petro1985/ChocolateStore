@@ -8,4 +8,15 @@
   transform: rotate(180deg);
 }
 
+.product-photo {
+  width: fit-content;
+  position: relative;
+}
+.product-photo img {
+  display: block;
+}
+.product-photo button {
+  z-index: 10;
+}
+
 /*# sourceMappingURL=products.css.map */

@@ -9,9 +9,9 @@ function _arrayBufferToBase64( buffer: ArrayBuffer ) {
     return window.btoa( binary );
 }
 
-async function OnInputImageChange(e: any) {
+async function OnMainPhotoInputChange(e: any) {
     const inputElement: HTMLInputElement = e.target;
-    const imageElement = inputElement.parentElement?.querySelector('img');
+    const imageElement = inputElement.parentElement?.parentElement?.querySelector('img');
 
     const files = inputElement?.files;
     if (files && files.length > 0) {
