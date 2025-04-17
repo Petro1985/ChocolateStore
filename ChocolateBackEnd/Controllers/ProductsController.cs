@@ -75,7 +75,6 @@ public class ProductsController : BaseApiController
         try
         {
             var photo = Convert.FromBase64String(addPhotoRequest.PhotoBase64);
-            
             var newPhotoId = await _photoService.AddPhoto(addPhotoRequest.ProductId, photo);
 
             return Ok(newPhotoId);

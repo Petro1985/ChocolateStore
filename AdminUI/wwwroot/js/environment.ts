@@ -1,0 +1,1 @@
+const BaseUrl = "http://localhost:5260";

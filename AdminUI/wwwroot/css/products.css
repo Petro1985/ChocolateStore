@@ -19,4 +19,26 @@
   z-index: 10;
 }
 
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  min-width: 300px;
+  width: 300px;
+  text-align: center;
+}
+
 /*# sourceMappingURL=products.css.map */

@@ -86,7 +86,7 @@
                                 <label class="btn btn-outline-primary m-2">Выбрать главное фото
                                     <input type="file"
                                            asp-for="PhotoFile"
-                                           id="photoFile"
+                                           id="main-photo-file-@j"
                                            accept="image/*"
                                            class="d-none input-image">
                                 </label>
@@ -118,21 +118,23 @@
                         <h4>Остальные фотографии</h4>
                         @foreach (var photoId in Model.ProductsList[j].Photos)
                         {
-                        <div class="product-photo">
-                            <image id="photo-@photoId.ToString()" src="@PhotoHelpers.GetPhotoUrl(photoId)" width="400px" height="400px"></image>
+                            <div class="product-photo m-2" id="photo-@photoId.ToString()">
+                                <image src="@PhotoHelpers.GetPhotoUrl(photoId)" width="400px" height="400px"></image>
 
-                            <button type="button"
-                                    class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1"
-                                    data-photo-id="@photoId"
-                                    title="Удалить фото">
-                                <i class="bi bi-x-lg"></i>
-                            </button>
-                        </div>
+                                <button type="button"
+                                        data-photo-id="@photoId"
+                                        id="delete-photo-@j"
+                                        class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1"
+                                        title="Удалить фото">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
                         }
                         <label class="btn btn-outline-primary m-2">Добавить фотографию
                             <input type="file"
-                                   asp-for="PhotoFile"
-                                   id="photoFile"
+                                   multiple="multiple"
+                                   id="new-photo-file-@j"
+                                   data-product-id="@product.Id"
                                    accept="image/*"
                                    class="d-none input-image">
                         </label>
@@ -144,6 +146,16 @@
         
     }
 </table>
+
+@* Модальное окно подтверждения удаления *@
+<div id="deleteModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <p>Вы уверены, что хотите удалить?</p>
+        <button class="btn btn-danger m-1" id="confirmDelete">Удалить</button>
+        <button class="btn btn-primary m-1" id="cancelDelete">Отмена</button>
+    </div>
+</div>
+
 
 @section Scripts
 {

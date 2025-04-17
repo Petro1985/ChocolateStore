@@ -1,6 +1,8 @@
 ﻿using System.Net.Mime;
 using AutoMapper;
+using ChocolateDomain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using Models.Photo;
 using Services.Photo;
 
 namespace AdminUI.Controllers;
@@ -32,21 +34,26 @@ public class PhotosController : ControllerBase
     }
     
     // [Authorize(Policy = PoliciesConstants.Admin)]
-    // [HttpPost("Crop", Name = "CropPhoto")]
-    // public async Task<IActionResult> CropPhoto()
-    // {
-    //     var stream = HttpContext.Request.BodyReader.AsStream();
-    //     var newPhoto = await _photoService.CropPhoto(stream);
-    //     var newPhotoBase64 = Convert.ToBase64String(newPhoto);
-    //     return Ok(newPhotoBase64);
-    // }
-    //
-    // [Authorize(Policy = PoliciesConstants.Admin)]
-    // [HttpDelete("{photoId:guid}", Name = "DeletePhoto")]
-    // public async Task<IActionResult> DeletePhoto([FromRoute]Guid photoId)
-    // {
-    //     await _photoService.Delete(photoId);
-    //     return Ok();
-    // }
+    [HttpDelete("{photoId:guid}", Name = "DeletePhoto")]
+    public async Task<IActionResult> DeletePhoto([FromRoute]Guid photoId)
+    {
+        await _photoService.Delete(photoId);
+        return Ok();
+    }
+    
+    [HttpPost("/Product/{productId:Guid}/Photos")]
+    public async Task<IActionResult> AddPhotos([FromBody]AddPhotoRequest addPhotoRequest)
+    {
+        try
+        {
+            var photo = Convert.FromBase64String(addPhotoRequest.PhotoBase64);
+            var newPhotoId = await _photoService.AddPhoto(addPhotoRequest.ProductId, photo);
 
+            return Ok(newPhotoId);
+        }
+        catch (EntityNotFoundException e)
+        {
+            return BadRequest("Incorrect ProductID");
+        }
+    }
 }
