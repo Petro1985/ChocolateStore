@@ -6,6 +6,7 @@ describe('CategoriesComponent', () => {
   let component: CategoriesListComponent;
   let fixture: ComponentFixture<CategoriesListComponent>;
 
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [CategoriesListComponent]

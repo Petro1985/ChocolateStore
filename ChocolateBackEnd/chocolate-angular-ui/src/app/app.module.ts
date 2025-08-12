@@ -45,7 +45,6 @@ export function HttpLoaderFactory(http: HttpClient)
   ],
   imports: [
     InputMaskModule.forRoot({ inputSelector: 'input', isAsync: true }),
-    // NgxMaskDirective, NgxMaskPipe,
     MainPageModule,
     BrowserModule,
     HttpClientModule,

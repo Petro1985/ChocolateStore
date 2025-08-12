@@ -3,6 +3,7 @@ import {IProduct} from "../../../services/contracts/products";
 import {ImageService} from "../../../services/image-service";
 import {SwiperContainer} from "swiper/swiper-element";
 import {Swiper} from "swiper";
+import { ProductService } from '../../../services/product-service';
 
 @Component({
   selector: 'app-product-modal',
@@ -10,14 +11,17 @@ import {Swiper} from "swiper";
   styleUrl: './product-modal.component.scss',
 })
 export class ProductModalComponent implements OnInit {
-  @Input() product!: IProduct;
+  public product!: IProduct;
   @Input() closeFunction!: Function;
 
   @ViewChild('mainSwiper', {static: true}) mainSwiper!: ElementRef<SwiperContainer>
   @ViewChild('thumbnailSwiper', {static: true}) thumbnailSwiper!: ElementRef<SwiperContainer>
   @ViewChild('testSwiper', {static: true}) testSwiper!: ElementRef<SwiperContainer>
 
-  constructor(public imageService: ImageService) {
+  constructor(public imageService: ImageService, productService: ProductService) {
+    productService.getCurrentProduct().subscribe(p => {
+      this.product = p;
+    });
   }
 
   onThumbnailClick(i:number, e: any): void {
@@ -45,7 +49,7 @@ export class ProductModalComponent implements OnInit {
   ngOnInit() {
     this.mainSwiper.nativeElement.swiper.on('slideChange' ,swiper => this.MainSwiperOnSlideChange(swiper));
     this.mainSwiper.nativeElement.swiper.on('activeIndexChange' ,swiper => this.setActiveThumbnail(swiper.realIndex));
-    this.mainSwiper.nativeElement.swiper.on('slidesUpdated' ,swiper => this.onSwiperInit(swiper));
+    this.mainSwiper.nativeElement.swiper.on('slidesUpdated' ,swiper => this.onSwiperInit());
 
   }
 
@@ -56,7 +60,7 @@ export class ProductModalComponent implements OnInit {
     }
   }
 
-  private onSwiperInit(swiper: Swiper) {
+  private onSwiperInit() {
     this.thumbnailSwiper.nativeElement.swiper.slideTo(0, 0);
     this.mainSwiper.nativeElement.swiper.slideTo(0, 0);
   }

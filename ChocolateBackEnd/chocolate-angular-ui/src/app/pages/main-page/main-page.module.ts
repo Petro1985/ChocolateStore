@@ -7,6 +7,7 @@ import {ProductsCarouselComponent} from "./products-carousel/products-carousel.c
 import {ProductCardComponent} from "./product-card/product-card.component";
 import { MainPageComponent } from './main-page/main-page.component';
 import { ProductModalComponent } from './product-modal/product-modal.component';
+import { ProductListComponent } from './product-list/product-list.component';
 import {ModalModule} from "../../_modal";
 import {SwiperDirective} from "../../directives/swiper.directive";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -19,6 +20,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     ProductCardComponent,
     MainPageComponent,
     ProductModalComponent,
+    ProductListComponent,
     SwiperDirective
   ],
     imports: [

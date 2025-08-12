@@ -1,9 +1,7 @@
-import {
-  Component, EventEmitter,
-  Input, OnInit, Output
-} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {ICategory} from "../../../services/contracts/category";
-import {Observable} from "rxjs";
+import {Observable, take} from "rxjs";
+import { CategoryService } from '../../../services/category-service';
 
 @Component({
   selector: 'app-categories-list',
@@ -11,24 +9,22 @@ import {Observable} from "rxjs";
   styleUrls: ['./categories-list.component.scss']
 })
 export class CategoriesListComponent implements OnInit {
-  @Input() categories$!: Observable<ICategory[]>;
-  @Input() currentCategory!: ICategory;
-  @Output() chosenCategory: EventEmitter<ICategory> = new EventEmitter<ICategory>();
+  public currentCategory$!: Observable<ICategory| null>;
+  public categories$!: Observable<ICategory[]>;
 
-  constructor() {
+  constructor(private categoryService: CategoryService) {
+    this.categories$ = this.categoryService.getAllCategories();
+    this.currentCategory$ = this.categoryService.getCurrentCategory();
+    this.categories$.pipe(take(1)).subscribe(categories => {
+      this.categoryService.setCurrentCategory(categories[0].id);
+    });
   }
 
   ngOnInit(): void {
-    console.log('CategoriesListComponent init!!')
-    this.categories$.subscribe(
-      {
-        // next: value => this.chosenCategory = value[0]
-      }
-    );
   }
 
   OnCategoryClick(category: ICategory) {
-    this.chosenCategory.emit(category);
+    this.categoryService.setCurrentCategory(category.id);
     console.log('Child -> category changed to', category);
   }
 }

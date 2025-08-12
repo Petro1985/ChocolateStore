@@ -9,6 +9,8 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  min-height: 200px;
+  align-items: stretch;
   
   // Mobile styles - horizontal scrolling
   @media (max-width: 768px) {
@@ -27,6 +29,33 @@
     app-category-card {
       flex-shrink: 0;
       min-width: 150px; // Ensure minimum width for categories
+    }
+  }
+}
+
+.categories-spinner-container {
+  min-height: 500px;
+  min-width: 100%;
+  font-size: 1.2rem;
+  color: #6c757d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  
+  .spinner-border {
+    width: 8rem;
+    height: 8rem;
+    border-width: 0.9rem;
+  }
+  
+  @media (max-width: 768px) {
+    min-height: 200px;
+    
+    .spinner-border {
+      width: 4rem;
+      height: 4rem;
+      border-width: 0.4em;
     }
   }
 }

@@ -98,10 +98,12 @@ export class HeaderComponent implements AfterViewInit {
   onCategoryClick(category: ICategorySearchResult): void {
     this.categoryService.setCurrentCategory(category.id);
     this.clearSearchResults();
+    this.searchInput.nativeElement.value = '';
   }
 
   onProductClick(product: IProductSearchResult): void {
     this.categoryService.setCurrentCategory(product.categoryId);
     this.clearSearchResults();
+    this.searchInput.nativeElement.value = '';
   }
 }

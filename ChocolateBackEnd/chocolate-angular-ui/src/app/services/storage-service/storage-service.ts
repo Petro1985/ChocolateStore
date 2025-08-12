@@ -9,27 +9,7 @@ const emptyCategory: ICategory = {id:'', name: '', mainPhotoId: ''}
 @Injectable()
 export class StorageService
 {
-  private currentCategory: BehaviorSubject<ICategory> = new BehaviorSubject<ICategory>(emptyCategory);
-
   constructor(private fetchService: FetchService) {
   }
 
-  SetCurrentCategory(categoryId: string)
-  {
-    this.fetchService.GetCategory(categoryId)
-      .subscribe(
-        {
-          next: value =>
-          {
-            this.currentCategory.next(value);
-            localStorage.setItem(localstorageConstants.currentCategoryId, JSON.stringify(value));
-          }
-        }
-      );
-  }
-
-  GetCurrentCategory(): Observable<ICategory>
-  {
-    return this.currentCategory;
-  }
 }

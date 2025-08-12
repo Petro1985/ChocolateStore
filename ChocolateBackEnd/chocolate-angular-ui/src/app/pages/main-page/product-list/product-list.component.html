@@ -1,0 +1,14 @@
+<p class="d-block mb-2">Продукты категории <span class="products-section__header">{{ (currentCategory$ | async)?.name }}</span></p>
+
+@if ((products$ | async) === null) {
+  <div class="spinner-container">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+} @else {
+  <div class="products-grid">
+    @for (product of products$ | async; track product.id) {
+      <app-product-card [product]="product"></app-product-card>
+    }
+  </div>
+}
+

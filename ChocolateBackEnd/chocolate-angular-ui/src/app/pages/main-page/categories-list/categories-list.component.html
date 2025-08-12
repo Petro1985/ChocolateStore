@@ -1,11 +1,16 @@
 <div class="category-header">Категории товаров</div>
-<div class="categories-container">
-  @for (category of categories$ | async; track category.id)
-  {
-    <app-category-card 
-      [category]="category" 
-      [isSelected]="currentCategory?.id === category.id"
-      (click)="OnCategoryClick(category)">
-    </app-category-card>
-  }
-</div>
+@if (categories$ | async; as cats) {
+  <div class="categories-container">
+    @for (category of cats; track category.id) {
+      <app-category-card 
+        [category]="category" 
+        [isSelected]="(currentCategory$ | async)?.id === category.id"
+        (click)="OnCategoryClick(category)">
+      </app-category-card>
+    }
+  </div>
+} @else {
+  <div class="categories-spinner-container">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+}

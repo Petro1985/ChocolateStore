@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   Component,
   Input, OnChanges,
   SimpleChanges,
@@ -70,11 +69,9 @@ export class MainPageComponent implements OnChanges {
     this.currentCategory = $event;
     this.isLoadingProducts = true;
 
-    const productsObservable = this.fetchService.GetProducts($event.id);
-    this.products$ = productsObservable;
+    this.products$ = this.fetchService.GetProducts($event.id);
 
-    // Subscribe to handle loading state
-    productsObservable.subscribe({
+    this.products$.subscribe({
       next: () => {
         this.isLoadingProducts = false;
       },
@@ -82,17 +79,5 @@ export class MainPageComponent implements OnChanges {
         this.isLoadingProducts = false;
       }
     });
-
-    console.log('Parent -> Current category set to ', $event);
-  }
-
-  pickedProductChanged($event: IProduct) {
-    this.pickedProduct = $event;
-    this.modalService.open('product-modal')
-  }
-
-  closeProductModal = () =>
-  {
-    this.modalService.close('product-modal');
   }
 }

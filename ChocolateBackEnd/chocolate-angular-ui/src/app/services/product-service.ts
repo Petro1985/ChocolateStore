@@ -1,37 +1,45 @@
 import {FetchService} from "./fetch-service";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable, take} from "rxjs";
 import {IProduct} from "./contracts/products";
-import {ActivatedRoute} from "@angular/router";
 import {Injectable} from "@angular/core";
+import { CategoryService } from "./category-service";
+import { EmptyProduct } from "../constants/product-constants";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService
 {
-  private _products: BehaviorSubject<IProduct[] | null> = new BehaviorSubject<IProduct[] | null>(null);
-  private _categoryId: string = '';
+  private _products$!: Observable<IProduct[]>;
+  private _currentProduct$: BehaviorSubject<IProduct> = new BehaviorSubject<IProduct>(EmptyProduct);
 
-  constructor(private fetchService: FetchService, private route:ActivatedRoute) {
-    // this.fetchService.GetProducts()
+  constructor(private fetchService: FetchService, categoryService: CategoryService) {
+    categoryService.getCurrentCategory().subscribe(category => {
+      if (category)
+      {
+        this._products$ = fetchService.GetProducts(category.id);
+      }
+    });
   }
 
-  public GetProducts()
+  public GetProducts() : Observable<IProduct[]>
   {
-    if (this._products.value === null)
-    {
-      const categoryId = this.route.snapshot.params["id"];
-      this.fetchService.GetProducts(categoryId)
-        .subscribe(
-          {
-          next: value =>
-          {
-            this._products.next(value);
-          }
-        })
-    }
-    return this._products;
+    return this._products$;
   }
 
+  public setCurrentProduct(productId: string)
+  {
+    this._products$.pipe(take(1)).subscribe(products => {
+      const product = products.find(p => p.id === productId);
+      if (product)
+      {
+        this._currentProduct$.next(product);
+      }
+    });
+  }
 
+  public getCurrentProduct() : Observable<IProduct>
+  {
+    return this._currentProduct$;
+  }
 }
