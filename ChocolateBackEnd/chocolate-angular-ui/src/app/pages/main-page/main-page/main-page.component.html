@@ -1,17 +1,33 @@
 <!-- контейнер для категорий слева и продуктов справа -->
 <div class="container main-container">
   <div class="col-4 p-3">
-    <app-categories-list [categories$]="categories$" (chosenCategory)="currentCategoryChanged($event)">
-    </app-categories-list>
+    <!-- Categories loading spinner -->
+    @if (isLoadingCategories) {
+      <div class="categories-spinner-container">
+        <div class="spinner-border text-primary" role="status"></div>
+      </div>
+    } @else {
+      <app-categories-list [categories$]="categories$" (chosenCategory)="currentCategoryChanged($event)">
+      </app-categories-list>
+    }
   </div>
   <div class="col-8 mt-3 p-3">
     <p class="d-block">Продукты категории {{ currentCategory?.name ?? ''}}</p>
-    <div class="d-flex flex-row flex-wrap justify-content-evenly">
-      @for (product of products$ | async; track product.id) {
-        <app-product-card [product]="product" (pickedProduct)="pickedProductChanged($event)">
-        </app-product-card>
-      }
-    </div>
+
+    <!-- Products loading spinner -->
+    @if (isLoadingProducts) {
+      <div class="spinner-container">
+        <div class="spinner-border text-primary" role="status"></div>
+      </div>
+    } @else {
+      <!-- Products grid -->
+      <div class="d-flex flex-row flex-wrap justify-content-evenly">
+        @for (product of products$ | async; track product.id) {
+          <app-product-card [product]="product" (pickedProduct)="pickedProductChanged($event)">
+          </app-product-card>
+        }
+      </div>
+    }
   </div>
 </div>
 

@@ -37,6 +37,8 @@ public class ProductsController : BaseApiController
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByCategory([FromQuery]Guid? categoryId)
     {
+        await Task.Delay(1000);
+
         return categoryId is null 
             ? Ok(await _productService.GetAllProducts()) 
             : Ok(await _productService.GetProductsByCategory(categoryId.Value));

@@ -5,7 +5,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {BehaviorSubject, Observable, switchMap} from "rxjs";
+import {BehaviorSubject, Observable, switchMap, finalize} from "rxjs";
 import {ICategory} from "../../../services/contracts/category";
 import {FetchService} from "../../../services/fetch-service";
 import {IProduct} from "../../../services/contracts/products";
@@ -25,16 +25,40 @@ export class MainPageComponent implements OnChanges {
   public products$: Observable<IProduct[]> = new BehaviorSubject<IProduct[]>([]);
   @Input() currentCategory!: ICategory;
   @Input() pickedProduct: IProduct = EmptyProduct;
+  public isLoadingProducts: boolean = false;
+  public isLoadingCategories: boolean = false;
   // public currentCategory!: ICategory;
 
   constructor(private fetchService: FetchService, public modalService: ModalService) {
-    this.products$ = this.fetchService.GetCategories()
-      .pipe(switchMap(x => {
-        this.categories$.next(x);
-        this.currentCategory = x[0];
-        return this.fetchService.GetProducts(x[0].id);
-      }));
-
+    this.isLoadingCategories = true;
+    this.isLoadingProducts = true;
+    
+    // Load categories first
+    const categoriesObservable = this.fetchService.GetCategories();
+    categoriesObservable.subscribe({
+      next: (categories) => {
+        this.categories$.next(categories);
+        this.currentCategory = categories[0];
+        this.isLoadingCategories = false;
+        
+        // Then load products for the first category
+        const productsObservable = this.fetchService.GetProducts(categories[0].id);
+        this.products$ = productsObservable;
+        
+        productsObservable.subscribe({
+          next: () => {
+            this.isLoadingProducts = false;
+          },
+          error: () => {
+            this.isLoadingProducts = false;
+          }
+        });
+      },
+      error: () => {
+        this.isLoadingCategories = false;
+        this.isLoadingProducts = false;
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -44,7 +68,21 @@ export class MainPageComponent implements OnChanges {
 
   currentCategoryChanged($event: ICategory) {
     this.currentCategory = $event;
-    this.products$ = this.fetchService.GetProducts($event.id);
+    this.isLoadingProducts = true;
+
+    const productsObservable = this.fetchService.GetProducts($event.id);
+    this.products$ = productsObservable;
+
+    // Subscribe to handle loading state
+    productsObservable.subscribe({
+      next: () => {
+        this.isLoadingProducts = false;
+      },
+      error: () => {
+        this.isLoadingProducts = false;
+      }
+    });
+
     console.log('Parent -> Current category set to ', $event);
   }
 

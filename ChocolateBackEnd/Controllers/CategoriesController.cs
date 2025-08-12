@@ -22,6 +22,7 @@ public class CategoriesController : BaseApiController
     public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
     {
         var result = await _productService.GetAllCategories();
+        await Task.Delay(1000);
         return Ok(result);
     }
 
