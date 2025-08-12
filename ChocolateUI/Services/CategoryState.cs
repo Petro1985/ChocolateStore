@@ -1,8 +1,6 @@
-﻿using Models.Category;
-
-namespace ChocolateUI.Services;
+﻿namespace ChocolateUI.Services;
 
 public class CategoryState
 {
-    public Dictionary<Guid, CategoryDto> Categories { get; set; } = new ();
+    public Dictionary<Guid, CategoryResponse> Categories { get; set; } = new ();
 }

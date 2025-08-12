@@ -1,5 +1,4 @@
 ﻿using Models;
-using Models.User;
 
 namespace ChocolateUI;
 
@@ -7,7 +6,7 @@ public interface IUserProfile
 {
     bool IsLoggedIn();
     string? GetName();
-    void LogIn(UserInfoDTO userInfoDto);
+    void LogIn(UserInfoResponse userInfoResponse);
     void LogOut();
     bool IsAdmin();
 }
@@ -27,10 +26,10 @@ public class UserProfile : IUserProfile
     public string? GetName()
         => _name;
 
-    public void LogIn(UserInfoDTO userInfoDto)
+    public void LogIn(UserInfoResponse userInfoResponse)
     {
-        _name = userInfoDto.Name;
-        _isAdmin = userInfoDto.IsAdmin;
+        _name = userInfoResponse.Name;
+        _isAdmin = userInfoResponse.IsAdmin;
         _loggedIn = true;
     }
 

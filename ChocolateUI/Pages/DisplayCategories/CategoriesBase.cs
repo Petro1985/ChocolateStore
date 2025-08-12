@@ -1,6 +1,5 @@
 ﻿using ChocolateUI.Services;
 using Microsoft.AspNetCore.Components;
-using Models.Category;
 
 namespace ChocolateUI.Pages.DisplayCategories;
 
@@ -10,7 +9,7 @@ public class CategoryBase : ComponentBase
     [Inject] public IUserProfile UserProfile { get; set; }
     [Inject] public ILogger<CategoryBase> Logger { get; set; }
 
-    public Dictionary<Guid, CategoryDto>? Categories { get; set; }
+    public Dictionary<Guid, CategoryResponse>? Categories { get; set; }
 
     public bool IsAddingNew { get; set; }
     protected override async Task OnInitializedAsync()

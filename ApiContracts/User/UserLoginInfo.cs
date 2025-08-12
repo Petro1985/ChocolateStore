@@ -1,4 +1,4 @@
-﻿namespace Models.User;
+﻿namespace ApiContracts.User;
 
 public class UserLoginInfo
 {

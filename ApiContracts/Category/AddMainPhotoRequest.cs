@@ -1,4 +1,4 @@
-﻿namespace Models.Category;
+﻿namespace ApiContracts.Category;
 
 public class AddMainPhotoRequest
 {

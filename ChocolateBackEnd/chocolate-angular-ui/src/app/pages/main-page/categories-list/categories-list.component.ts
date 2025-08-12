@@ -4,7 +4,6 @@ import {
 } from '@angular/core';
 import {ICategory} from "../../../services/contracts/category";
 import {Observable} from "rxjs";
-import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 
 @Component({
   selector: 'app-categories-list',
@@ -13,6 +12,7 @@ import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 })
 export class CategoriesListComponent implements OnInit {
   @Input() categories$!: Observable<ICategory[]>;
+  @Input() currentCategory!: ICategory;
   @Output() chosenCategory: EventEmitter<ICategory> = new EventEmitter<ICategory>();
 
   constructor() {

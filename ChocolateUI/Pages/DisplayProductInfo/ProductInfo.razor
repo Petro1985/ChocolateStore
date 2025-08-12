@@ -1,6 +1,5 @@
 ﻿@page "/Category/{CategoryId:guid}/Product/{ProductId:guid}"
 @using ChocolateUI.Services
-@using Models.Product
 @inject IUserProfile UserProfile
 @inject ILogger<ProductInfo> Logger
 @inject IFetchService FetchService
@@ -52,8 +51,8 @@ else
 
     private AddPhotoModal _addPhotoForm;
     
-    private ProductDto? _product;
-    public ProductDto? Product
+    private ProductResponse? _product;
+    public ProductResponse? Product
     {
         get => _product;
         set

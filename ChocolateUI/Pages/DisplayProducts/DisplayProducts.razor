@@ -1,5 +1,4 @@
-﻿@using Models.Product
-@using ChocolateUI.Pages.Components
+﻿@using ChocolateUI.Pages.Components
 @using ChocolateUI.Services
 @inject ILogger<DisplayProducts> Logger
 @inject IUserProfile UserProfile
@@ -44,14 +43,14 @@
 @code
 {
     [Parameter] 
-    public Dictionary<Guid, ProductDto>? Products { get; set; }
+    public Dictionary<Guid, ProductResponse>? Products { get; set; }
     [Parameter]
-    public Func<ProductDto, Task>? UpdateProductFunc { get; set; }
+    public Func<ProductResponse, Task>? UpdateProductFunc { get; set; }
     [Parameter]
     public Func<Guid, Task>? DeleteProductFunc { get; set; }
 
     private AddOrEditProductModal? _editProductForm;
-    private DeleteItem<ProductDto>? _deleteButton;
+    private DeleteItem<ProductResponse>? _deleteButton;
     
     private async Task RemoveProduct(Guid id)
     {

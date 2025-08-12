@@ -1,9 +1,9 @@
 using AdminUI.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Models.Category;
 using Models.Product;
 using Services.Category;
+using Services.Models;
 using Services.Photo;
 using Services.Product;
 

@@ -1,6 +1,5 @@
 ﻿using ChocolateUI.Services;
 using Microsoft.AspNetCore.Components;
-using Models.User;
 
 namespace ChocolateUI.Pages.UserSignUp;
 

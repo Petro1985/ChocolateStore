@@ -1,9 +1,61 @@
 
-.main-container
-{
+.main-container {
   //background-color: #0dcaf0;
   display: flex;
   flex-direction: row;
+  
+  // Mobile layout - stack vertically
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.categories-section {
+  flex: 0 0 33.333333%; // 4 columns equivalent
+  padding: 1rem;
+  
+  @media (max-width: 768px) {
+    flex: none;
+    padding: 0.5rem;
+  }
+}
+
+.products-section {
+  flex: 0 0 66.666667%;
+  padding: 1rem;
+
+  .products-section__header {
+    font-weight: 900;
+    color: #9f7d0e;
+  }
+
+  @media (max-width: 768px) {
+    flex: none;
+    margin-top: 0;
+    padding: 0.5rem;
+  }
+}
+
+.products-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 1rem;
+  
+  // Mobile - 2 columns
+  @media (max-width: 768px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    justify-content: stretch;
+    padding: 0 0.5rem;
+    
+    app-product-card {
+      width: 100%;
+      max-width: none;
+      min-width: 0; // Allow cards to shrink below their natural size
+    }
+  }
 }
 
 .spinner-container {
@@ -20,6 +72,16 @@
     height: 10rem;
     border-width: 1em;
   }
+  
+  @media (max-width: 768px) {
+    min-height: 300px;
+    
+    .spinner-border {
+      width: 6rem;
+      height: 6rem;
+      border-width: 0.6em;
+    }
+  }
 }
 
 .categories-spinner-container {
@@ -35,5 +97,15 @@
     width: 10rem;
     height: 10rem;
     border-width: 1em;
+  }
+  
+  @media (max-width: 768px) {
+    min-height: 200px;
+    
+    .spinner-border {
+      width: 4rem;
+      height: 4rem;
+      border-width: 0.4em;
+    }
   }
 }

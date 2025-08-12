@@ -16,6 +16,20 @@ $category-card-height: 150px;
   text-decoration: none;
   vertical-align: top;
   cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 6px 15px rgba(0,0,0,.1);
+    transform: translateY(-2px);
+  }
+
+  &.selected {
+    border-radius: 11px;
+    border: 3px solid #fe9000;
+    box-shadow: 0 6px 20px rgba(254, 144, 0, 0.3);
+    transform: scale(1.05);
+  }
 
   .category-photo {
     //display: inline-block;

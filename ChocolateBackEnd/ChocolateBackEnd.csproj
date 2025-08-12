@@ -14,6 +14,7 @@
 
     <ItemGroup>
         <PackageReference Include="Asp.Versioning.Mvc" Version="8.0.0" />
+        <PackageReference Include="Mapster" Version="7.4.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.1" />
@@ -29,13 +30,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <!-- Don't publish the SPA source files, but do show them in the project files list -->
         <Content Remove="$(SpaRoot)**" />
         <None Remove="$(SpaRoot)**" />
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ApiContracts\ApiContracts.csproj" />
       <ProjectReference Include="..\ChocolateData\ChocolateData.csproj" />
       <ProjectReference Include="..\ChocolateDomain\ChocolateDomain.csproj" />
       <ProjectReference Include="..\Services\Services.csproj" />

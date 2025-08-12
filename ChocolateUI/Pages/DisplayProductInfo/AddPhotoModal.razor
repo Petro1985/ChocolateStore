@@ -1,6 +1,4 @@
 ﻿@using ChocolateUI.Services
-@using Models.Product
-@using Models.Category
 @inject ILogger<AddPhotoModal> _Logger;
 @inject IFetchService FetchService
 @inject IJSRuntime JS
@@ -50,7 +48,7 @@
     [Parameter]
     public Func<Task> AfterAddingCallBack { get; set; }
     [Parameter]
-    public ProductDto Product { get; set; }
+    public ProductResponse Product { get; set; }
 
     public Stream Photo = new MemoryStream();
     
@@ -61,7 +59,7 @@
 
     private IList<string> imageData = new List<string>();
 
-    public CategoryDto NewCategory { get; set; } = new ();
+    public CategoryResponse NewCategory { get; set; } = new ();
     private IJSObjectReference? module;
 
     public void Open()

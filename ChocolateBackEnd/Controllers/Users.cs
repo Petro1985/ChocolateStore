@@ -1,12 +1,9 @@
 ﻿using System.Security.Claims;
-using ChocolateBackEnd.Auth;
+using ApiContracts.User;
 using ChocolateDomain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Models;
-using Models.User;
 
 namespace ChocolateBackEnd.Controllers;
 
@@ -24,7 +21,7 @@ public class UsersController : BaseApiController
 
     [Authorize]
     [HttpGet("info")]
-    public ActionResult<UserInfoDTO> UserInfo()
+    public ActionResult<List<Claim>> UserInfo()
     {
         var userClaims = User.Claims.Select(x => new Claim(x.Type, x.Value)).ToList();
         return Ok(userClaims);
@@ -38,12 +35,6 @@ public class UsersController : BaseApiController
         return Ok();
     }
 
-    public class UserSignupRequest
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string PhoneNumber { get; set; }
-    }
     
     [HttpPost("SignUp")]
     public async Task<IActionResult> UserSignUp([FromBody] UserSignupRequest userInfo)
@@ -63,13 +54,6 @@ public class UsersController : BaseApiController
         }
 
         return Ok();
-    }
-
-    public record UserLoginRequest
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public bool Remember { get; set; }
     }
 
     [HttpPost("Login")]

@@ -1,0 +1,62 @@
+<svg width="140" height="60" viewBox="0 0 180 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for chocolate bar -->
+    <linearGradient id="chocolateGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D2691E;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#CD853F;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B4513;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient for cocoa beans -->
+    <radialGradient id="beanGradient" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#A0522D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#654321;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Main chocolate bar -->
+  <rect x="8" y="15" width="44" height="30" rx="4" fill="url(#chocolateGradient)" stroke="#654321" stroke-width="1"/>
+  
+  <!-- Chocolate bar grid pattern -->
+  <g stroke="#654321" stroke-width="0.8" opacity="0.7">
+    <!-- Vertical lines -->
+    <line x1="19" y1="15" x2="19" y2="45"/>
+    <line x1="30" y1="15" x2="30" y2="45"/>
+    <line x1="41" y1="15" x2="41" y2="45"/>
+    <!-- Horizontal lines -->
+    <line x1="8" y1="25" x2="52" y2="25"/>
+    <line x1="8" y1="35" x2="52" y2="35"/>
+  </g>
+  
+  <!-- Cocoa beans around the bar -->
+  <g fill="url(#beanGradient)">
+    <!-- Large beans -->
+    <ellipse cx="15" cy="8" rx="3" ry="4.5" transform="rotate(-20 15 8)"/>
+    <ellipse cx="45" cy="52" rx="3" ry="4.5" transform="rotate(35 45 52)"/>
+    <ellipse cx="3" cy="35" rx="2.5" ry="4" transform="rotate(-60 3 35)"/>
+    <ellipse cx="57" cy="20" rx="2.5" ry="4" transform="rotate(45 57 20)"/>
+    
+    <!-- Small beans -->
+    <ellipse cx="25" cy="5" rx="2" ry="3" transform="rotate(10 25 5)"/>
+    <ellipse cx="35" cy="55" rx="2" ry="3" transform="rotate(-25 35 55)"/>
+  </g>
+  
+  <!-- Bean center lines -->
+  <g stroke="#3D2914" stroke-width="0.8" opacity="0.8">
+    <line x1="15" y1="5" x2="15" y2="11" transform="rotate(-20 15 8)"/>
+    <line x1="45" y1="49" x2="45" y2="55" transform="rotate(35 45 52)"/>
+    <line x1="3" y1="32" x2="3" y2="38" transform="rotate(-60 3 35)"/>
+    <line x1="57" y1="17" x2="57" y2="23" transform="rotate(45 57 20)"/>
+    <line x1="25" y1="2" x2="25" y2="8" transform="rotate(10 25 5)"/>
+    <line x1="35" y1="52" x2="35" y2="58" transform="rotate(-25 35 55)"/>
+  </g>
+  
+  <!-- Stylish company name -->
+  <g font-family="Georgia, serif">
+    <text x="65" y="22" font-size="16" font-weight="bold" fill="#654321" letter-spacing="0.5px">CHOCOLATE</text>
+    <text x="65" y="42" font-size="12" font-weight="normal" fill="#8B4513" letter-spacing="1px">STORE</text>
+  </g>
+  
+
+
+</svg>

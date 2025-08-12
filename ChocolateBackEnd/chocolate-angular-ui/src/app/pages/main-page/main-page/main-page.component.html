@@ -1,18 +1,18 @@
 <!-- контейнер для категорий слева и продуктов справа -->
 <div class="container main-container">
-  <div class="col-4 p-3">
+  <div class="categories-section">
     <!-- Categories loading spinner -->
     @if (isLoadingCategories) {
       <div class="categories-spinner-container">
         <div class="spinner-border text-primary" role="status"></div>
       </div>
     } @else {
-      <app-categories-list [categories$]="categories$" (chosenCategory)="currentCategoryChanged($event)">
+      <app-categories-list [categories$]="categories$" [currentCategory]="currentCategory" (chosenCategory)="currentCategoryChanged($event)">
       </app-categories-list>
     }
   </div>
-  <div class="col-8 mt-3 p-3">
-    <p class="d-block">Продукты категории {{ currentCategory?.name ?? ''}}</p>
+  <div class="products-section">
+    <p class="d-block mb-2">Продукты категории <span class="products-section__header">{{ currentCategory.name }}</span></p>
 
     <!-- Products loading spinner -->
     @if (isLoadingProducts) {
@@ -21,7 +21,7 @@
       </div>
     } @else {
       <!-- Products grid -->
-      <div class="d-flex flex-row flex-wrap justify-content-evenly">
+      <div class="products-grid">
         @for (product of products$ | async; track product.id) {
           <app-product-card [product]="product" (pickedProduct)="pickedProductChanged($event)">
           </app-product-card>

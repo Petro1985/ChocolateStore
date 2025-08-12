@@ -1,6 +1,4 @@
 ﻿@using Models
-@using Models.Category
-@using Models.Product
 @using ChocolateUI.Services
 @using ChocolateUI.Pages.Components
 @inject IFetchService FetchService
@@ -67,12 +65,12 @@
 @code {
 
     [Parameter]
-    public CategoryDto? Category { get; set; }
+    public CategoryResponse? Category { get; set; }
 
     [Parameter]
-    public Func<ProductDto, Task>? AddProductFunc {get; set; } 
+    public Func<ProductResponse, Task>? AddProductFunc {get; set; } 
     [Parameter]
-    public Func<ProductDto, Task>? UpdateProductFunc {get; set; } 
+    public Func<ProductResponse, Task>? UpdateProductFunc {get; set; } 
 
     private ChoosePhoto? _choosePhoto;
     public Guid Guid = Guid.NewGuid();
@@ -80,15 +78,15 @@
     public string ModalClass = "";
     public bool ShowBackdrop = false;
 
-    public ProductDto CurrentProduct { get; set; }
+    public ProductResponse CurrentProduct { get; set; }
 
     protected override void OnInitialized()
     {
-        CurrentProduct = new ProductDto();
-        Category = new CategoryDto();
+        CurrentProduct = new ProductResponse();
+        Category = new CategoryResponse();
     }
 
-    public void Open(ProductDto product)
+    public void Open(ProductResponse product)
     {
         CurrentProduct = product;
         ModalDisplay = "block;";

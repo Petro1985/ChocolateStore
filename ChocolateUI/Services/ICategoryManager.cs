@@ -1,13 +1,12 @@
 ﻿using ChocolateUI.Pages.DisplayCategories;
-using Models.Category;
 
 namespace ChocolateUI.Services;
 
 public interface ICategoryManager
 {
-    Task<IEnumerable<CategoryDto>> GetAll();
-    Task<CategoryDto> Get();
-    Task Add(CategoryDto category);
-    Task Delete(CategoryDto category);
-    Task Update(CategoryDto category);
+    Task<IEnumerable<CategoryResponse>> GetAll();
+    Task<CategoryResponse> Get();
+    Task Add(CategoryResponse category);
+    Task Delete(CategoryResponse category);
+    Task Update(CategoryResponse category);
 }

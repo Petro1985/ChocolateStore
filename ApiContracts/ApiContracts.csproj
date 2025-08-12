@@ -4,7 +4,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>12</LangVersion>
-        <RootNamespace>Models</RootNamespace>
+        <RootNamespace>ApiContracts</RootNamespace>
         <TargetFrameworks>net7.0;net8.0;net8.0-windows</TargetFrameworks>
     </PropertyGroup>
     

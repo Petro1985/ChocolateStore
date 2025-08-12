@@ -2,7 +2,6 @@
 @using System.Xml
 @using ChocolateUI.Pages.Components
 @using ChocolateUI.Services
-@using Models.Category
 @inject ILogger<AddOrEditCategoryModal> Logger
 @inject IFetchService FetchService
 
@@ -43,19 +42,19 @@
 @code {
 
     [Parameter]
-    public Func<CategoryDto, Task>? AddCategory { get; set; }
+    public Func<CategoryResponse, Task>? AddCategory { get; set; }
     [Parameter]
-    public Func<CategoryDto, Task>? UpdateCategory { get; set; }
+    public Func<CategoryResponse, Task>? UpdateCategory { get; set; }
     
     public string ModalDisplay = "none;";
     public string ModalClass = "";
     public bool ShowBackdrop = false;
 
-    public CategoryDto CurrentCategory { get; set; } = new();
+    public CategoryResponse CurrentCategory { get; set; } = new();
 
     private ChoosePhoto _choosePhoto;
 
-    public void Open(CategoryDto category)
+    public void Open(CategoryResponse category)
     {
         CurrentCategory = category;
         if (category.MainPhotoId != default)

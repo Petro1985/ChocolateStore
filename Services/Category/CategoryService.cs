@@ -6,7 +6,6 @@ using ChocolateDomain.Entities;
 using ChocolateDomain.Specifications;
 using ChocolateDomain.Specifications.Categories;
 using ChocolateDomain.Specifications.Common;
-using Models.Category;
 using Services.Models;
 
 namespace Services.Category;

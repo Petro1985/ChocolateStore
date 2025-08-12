@@ -1,6 +1,4 @@
 ﻿using ChocolateDomain.Entities;
-using Models;
-using Models.Category;
 using Models.Product;
 using Services.Models;
 
@@ -12,7 +10,7 @@ public interface IProductService
     
     Task<IEnumerable<ProductDto>> GetProductsByCategory(Guid categoryId);
     
-    Task<IEnumerable<CategoryDto>> GetAllCategories();
+    Task<List<CategoryDto>> GetAllCategories();
     
     Task<ProductDto> GetProduct(Guid productId);
     
@@ -24,7 +22,19 @@ public interface IProductService
     Task<ProductDto> GetProductWithPhotoIds(Guid productId);
     
     Task<CategoryDto> GetCategory(Guid categoryId);
-    Task<Guid> AddNewProduct(ProductCreateRequest product);
+    
+    /// <summary>
+    /// Добавление нового товара
+    /// </summary>
+    /// <param name="product"></param>
+    /// <returns></returns>
+    Task<Guid> AddNewProduct(ProductDto product);
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="product"></param>
+    /// <returns></returns>
     Task UpdateProduct(ProductDto product);
     Task UpdateCategory(CategoryDto category);
     Task SetProductPhoto(Guid productId, Guid photoId);

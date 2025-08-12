@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Json;
-using Models.User;
 using Newtonsoft.Json;
 
 namespace ChocolateUI.Services;
@@ -41,7 +40,7 @@ class UserService : IUserService
         }
     }
 
-    public async Task<UserInfoDTO> GetUserInfo()
+    public async Task<UserInfoResponse> GetUserInfo()
     {
         try
         {
@@ -51,7 +50,7 @@ class UserService : IUserService
             
             var responseBody = await response.Content.ReadAsStringAsync();
 
-            var userInfo = JsonConvert.DeserializeObject<UserInfoDTO>(responseBody) ?? new UserInfoDTO();
+            var userInfo = JsonConvert.DeserializeObject<UserInfoResponse>(responseBody) ?? new UserInfoResponse();
             _userProfile.LogIn(userInfo);
             
             return userInfo;

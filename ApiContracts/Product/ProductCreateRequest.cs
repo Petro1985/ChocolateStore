@@ -1,4 +1,4 @@
-﻿namespace Models.Product;
+﻿namespace ApiContracts.Product;
 
 public class ProductCreateRequest
 {

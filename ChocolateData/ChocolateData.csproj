@@ -19,7 +19,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ChocolateDomain\ChocolateDomain.csproj" />
-      <ProjectReference Include="..\ApiContracts\ApiContracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>

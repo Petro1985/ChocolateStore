@@ -1,8 +1,8 @@
 ﻿using System.Net.Mime;
+using ApiContracts.Photo;
 using AutoMapper;
 using ChocolateDomain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Models.Photo;
 using Services.Photo;
 
 namespace AdminUI.Controllers;

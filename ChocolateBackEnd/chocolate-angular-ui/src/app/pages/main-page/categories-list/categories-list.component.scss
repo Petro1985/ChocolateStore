@@ -1,5 +1,32 @@
 .category-header
 {
-  margin: 10px 0 10px 0;
   font: 1.2rem bold;
+  color: #9f7d0e; 
+  font-weight: 900;
+}
+
+.categories-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  
+  // Mobile styles - horizontal scrolling
+  @media (max-width: 768px) {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0;
+    -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none; // IE/Edge
+    
+    &::-webkit-scrollbar {
+      display: none; // Chrome/Safari
+    }
+    
+    app-category-card {
+      flex-shrink: 0;
+      min-width: 150px; // Ensure minimum width for categories
+    }
+  }
 }

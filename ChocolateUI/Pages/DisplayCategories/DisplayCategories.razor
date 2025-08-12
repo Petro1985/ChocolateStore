@@ -2,7 +2,6 @@
 @using System.Security.AccessControl
 @using ChocolateUI.Pages.Components
 @using Microsoft.VisualBasic.FileIO
-@using Models.Category
 @inherits DisplayCategoriesBase
 
 @foreach (var value in Categories)
@@ -41,9 +40,9 @@
 @code
 {
     [Parameter] 
-    public Dictionary<Guid, CategoryDto>? Categories { get; set; }
+    public Dictionary<Guid, CategoryResponse>? Categories { get; set; }
     [Parameter]
-    public Func<CategoryDto, Task>? UpdateCategory { get; set; }
+    public Func<CategoryResponse, Task>? UpdateCategory { get; set; }
     [Parameter]
     public Func<Guid, Task>? DeleteCategory { get; set; }
 

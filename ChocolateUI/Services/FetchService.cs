@@ -2,9 +2,6 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Net.Mime;
-using Models.Category;
-using Models.Photo;
-using Models.Product;
 
 namespace ChocolateUI.Services;
 
@@ -22,14 +19,14 @@ class FetchService : IFetchService
         _serverUrl = _httpClient.BaseAddress?.ToString() ?? "";
     }
 
-    public async Task<ICollection<ProductDto>> GetProductByCategory(Guid categoryId)
+    public async Task<ICollection<ProductResponse>> GetProductByCategory(Guid categoryId)
     {
         try
         {
             Console.WriteLine(_httpClient.BaseAddress);
             var response = await _httpClient.GetAsync($"Products?categoryId={categoryId}");
-            var responseBody = await response.Content.ReadFromJsonAsync<ICollection<ProductDto>>();
-            return responseBody ?? new List<ProductDto>();
+            var responseBody = await response.Content.ReadFromJsonAsync<ICollection<ProductResponse>>();
+            return responseBody ?? new List<ProductResponse>();
         }
         catch (Exception e)
         {
@@ -38,14 +35,14 @@ class FetchService : IFetchService
         }
     }
 
-    public async Task<ICollection<CategoryDto>> GetCategories()
+    public async Task<ICollection<CategoryResponse>> GetCategories()
     {
         try
         {
             var response = await _httpClient.GetAsync("Categories");
     
-            var responseBody = await response.Content.ReadFromJsonAsync<ICollection<CategoryDto>>();
-            return responseBody ?? new List<CategoryDto>();
+            var responseBody = await response.Content.ReadFromJsonAsync<ICollection<CategoryResponse>>();
+            return responseBody ?? new List<CategoryResponse>();
         }
         catch (Exception e)
         {
@@ -54,14 +51,14 @@ class FetchService : IFetchService
         }
     }
 
-    public async Task<ProductDto> GetProduct(Guid productId)
+    public async Task<ProductResponse> GetProduct(Guid productId)
     {
         try
         {
             var response = await _httpClient.GetAsync($"Products/{productId}");
     
-            var responseBody = await response.Content.ReadFromJsonAsync<ProductDto>();
-            return responseBody ?? new ProductDto();
+            var responseBody = await response.Content.ReadFromJsonAsync<ProductResponse>();
+            return responseBody ?? new ProductResponse();
         }
         catch (Exception e)
         {
@@ -70,11 +67,11 @@ class FetchService : IFetchService
         }
     }
 
-    public async Task<Guid> CreateNewCategory(CategoryDto categoryDto)
+    public async Task<Guid> CreateNewCategory(CategoryResponse categoryResponse)
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync("Categories", categoryDto);
+            var response = await _httpClient.PostAsJsonAsync("Categories", categoryResponse);
             
             var responseBody = await response.Content.ReadFromJsonAsync<Guid>();
             return responseBody;
@@ -86,7 +83,7 @@ class FetchService : IFetchService
         }
     }
 
-    public async Task<Guid> CreateNewProduct(ProductDto newProduct)
+    public async Task<Guid> CreateNewProduct(ProductResponse newProduct)
     {
         try
         {
@@ -110,15 +107,15 @@ class FetchService : IFetchService
         }
     }
 
-    public async Task<CategoryDto> GetCategory(Guid categoryId)
+    public async Task<CategoryResponse> GetCategory(Guid categoryId)
     {
         try
         {
             var response = await _httpClient.GetAsync($"Categories/{categoryId}");
     
             response.EnsureSuccessStatusCode();
-            var responseBody = await response.Content.ReadFromJsonAsync<CategoryDto>();
-            return responseBody ?? new CategoryDto();
+            var responseBody = await response.Content.ReadFromJsonAsync<CategoryResponse>();
+            return responseBody ?? new CategoryResponse();
         }
         catch (Exception e)
         {
@@ -230,7 +227,7 @@ class FetchService : IFetchService
         }
     }
     
-    public async Task UpdateCategory(CategoryDto category)
+    public async Task UpdateCategory(CategoryResponse category)
     {
         try
         {
@@ -244,7 +241,7 @@ class FetchService : IFetchService
         }
     }
     
-    public async Task UpdateProduct(ProductDto product)
+    public async Task UpdateProduct(ProductResponse product)
     {
         try
         {

@@ -1,9 +1,11 @@
-<p class="category-header">Категории товаров которые вы можете заказать</p>
-
-<div class="d-flex flex-row flex-wrap">
+<div class="category-header">Категории товаров</div>
+<div class="categories-container">
   @for (category of categories$ | async; track category.id)
   {
-    <app-category-card [category]="category" (click)="OnCategoryClick(category)">
+    <app-category-card 
+      [category]="category" 
+      [isSelected]="currentCategory?.id === category.id"
+      (click)="OnCategoryClick(category)">
     </app-category-card>
   }
 </div>

@@ -1,6 +1,5 @@
-<a class="category-card">
+<a class="category-card" [class.selected]="isSelected">
   <div class="category-photo">
-<!--    <img class="" [style.width.px]="CategoryConstants.CardWidth-10" src="{{imageUrl}}" alt="ProductMainPhoto" />-->
     <img class="" ngSrc="{{imageUrl}}" fill alt="ProductMainPhoto" />
     <p class="name">
       {{ this.category.name }}

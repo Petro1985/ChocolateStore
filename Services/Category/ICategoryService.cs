@@ -1,6 +1,5 @@
 using System.Linq.Expressions;
 using ChocolateDomain.Entities;
-using Models.Category;
 using Services.Models;
 
 namespace Services.Category;

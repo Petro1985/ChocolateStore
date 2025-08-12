@@ -6,7 +6,6 @@ using ChocolateDomain.Specifications.Categories;
 using ChocolateDomain.Specifications.Common;
 using ChocolateDomain.Specifications.Products;
 using Microsoft.EntityFrameworkCore;
-using Models.Category;
 using Models.Product;
 using Services.Models;
 
@@ -58,11 +57,11 @@ public class ProductService : IProductService
         return mappedPhotos;
     }
 
-    public async Task<IEnumerable<CategoryDto>> GetAllCategories()
+    public async Task<List<CategoryDto>> GetAllCategories()
     {
         var specification = new CategoriesSortedByNameSpecification();
         var categories = await _categoryRepository.GetBySpecification(specification);
-        return _mapper.Map<IEnumerable<CategoryDto>>(categories);
+        return _mapper.Map<List<CategoryDto>>(categories);
     }
 
     public async Task<CategoryDto> GetCategory(Guid categoryId)
@@ -71,7 +70,7 @@ public class ProductService : IProductService
         return _mapper.Map<CategoryDto>(category);
     }
 
-    public async Task<Guid> AddNewProduct(ProductCreateRequest product)
+    public async Task<Guid> AddNewProduct(ProductDto product)
     {
         var productEntity = _mapper.Map<ProductEntity>(product);
         await _productRepository.Add(productEntity);

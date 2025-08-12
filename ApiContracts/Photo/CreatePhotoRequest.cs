@@ -1,5 +1,5 @@
 ﻿
-namespace Models.Photo;
+namespace ApiContracts.Photo;
 
 public class AddPhotoRequest
 {

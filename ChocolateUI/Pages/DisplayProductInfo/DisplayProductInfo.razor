@@ -1,6 +1,4 @@
 ﻿@using ChocolateUI.Pages.Components
-@using Models.Photo
-@using Models.Product
 @using System.Globalization
 @using ChocolateUI.Services
 @inject IUserProfile UserProfile
@@ -52,7 +50,7 @@
 @code
 {
     [Parameter]
-    public ProductDto Product { get; set; }
+    public ProductResponse Product { get; set; }
 
     [Parameter]
     public ICollection<Guid> Photos { get; set; }

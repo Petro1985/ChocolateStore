@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ApiContracts.Category;
+using Microsoft.AspNetCore.Mvc;
 using ChocolateBackEnd.Auth;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
-using Models.Category;
+using Services.Models;
 using Services.Photo;
 using Services.Product;
 
@@ -19,17 +21,20 @@ public class CategoriesController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
+    public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetCategories()
     {
         var result = await _productService.GetAllCategories();
+        var mappedResult = result.Adapt<List<CategoryDto>, List<CategoryResponse>>();
         await Task.Delay(1000);
-        return Ok(result);
+        return Ok(mappedResult);
     }
 
     [HttpGet("{categoryId:guid}", Name = "GetCategory")]
     public async Task<ActionResult<CategoryDto>> GetCategory([FromRoute] Guid categoryId)
     {
-        return Ok(await _productService.GetCategory(categoryId));
+        var result = await _productService.GetCategory(categoryId);
+        var mappedResult = result.Adapt<CategoryDto, CategoryResponse>();
+        return Ok(mappedResult);
     }
 
     [Authorize(Policy = PoliciesConstants.Admin)]
@@ -44,15 +49,17 @@ public class CategoriesController : BaseApiController
 
     [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpPost]
-    public async Task<ActionResult<Guid>> AddCategory(CategoryDto category)
+    public async Task<ActionResult<Guid>> AddCategory(CreateCategoryRequest createCategoryRequest)
     {
-        return Ok(await _productService.AddNewCategory(category));
+        var newCategory = createCategoryRequest.Adapt<CreateCategoryRequest, CategoryDto>();
+        return Ok(await _productService.AddNewCategory(newCategory));
     }
 
     [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpPut]
-    public async Task<IActionResult> UpdateCategory([FromBody] CategoryDto category)
+    public async Task<IActionResult> UpdateCategory([FromBody] UpdateCategoryRequest updateCategoryRequest)
     {
+        var category = updateCategoryRequest.Adapt<UpdateCategoryRequest, CategoryDto>();
         await _productService.UpdateCategory(category);
         return Ok();
     }

@@ -1,11 +1,11 @@
-﻿using System.IO.Compression;
-using System.Net.Mime;
-using AutoMapper;
+﻿using System.Net.Mime;
+using ApiContracts.Photo;
+using ApiContracts.Product;
 using ChocolateDomain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using ChocolateBackEnd.Auth;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
-using Models.Photo;
 using Models.Product;
 using Services.Photo;
 using Services.Product;
@@ -14,51 +14,42 @@ namespace ChocolateBackEnd.Controllers;
 
 public class ProductsController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly IPhotoService _photoService;
     private readonly IProductService _productService;
 
-    public ProductsController(IMapper mapper,  IPhotoService photoService, IProductService productService)
+    public ProductsController(IPhotoService photoService, IProductService productService)
     {
-        _mapper = mapper;
         _photoService = photoService;
         _productService = productService;
     }
 
    
     [HttpGet("{productId:Guid}", Name = "GetProduct")]
-    public async Task<ActionResult<ProductDto>> GetProduct(Guid productId)
+    public async Task<ActionResult<ProductResponse>> GetProduct(Guid productId)
     {
         var product = await _productService.GetProductWithPhotoIds(productId);
-
-        return Ok(product);
+        var response = product.Adapt<ProductResponse>();
+        return Ok(response);
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsByCategory([FromQuery]Guid? categoryId)
+    public async Task<ActionResult<List<ProductResponse>>> GetProductsByCategory([FromQuery]Guid? categoryId)
     {
         await Task.Delay(1000);
+        var result = categoryId is null
+            ? await _productService.GetAllProducts()
+            : await _productService.GetProductsByCategory(categoryId.Value);
 
-        return categoryId is null 
-            ? Ok(await _productService.GetAllProducts()) 
-            : Ok(await _productService.GetProductsByCategory(categoryId.Value));
+        var response = result.Adapt<List<ProductResponse>>();
+        return response;
     }
-
-    // [Authorize(Policy = Policies.Admin)]
-    // [HttpPost("Photo")]
-    // public async Task<IActionResult> AddProductPhoto(AddMainPhotoRequest request)
-    // {
-    //     var photo = Convert.FromBase64String(request.PhotoBase64);
-    //     var newPhotoId = await _photoService.AddPhoto(null, photo);
-    //     await _productService.SetProductPhoto(request.EntityId, newPhotoId);
-    //     return Ok(newPhotoId);
-    // }
 
     [Authorize(Policy = PoliciesConstants.Admin)]
     [HttpPost]
-    public async Task<ActionResult<Guid>> AddProduct([FromBody]ProductCreateRequest product)
+    public async Task<ActionResult<Guid>> AddProduct([FromBody]ProductCreateRequest createProductRequest)
     {
-        var newProductId = await _productService.AddNewProduct(product);
+        var newProduct = createProductRequest.Adapt<ProductDto>();
+        var newProductId = await _productService.AddNewProduct(newProduct);
         return Ok(newProductId);
     }
 

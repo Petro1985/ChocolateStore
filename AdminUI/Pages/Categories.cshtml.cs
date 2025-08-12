@@ -6,8 +6,8 @@ using ChocolateDomain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Models.Category;
 using Services.Category;
+using Services.Models;
 using Services.Photo;
 
 namespace AdminUI.Pages;
