@@ -10,6 +10,7 @@ import {SearchService} from "../../services/search-service";
 import {ImageService} from "../../services/image-service";
 import { ICategorySearchResult, IProductSearchResult, ISearchResultResponse } from '../../services/contracts/search-result';
 import { CategoryService } from '../../services/category-service';
+import { ProductService } from '../../services/product-service';
 
 @Component({
   selector: 'app-header',
@@ -27,11 +28,11 @@ export class HeaderComponent implements AfterViewInit {
   @ViewChild('searchInput') searchInput!: ElementRef;
 
   constructor(private translateService: TranslateService,
-              private storageService: StorageService,
               private modalService: ModalService,
               private searchService: SearchService,
               private imageService: ImageService,
-              private categoryService: CategoryService) {
+              private categoryService: CategoryService,
+              private productService: ProductService) {
     this.category$ = this.categoryService.getCurrentCategory();
     this.searchResults$ = new Observable<ISearchResultResponse>();
   }
@@ -101,9 +102,11 @@ export class HeaderComponent implements AfterViewInit {
     this.searchInput.nativeElement.value = '';
   }
 
-  onProductClick(product: IProductSearchResult): void {
+  async onProductClick(product: IProductSearchResult): Promise<void> {
     this.categoryService.setCurrentCategory(product.categoryId);
+    this.productService.setCurrentProduct(product.id);
     this.clearSearchResults();
     this.searchInput.nativeElement.value = '';
+    this.modalService.open('product-modal');    
   }
 }

@@ -19,7 +19,7 @@ export class CategoryService {
     return this.allCategories$;
   }
 
-  public setCurrentCategory(categoryId: string): void {
+  public setCurrentCategory(categoryId: string) {
     this.allCategories$.pipe(take(1)).subscribe(categories => {
       const found = categories.find(c => c.id === categoryId);
       if (found) {

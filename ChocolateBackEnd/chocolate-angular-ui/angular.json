@@ -80,6 +80,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "host": "192.168.0.108",
+            "port": 4200
+          },
           "configurations": {
             "production": {
               "buildTarget": "chocolate-angular-ui:build:production"

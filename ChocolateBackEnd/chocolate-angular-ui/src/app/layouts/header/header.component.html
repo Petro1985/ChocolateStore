@@ -1,10 +1,26 @@
 <div class="container-fluid">
   <nav class="navbar navbar-light">
-    <a class="navbar-brand logo-container" href="#">
-      <img alt="Chocolate Store Logo" ngSrc="./assets/chocolate-logo.svg" priority class="logo-img" width="140" height="60"/>
-    </a>
+    <!-- First row: Logo and Login -->
+    <div class="header__top-row">
+      <a class="navbar-brand logo-container" href="#">
+        <img alt="Chocolate Store Logo" ngSrc="./assets/chocolate-logo.svg" priority class="logo-img" width="140" height="60"/>
+      </a>
 
-    <div class="header__tools-container">
+      <div class="header__tools-container">
+        <select class="form-select header__language-select" (change)="onLanguageChange($event)">
+          <option value="ru">Русский</option>
+          <option value="en">English</option>
+        </select>
+
+        <div class="login-wrapper" (click)="onLoginClick()">
+          <img ngSrc="./assets/Icons/login.svg" alt="login" width="24" height="24"/>
+          <span class="login-text">Войти</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Second row: Search -->
+    <div class="header__search-row">
       <div class="search-container">
         <input #searchInput type="text" 
                class="form-control header__search-input" 
@@ -42,16 +58,6 @@
           </div>
         }
       </div>
-
-      <select class="form-select header__language-select" (change)="onLanguageChange($event)">
-        <option value="ru">Русский</option>
-        <option value="en">English</option>
-      </select>
-    </div>
-
-    <div class="login-wrapper" (click)="onLoginClick()">
-      <img ngSrc="./assets/Icons/login.svg" alt="login" width="24" height="24"/>
-      <span class="login-text">Войти</span>
     </div>
 
     <app-modal [id]="'loginModal'" #loginModal [width]="500" [height]="50" >

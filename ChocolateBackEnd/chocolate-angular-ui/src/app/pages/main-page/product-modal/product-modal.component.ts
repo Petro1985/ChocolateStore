@@ -4,6 +4,8 @@ import {ImageService} from "../../../services/image-service";
 import {SwiperContainer} from "swiper/swiper-element";
 import {Swiper} from "swiper";
 import { ProductService } from '../../../services/product-service';
+import { ModalService } from '../../../_modal';
+import { EmptyProduct } from '../../../constants/product-constants';
 
 @Component({
   selector: 'app-product-modal',
@@ -18,7 +20,7 @@ export class ProductModalComponent implements OnInit {
   @ViewChild('thumbnailSwiper', {static: true}) thumbnailSwiper!: ElementRef<SwiperContainer>
   @ViewChild('testSwiper', {static: true}) testSwiper!: ElementRef<SwiperContainer>
 
-  constructor(public imageService: ImageService, productService: ProductService) {
+  constructor(public imageService: ImageService, private productService: ProductService, private modalService: ModalService) {
     productService.getCurrentProduct().subscribe(p => {
       this.product = p;
     });
@@ -42,8 +44,9 @@ export class ProductModalComponent implements OnInit {
   }
 
   Close() {
+    this.productService.setCurrentProduct(null);
     this.mainSwiper.nativeElement.loop = false;
-    this.closeFunction();
+    this.modalService.close('product-modal');
   }
 
   ngOnInit() {

@@ -17,8 +17,7 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private categoryService: CategoryService,
-    private modalService: ModalService
+    private categoryService: CategoryService
   ) {
     this.products$ = this.productService.GetProducts();
     this.currentCategory$ = this.categoryService.getCurrentCategory();
@@ -30,8 +29,5 @@ export class ProductListComponent implements OnInit {
     });
   }
 
-  onProductClick(product: IProduct): void {
-    this.modalService.open('product-modal');
-  }
 }
 

@@ -27,14 +27,20 @@ export class ProductService
     return this._products$;
   }
 
-  public setCurrentProduct(productId: string)
+  public setCurrentProduct(productId: string | null)
   {
+    if (productId === null)
+    {
+      this._currentProduct$.next(EmptyProduct);
+      return;
+    }
+
     this._products$.pipe(take(1)).subscribe(products => {
       const product = products.find(p => p.id === productId);
       if (product)
       {
         this._currentProduct$.next(product);
-      }
+      } 
     });
   }
 

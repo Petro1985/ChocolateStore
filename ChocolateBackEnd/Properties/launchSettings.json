@@ -4,18 +4,17 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:47007",
+      "applicationUrl": "http://192.168.0.108:47007",
       "sslPort": 44370
     }
   },
   "profiles": {
     "ChocolateBackEnd": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "applicationUrl": "http://localhost:8086",
+      "launchBrowser": false,
+      "applicationUrl": "http://192.168.0.108:8086",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }
